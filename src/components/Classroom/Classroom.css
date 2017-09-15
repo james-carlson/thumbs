@@ -1,0 +1,14 @@
+.classroom {
+    background-color: #ddd;
+    height: 100vh;
+
+}
+
+.questionbox {
+    border: 1px dashed #fff;
+    width: 90vw;
+}
+
+.hidden {
+    display: none;
+}
