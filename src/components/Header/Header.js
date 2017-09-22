@@ -1,33 +1,45 @@
 import React, { Component } from 'react';
 import './Header.css';
 import logo from './dmlogo.png';
-import InstructorHeader from './Instructor/InstructorHeader';
-import StudentHeader from './Student/StudentHeader';
 import Subheader from '../Subheader/Subheader';
 import { Link } from 'react-router-dom';
 import { goLive } from '../../ducks/backend_reducer';
 import { connect } from 'react-redux';
+import InstructorHeader from './InstructorHeader';
+import StudentHeader from './StudentHeader';
 
 
 class Header extends Component {
-    render() {
-        var headerStuffing;
+    displayDynamicHeaderController(props) {
         if (this.props.userType === 'instructor') {
-            headerStuffing = <InstructorHeader />
+            return(<InstructorHeader />);
         } else {
-            headerStuffing = <StudentHeader />
+            return(<StudentHeader />);
         }
 
-        return (
+    }
 
-            <div>
+
+    render() {
+
+        return (
+            <div className="nav_container">
                 <div className="header">
-                    <div><img className="logo" src={logo} alt="DevMountain logo" /></div>
-                    <div>Thumbs</div>
-                    <div><Link to="/">Home</Link></div>
-                    <div className="instructor">{headerStuffing}</div>
+                    <div className="logo_container">
+                        <div className="logo">
+                            <Link to="/" className="logo">
+                            <img className="logo" src={logo} alt="DevMountain logo" />
+                            <text className="appName">THUMBS</text>
+                            </Link>
+                        </div>
+                    </div>
+                    <div className="header_dynamic_portion_container">
+                        {this.displayDynamicHeaderController()}
+                        </div>
                 </div>
+                <div className="subheader">
                 <Subheader />
+                </div>
             </div>
 
 

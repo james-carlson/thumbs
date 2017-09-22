@@ -2,6 +2,8 @@ import * as handler from '../services/handle_data';
 import * as socket from '../services/handle_socket';
 
 // BACKEND/HANDLING DATA
+// const RECORD_INSTRUCTOR_NAME = "RECORD_INSTRUCTOR_NAME"
+// const RECORD_CLASS_TOPIC = "RECORD_CLASS_TOPIC"
 const RECORD_CURRENT_TEXT = "RECORD_CURRENT_TEXT"
 const RECORD_NEW_QUESTION = "RECORD_NEW_QUESTION"
 const RECORD_NEW_QUESTION_PENDING = "RECORD_NEW_QUESTION_PENDING"
@@ -14,6 +16,7 @@ const GO_LIVE = "GO_LIVE"
 const GO_LIVE_PENDING = "GO_LIVE_PENDING"
 const GO_LIVE_FULFILLED = "GO_LIVE_FULFILLED"
 const INITIALIZE_USER_TYPE = "INITIALIZE_USER_TYPE"
+const VIEW_QUESTION_RESPONSES = "VIEW_QUESTION_RESPONSES"
 
 // SOCKETS
 const SUBSCRIBE_TO_CLASSROOM = "SUBSCRIBE_TO_CLASSROOM"
@@ -23,20 +26,26 @@ const RECEIVE_TIMESTAMP = "RECEIVE_TIMESTAMP"
 
 const initialState = { 
     loading: false,
-    questions: [],
+    live: false,
     class_sessionID: '',
-    currentText: '',
-    db_session_id: null,
     userType: '',
-    timestamp: 'no timestamp yet'
+    instructorName: '',
+    classTopic: '',
+    questionType: '',
+    timestamp: 'no timestamp yet',
+    newQuestionText: '',
+    db_session_id: null,
+    questions: []
 };
 
 export default function reducer(state = initialState, action) {
+    console.log("REDUCER HIT: " + state, action);
     switch (action.type) {
         case RECORD_CURRENT_TEXT:
-            return Object.assign({}, state, {currentText: action.payload});
-        // case RECORD_NEW_QUESTION:
-        //     return Object.assign({}, state, {questionID: 'This should come from the database'});
+            console.log("RECORD_CURRENT_TEXT" + JSON.stringify(action))
+            return Object.assign({}, state, {[action.key]: action.payload});
+        case RECORD_NEW_QUESTION:
+            return Object.assign({}, state, {questionID: 'This should come from the database'});
         case RECORD_NEW_QUESTION_PENDING:
             return Object.assign({}, state, {questionID: 'This should come from the database'});
         case RECORD_NEW_QUESTION_FULFILLED:
@@ -50,13 +59,13 @@ export default function reducer(state = initialState, action) {
         case CREATE_NEW_CLASS_SESSION_ID:
             return Object.assign({}, state, {loading: false, class_sessionID: action.payload});
         // case GO_LIVE:
-        //     return Object.assign({}, state, {loading: true});
+        //     return Object.assign({}, state, {live: true});
         case GO_LIVE_PENDING:
             return Object.assign({}, state, {loading: true});
         case GO_LIVE_FULFILLED:
-            return Object.assign({}, state, {loading: false, db_session_id: action.payload});
+            return Object.assign({}, state, {loading: false, db_session_id: action.payload, live: !state.live});
         case INITIALIZE_USER_TYPE:
-            console.log(action.payload)
+            console.log(action.payload + " view")
             return Object.assign({}, state, {userType: action.payload});
         // case SUBSCRIBE_TO_CLASSROOM_PENDING:
         //     return Object.assign({}, state, {loading: true});
@@ -73,26 +82,39 @@ export default function reducer(state = initialState, action) {
     }
 }
 
-export function recordNewQuestion(questionText, class_sessionID) {
+
+
+export function recordNewQuestion(questionText, userType, class_sessionID) {
     console.log("At the reducer: " + questionText, class_sessionID);
     return {
         type: RECORD_NEW_QUESTION,
-        payload: handler.recordNewQuestion(questionText, class_sessionID)
+        payload: handler.recordNewQuestion(questionText, class_sessionID),
+        questionType: userType
     }
 }
 
-export function recordCurrentText(value) {
+export function recordCurrentText(value, stateproperty) {
+    console.log("recording current text: " + value, stateproperty)
     return {
         type: RECORD_CURRENT_TEXT,
-        payload: value
-    }
+        payload: value,
+        key: stateproperty
+        }
 }
 
-export function getQuestions() {
-    return {
-        type: GET_QUESTIONS,
-        payload: handler.getQuestions()
+export function getQuestions(userType) {
+    if (userType === 'instructor') {
+        return {
+            type: GET_QUESTIONS,
+            payload: handler.getQuestions('instructor')
+        }
+    } else {
+        return {
+            type: GET_QUESTIONS,
+            payload: handler.getQuestions()
+        }
     }
+
 }
 
 export function generateRandomID() {
@@ -105,31 +127,31 @@ export function generateRandomID() {
 export function goLive(generatedID) {
     return {
         type: GO_LIVE,
-        payload: handler.goLive(generatedID)
+        payload: handler.goLive(generatedID),
     }
 }
 
 export function initializeUser(typeOfUser) {
-    console.log('reducer function typeOfUser: ' + typeOfUser);
     return {
         type: INITIALIZE_USER_TYPE,
         payload: typeOfUser
     }
 }
 
-export function subscribeToClassroom() {
-    console.log("reducer: subscribeToClassroom hit");
-    return {
-        type: SUBSCRIBE_TO_CLASSROOM,
-        payload: socket.subscribeToClassroom()
-    }
-}
 
-export function receiveTimeStamp() {
-    console.log('reducer: receiveTimeStamp hit');
-    return {
-        type: RECEIVE_TIMESTAMP,
-        payload: socket.receiveTimeStamp()
-    }
-}
+// export function subscribeToClassroom() {
+//     console.log("reducer: subscribeToClassroom hit");
+//     return {
+//         type: SUBSCRIBE_TO_CLASSROOM,
+//         payload: socket.subscribeToClassroom()
+//     }
+// }
+
+// export function receiveTimeStamp() {
+//     console.log('reducer: receiveTimeStamp hit');
+//     return {
+//         type: RECEIVE_TIMESTAMP,
+//         payload: socket.receiveTimeStamp()
+//     }
+// }
 

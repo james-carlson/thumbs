@@ -2,32 +2,39 @@ import React, { Component } from 'react';
 import './Subheader.css';
 import { teacherNewQuestion, studentNewQuestion, viewStudentQuestion, viewQuestionResponses } from '../../ducks/view_reducer';
 import { connect } from 'react-redux';
-
+// import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import RaisedButton from 'material-ui/RaisedButton';
+import SessionInfo from '../SessionInfo/SessionInfo';
+import InstructorSubheader from '../Subheader/InstructorSubheader';
+import StudentSubheader from '../Subheader/StudentSubheader';
 
 class Subheader extends Component {
     render() {
+        const style = {
+            margin: 12,
+        };
+
+        var dynamicPortion;
+        if (this.props.userType === 'instructor') {
+            dynamicPortion = <InstructorSubheader />
+        } else {
+            dynamicPortion = <StudentSubheader />
+        }
+
         return (
             <div>
-                <div className="sub_header">
-                    <div>
-                        Teachers: 
-                        <button onClick={ () => this.props.teacherNewQuestion() }>Ask Question</button> 
-                        {/* <button onClick={ () => this.props.viewQuestionResponses() }>View Feedback</button> */}
-                        <button onClick={ () => this.props.viewStudentQuestion() }>Student Questions</button><br />
-                        Students: 
-                        <button onClick={ () => this.props.studentNewQuestion() }>Ask a Question</button> 
-                        <a href="https://q.devmountain.com/#/studentDashboard"><button>Q</button></a> 
-                        <a href="https://devmountain.difference-engine.com/#/courses"><button>LMS</button></a></div>
-                </div>
+                {dynamicPortion}
             </div>
         );
     }
 }
 
-function mapStateToProps( state ) {
+function mapStateToProps(state) {
     return {
-        currentview: state.currentview
+        currentView: state.views.currentView,
+        userType: state.data.userType
     }
 }
 
-export default connect ( mapStateToProps, { teacherNewQuestion, studentNewQuestion, viewStudentQuestion, viewQuestionResponses } )( Subheader );
+export default connect(mapStateToProps, { viewStudentQuestion, viewQuestionResponses })(Subheader);

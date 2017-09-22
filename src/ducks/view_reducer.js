@@ -1,6 +1,7 @@
 // VIEWS
-const ASK_NEW_TEACHER_QUESTION = "ASK_NEW_TEACHER_QUESTION"
-const ASK_NEW_STUDENT_QUESTION = "ASK_NEW_STUDENT_QUESTION"
+// const ASK_NEW_TEACHER_QUESTION = "ASK_NEW_TEACHER_QUESTION"
+// const ASK_NEW_STUDENT_QUESTION = "ASK_NEW_STUDENT_QUESTION"
+const DISPLAY_NEW_QUESTION_BOX = "DISPLAY_NEW_QUESTION_BOX"
 const VIEW_STUDENT_QUESTIONS = "VIEW_STUDENT_QUESTIONS"
 const VIEW_QUESTION_RESPONSES = "VIEW_QUESTION_RESPONSES"
 const VIEW_INITIAL = "VIEW_INITIAL"
@@ -9,15 +10,16 @@ const VIEW_INITIAL = "VIEW_INITIAL"
 const initialState = { 
     currentView: 'initial',
     currentText: '',
-    userType: 'instructor'
+    userType: 'instructor',
+    displayNewQuestionBox: false
 };
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
-        case ASK_NEW_TEACHER_QUESTION:
-            return Object.assign({}, state, {currentView: 'teacherNewQuestion' });
-        case ASK_NEW_STUDENT_QUESTION:
-            return Object.assign({}, state, {currentView: 'studentNewQuestion' });
+        case DISPLAY_NEW_QUESTION_BOX:
+            return Object.assign({}, state, {currentView: 'teacherNewQuestion', displayNewQuestionBox: !state.displayNewQuestionBox });
+        // case ASK_NEW_STUDENT_QUESTION:
+        //     return Object.assign({}, state, {currentView: 'studentNewQuestion' });
         case VIEW_STUDENT_QUESTIONS:
             return Object.assign({}, state, {currentView: 'allStudentQuestions' });
         case VIEW_QUESTION_RESPONSES:
@@ -29,13 +31,13 @@ export default function reducer(state = initialState, action) {
     }
 }
 
-export function teacherNewQuestion() {
-    return { type: ASK_NEW_TEACHER_QUESTION }
+export function toggleDisplayNewQuestionBox() {
+    return { type: DISPLAY_NEW_QUESTION_BOX }
 }
 
-export function studentNewQuestion() {
-    return { type: ASK_NEW_STUDENT_QUESTION }
-}
+// export function studentNewQuestion() {
+//     return { type: ASK_NEW_STUDENT_QUESTION }
+// }
 
 export function viewStudentQuestion() {
     return { type: VIEW_STUDENT_QUESTIONS }

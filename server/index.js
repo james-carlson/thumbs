@@ -111,10 +111,17 @@ app.get('/api/data/questions/session/student', function(req, res){
 // Socket setup
 var io = socket(server);
 
-io.on('connection', (client) => {    
-    client.on('subscribeToClassroom', (interval) => {
-        console.log('client is subscribing to timer with interval ', interval);
-        client.emit('subscribeSuccess') 
-    });
+io.on('connection', (socket) => {
+    var total=io.engine.clientsCount;
+    var message = "tester"    
+    socket.emit('getCount', total)
+    socket.emit('message', 'james')
+    socket.on("disconnect", () => {
+        io.sockets.emit("user count", total);
+    })
+    // client.on('subscribeToClassroom', (interval) => {
+    //     console.log('client is subscribing to timer with interval ', interval);
+    //     client.emit('subscribeSuccess') 
+    // });
 });
 

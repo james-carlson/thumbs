@@ -1,6 +1,9 @@
 .classroom {
-    background-color: #ddd;
-    height: 100vh;
+    background-color: #fff;
+    /* height: 85vh; */
+    padding-top: 30vh;
+    position: static;
+    z-index: 0;
 
 }
 

@@ -1,0 +1,16 @@
+.action_button_wrapper {
+    width: 90%;
+    display: flex;
+    justify-content: space-around;
+    padding-top: .6rem;
+}
+
+.action_button_wrapper button {
+    width: 100%;
+    margin-left: 2%;
+    margin-right: 2%;
+    font-size: 100%;
+    /* flex-wrap: nowrap; */
+    white-space: nowrap;
+
+}

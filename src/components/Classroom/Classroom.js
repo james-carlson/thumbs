@@ -7,34 +7,57 @@ import { getQuestions } from '../../ducks/backend_reducer';
 import List from '../List/List';
 import { subscribeToClassroom } from '../../services/handle_socket';
 import { receiveTimeStamp } from '../../services/handle_socket';
+import io from 'socket.io-client';
+let socket = io('http://localhost:4000');
 
 
 class Classroom extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            connectionCount: 0,
+            message: ''
+        }
+
+    }
+
     componentDidMount() {
         this.props.getQuestions();
+        
+        
+        }
+    
+    classroomDisplayController(props) {
+
+    }
+
+    socketController(props) {
+        socket.on('getCount', res => {
+            console.log(res)});
+        socket.on('message', res => {
+            console.log(res)});  
+            // this.setState({connectionCount : res, message: message})
     }
 
     render() {
-
 
         return (
             <div>
                 <Header />
                 <div className="classroom">
                     <div>
-                        <div></div>
-                        <div>Timer: {this.props.subscribeToClassroom(this.props.receiveTimeStamp)}</div>
+                        <div><NewQuestion /></div>
+                        {this.state.connectionCount}
+                        {/* <div>Timer: {this.props.subscribeToClassroom(this.props.receiveTimeStamp)}</div> */}
                         <div>This is the classroom. The current view is: {this.props.currentView}. </div>
                         <div className={"inital " + (this.props.currentView !== 'initial' ? "hidden" : '')}>
                             This is displayed because the current view is the initial view.
                     </div>
                         <div className={"teacherNewQuestion " + (this.props.currentView !== 'teacherNewQuestion' ? "hidden" : '')}>
                             This is displayed because the current view is teacherNewQuestion.
-                        <NewQuestion />
                         </div>
                         <div className={"studentNewQuestion " + (this.props.currentView !== 'studentNewQuestion' ? "hidden" : '')}>
                             This is displayed because the current view is studentNewQuestion.
-                        <NewQuestion />
                         </div>
                         <div className={"allStudentQuestions " + (this.props.currentView !== 'allStudentQuestions' ? "hidden" : '')}>
                             This is displayed because the current view is allStudentQuestions.

@@ -2,34 +2,56 @@ import React, { Component } from 'react';
 import './NewQuestion.css';
 import { connect } from 'react-redux';
 import { recordCurrentText, recordNewQuestion } from '../../ducks/backend_reducer';
-import { viewInitial } from '../../ducks/view_reducer';
+import { viewInitial, toggleDisplayNewQuestionBox } from '../../ducks/view_reducer';
 
 class NewQuestion extends Component {
-    
-    render () {
-        var questiontype = (this.props.currentView === 'teacherNewQuestion'? 'teacher' : 'student')
-        return (
-            <div className="NewQuestion">
-                <div>This div pops up for a new {questiontype} question.</div>
-                <div><textarea rows="10" cols="50" onChange={ (e) => this.props.recordCurrentText(e.target.value)}/></div>
-                <div>
-                    <button onClick={ (e) => this.props.recordNewQuestion(this.props.currentText, this.props.class_sessionID)}>Ask</button>
-                    <button onClick={ () => this.props.viewInitial() }>Cancel</button>
-                    {this.props.currentText}{this.props.class_sessionID}
+
+    askButton(e, callback) {
+        console.log('hit the Ask button', e);
+        (e) => { this.props.recordNewQuestion(this.props.newQuestionText, this.props.class_sessionID) };
+        callback();
+    }
+
+
+
+    newQuestionBoxController() {
+        console.log(this.props.displayNewQuestionBox);
+        if (this.props.displayNewQuestionBox === false) {
+            return ""
+        } else {
+            return (
+                <div className="new_question_container">
+                    <h3>New Question:</h3>
+                    <div className="new_question_container_textarea_box">
+                    <textarea placeholder="Type your question." onChange={(e) => this.props.recordCurrentText(e.target.value, "newQuestionText")} required />
+                    </div>
+                    <div className="new_question_container_buttons_box">
+                        <div><button id="cancel" onClick={() => this.props.toggleDisplayNewQuestionBox()}>Cancel</button></div>
+                        <div><button id="ask" onClick={(e) => this.askButton(e, this.props.toggleDisplayNewQuestionBox)}>Ask</button></div>
+                    </div>
                 </div>
-                <div></div>
-            </div>
+            )
+        }
+    }
+
+    render() {
+
+        return (
+            <div>{this.newQuestionBoxController()}</div>
         );
     }
+
 }
 
-function mapStateToProps( state ) {
+function mapStateToProps(state) {
     return {
         currentText: state.data.currentText,
         questionID: state.data.questionID,
         currentView: state.views.currentView,
-        class_sessionID: state.data.class_sessionID
+        class_sessionID: state.data.class_sessionID,
+        userType: state.data.userType,
+        displayNewQuestionBox: state.views.displayNewQuestionBox
     }
 }
 
-export default connect ( mapStateToProps, { recordCurrentText, recordNewQuestion, viewInitial } )( NewQuestion );
+export default connect(mapStateToProps, { recordCurrentText, recordNewQuestion, viewInitial, toggleDisplayNewQuestionBox })(NewQuestion);

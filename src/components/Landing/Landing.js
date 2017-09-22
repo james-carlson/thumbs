@@ -20,12 +20,13 @@ class Landing extends Component {
                         <img src={logo} className="App-logo" alt="logo" />
                         <h2>Thumbs: Instant, Accurate Feedback</h2>
                     </div>
-                    <div>To get started, click <Link to={`/${this.props.class_sessionID}`}><button>here</button></Link> to open a class session as an {this.props.userType}.</div>
                     <div></div>
                 </div>
                 <p className="App-intro">
-                    This is the background info.
+                    This is the background info. 
+                    
                 </p>
+                <div>To get started, click <Link to={`/${this.props.class_sessionID}`}><button>here</button></Link> to open a class session as an {this.props.userType}.</div>
             </div >
 
         );
