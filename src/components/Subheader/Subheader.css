@@ -1,3 +1,22 @@
+.subheader {
+    /* box-shadow: 0rem .1rem .15rem rgba(63, 145, 221, 0.78); */
+    /* border-bottom: 1px solid #696969; */
+    /* box-shadow: inset 0rem .1rem .15rem rgba(0,0,0,0.19), inset 0rem .1rem .5rem rgba(0,0,0,0.23);*/
+    box-shadow: .1rem .1rem .4rem rgba(0, 0, 0, 0.29), .1rem .1rem .4rem rgba(0, 0, 0, 0.27);
+    background-color: #DFDFDF;
+    color: #333;
+    /* padding: 3%; */
+    /* padding-top: 2.4rem; */
+    /* padding-bottom: 5%; */
+    font-family: sans-serif;
+    font-size: 80%;
+    /* height: 80%; */
+    /* overflow: scroll; */
+    width: 100%;
+    position: relative;
+    z-index: 5;
+}
+
 .subheader_dynamic_portion_item {
     display: flex;
     flex-direction: row;
@@ -5,7 +24,7 @@
     height: 100%;
     justify-content: space-around;
     align-content: center;
-    padding-top: .4rem;
+    /* padding-top: .4rem; */
 }
 
 .subheader_dynamic_portion_item button{
@@ -14,21 +33,7 @@
 
 }
 
-.subheader {
-    box-shadow: 0px 1px 15px rgba(0,0,0,0.19), 0px 1px 5px rgba(0,0,0,0.23);
-    background-color: #f2f2f2;
-    color: #333;
-    /* padding: 3%; */
-    padding-top: 2.4rem;
-    padding-bottom: 5%;
-    font-family: sans-serif;
-    font-size: 80%;
-    /* height: 80%; */
-    /* overflow: scroll; */
-    width: 100%;
-    position: fixed;
-    z-index: 50;
-}
+
 
 @media (min-width: 768px) {
     .student_subheader {

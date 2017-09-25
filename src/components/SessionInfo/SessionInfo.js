@@ -8,7 +8,7 @@ import { goLive } from '../../ducks/backend_reducer';
 
 class SessionInfo extends Component {
     render() {
-        var dynamicPortion;
+        // var dynamicPortion;
         if (this.props.userType === 'instructor') {
             // headerComponent = <InstructorHeader />;
             // subheaderComponent = <InstructorSubheader />;

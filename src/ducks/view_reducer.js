@@ -9,8 +9,6 @@ const VIEW_INITIAL = "VIEW_INITIAL"
 
 const initialState = { 
     currentView: 'initial',
-    currentText: '',
-    userType: 'instructor',
     displayNewQuestionBox: false
 };
 

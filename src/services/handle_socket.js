@@ -1,5 +1,5 @@
-import openSocket from 'socket.io-client';
-const socket = openSocket('http://localhost:4000');
+import io from 'socket.io-client';
+let socket = io('http://localhost:4000');
 
 
 export const subscribeToClassroom = function(cb) { 

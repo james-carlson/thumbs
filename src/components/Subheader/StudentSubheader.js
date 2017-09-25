@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import RaisedButton from 'material-ui/RaisedButton';
+import Actions from '../Actions/Actions';
+import List from '../List/List';
+
+
 
 class StudentSubheader extends Component {
     render () {
@@ -10,22 +12,8 @@ class StudentSubheader extends Component {
         };
 
         return (
-            <div>
-            <div className="student_subheader">Student Subheader
-                <div>{this.props.instructorName}this.props.instructorName</div>
-                <div>{this.props.classTopic}this.props.classTopic</div>
-                <div>{this.props.inSession}this.props.inSessionNow</div>
-
-            </div>
-            <div>
-            Students:
-                        <MuiThemeProvider>
-                            <RaisedButton label="Ask A Question" style={style} onClick={() => this.props.studentNewQuestion()} />
-                        </MuiThemeProvider>
-                        <MuiThemeProvider>
-                            <a href="https://q.devmountain.com/#/studentDashboard"><RaisedButton label="Go To Queue" style={style} /></a>
-                        </MuiThemeProvider>
-            </div>
+            <div className="subheader">
+            <div className="subheader_dynamic_portion_item"><Actions /></div>
             </div>
         );
     }
@@ -33,7 +21,8 @@ class StudentSubheader extends Component {
 
 function mapStateToProps(state) {
     return {
-        currentview: state.currentview
+        currentview: state.views.currentview,
+        live: state.data.live,
     }
 }
 

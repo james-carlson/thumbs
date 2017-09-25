@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { goLive } from '../../ducks/backend_reducer';
+import { goLive, endLive } from '../../ducks/backend_reducer';
 import { connect } from 'react-redux';
 // import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 // import TextField from 'material-ui/TextField';
@@ -18,7 +18,7 @@ class InstructorHeader extends Component {
                 <div><div className="live_indicator"></div></div>LIVE!</div>
             </div>
             <div>   
-            <div className="header_dynamic_portion_content_end">END</div>
+            <div className="header_dynamic_portion_content_end" onClick={this.props.endLive}>END</div>
             </div>
             </div>
             )
@@ -103,4 +103,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { goLive })(InstructorHeader);
+export default connect(mapStateToProps, { goLive, endLive })(InstructorHeader);

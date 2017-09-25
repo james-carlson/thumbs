@@ -1,4 +1,4 @@
 SELECT *
 From instructor_questions
--- WHERE sessionid = $1
+-- WHERE sessionid = $1;
 

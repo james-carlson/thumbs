@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import './Subheader.css';
-import { teacherNewQuestion, studentNewQuestion, viewStudentQuestion, viewQuestionResponses } from '../../ducks/view_reducer';
+import { viewStudentQuestion, viewQuestionResponses } from '../../ducks/view_reducer';
 import { connect } from 'react-redux';
 // import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import RaisedButton from 'material-ui/RaisedButton';
-import SessionInfo from '../SessionInfo/SessionInfo';
+// import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+// import RaisedButton from 'material-ui/RaisedButton';
+// import SessionInfo from '../SessionInfo/SessionInfo';
 import InstructorSubheader from '../Subheader/InstructorSubheader';
 import StudentSubheader from '../Subheader/StudentSubheader';
 
 class Subheader extends Component {
     render() {
-        const style = {
-            margin: 12,
-        };
+        // const style = {
+        //     margin: 12,
+        // };
 
         var dynamicPortion;
         if (this.props.userType === 'instructor') {
@@ -33,7 +33,8 @@ class Subheader extends Component {
 function mapStateToProps(state) {
     return {
         currentView: state.views.currentView,
-        userType: state.data.userType
+        userType: state.data.userType,
+        live: state.data.live
     }
 }
 

@@ -11,18 +11,15 @@ class GoLive extends Component {
 
     displayStatus(props) {
         if (this.props.live === true) {
-            return <button onClick={() => this.props.goLive(this.props.class_sessionID)}> END </button>
+            return <button onClick={() => this.props.endLive()}> END </button>
         } else {
-            return <button onClick={() => this.props.goLive(this.props.class_sessionID)}>GO LIVE</button>
+            return <button onClick={() => this.props.goLive(this.props.class_sessionID, this.props.instructorName, this.props.classTopic)}>GO LIVE</button>
         }
     
     }
 
 
     render () {
-        const display = {
-
-        }
 
         return (
             <div className="subheader_dynamic_portion_item">
@@ -35,7 +32,9 @@ class GoLive extends Component {
 function mapStateToProps(state) {
     return {
         live: state.data.live,
-        class_sessionID: state.data.class_sessionID
+        class_sessionID: state.data.class_sessionID,
+        classTopic: state.data.classTopic,
+        instructorName: state.data.instructorName
     }
 }
 

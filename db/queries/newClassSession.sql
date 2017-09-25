@@ -1,7 +1,7 @@
 INSERT INTO class_sessions
-(url_id)
+(class_session_id, instructor_name, class_topic)
 VALUES
-($1)
+($1, $2, $3);
 
 
 -- SELECT id 

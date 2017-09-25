@@ -6,12 +6,11 @@ const express = require('express')
     , cors = require('cors')
     , session = require('express-session')
     , path = require('path')
+    , questions = require('./controllers/questions')
     , socket = require('socket.io')
 ;
 
 var port = 4000;
-
-const questions = require('../src/models/questions');
 
 // 1. EXPRESS
 const app = express();
@@ -60,22 +59,45 @@ var server = app.listen(port, function(){
 app.use(express.static('public'));
 
 // ENDPOINTS
+var roomName = '';
+
 // GO_LIVE (New Class Session)
 app.post('/api/data/new-class-session', function(req, res, next) {
     // console.log(req.body)
-    // res.json(req.body)
-    req.app.get('db').queries.newClassSession(req.body.url_id)
+    const {class_session_id, instructorName, classTopic } = req.body
+    roomName = class_session_id;
+    req.app.get('db').queries.newClassSession(class_session_id, instructorName, classTopic)
     .then( data => res.status(200).send(res.data))
     // .catch(err => { res.status(500).send(err)})
         // 'New class session created. Questions and responses will be logged.').status(200);
     // console.log(req.body.url_id);
 })
 
-// New Teacher Question
-app.post('/api/data/new-teacher-question', function(req, res, next){
-    req.app.get('db').queries.recordNewTeacherQuestion('wacka')
-    res.send(`Question (${req.body.questiontext}) saved to the database.`).status(200)
+// Get live class session
+app.get('/api/data/class_sessions/:class_session_id', function(req, res, next) {
+    console.log(JSON.stringify(req.params.class_session_id));
+    console.log(req.params.class_session_id);
+    req.app.get('db').queries.startClass(req.params.class_session_id)
+    .then( data => {
+        res.status(200).send(data[0]);
+        console.log(data[0])})
+    .catch(err => { res.status(500).send(err)})
+    // const {class_session_id} = req.params
 })
+
+// New Teacher Question
+app.post('/api/data/new-teacher-question', questions.add, function ( req, res, next ) {
+    req.app.get('db').queries.getAllQuestionsForSession()
+    .then(data => res.status(200).send(data))
+    .catch(err => { res.status(500).send(err)})    
+});
+//  [( req, res, next ) => {
+//     console.log("add thing hit in module exports")
+//     const { questiontext , class_session_id } = req.body
+
+//     req.app.get('db').queries.recordNewTeacherQuestion([questiontext, class_session_id])
+//     .then( data => res.status(200).send(res.data))
+// } , ] );
 
 // New Student Question
 app.post('/api/data/new-student-question', function(req, res){
@@ -93,12 +115,13 @@ app.get('/api/data/questions/student/:id', function(req, res){
 })
 
 // Get All Teacher Questions for Session
-app.get('/api/data/questions/session/teacher', ((req, res) => {
-    req.app.get('db').queries.getAllQuestionsForSession()
-        .then( data => res.status(200).send(data))
-        .catch(err => { res.status(500).send(err)})
-}))
+app.get('/api/data/questions/session/teacher', questions.refresh );
 
+// function ( req, res, next ) {
+//     req.app.get('db').queries.getAllQuestionsForSession()
+//     .then(data => res.status(200).send(data))
+//     .catch(err => { res.status(500).send(err)})   
+// }
 
 
 // Get All Student Questions for Session
@@ -108,20 +131,50 @@ app.get('/api/data/questions/session/student', function(req, res){
 
 
 
+
 // Socket setup
 var io = socket(server);
+var socketCount = 0;
+var socketID = '';
+var classroom = '';
 
-io.on('connection', (socket) => {
-    var total=io.engine.clientsCount;
-    var message = "tester"    
-    socket.emit('getCount', total)
-    socket.emit('message', 'james')
-    socket.on("disconnect", () => {
-        io.sockets.emit("user count", total);
+io.on('connection', (serverside) => {
+    serverside.emit('getClassroom')
+    serverside.on('giveClassroom', function(data){
+        console.log("given classRoom:" + data)
     })
-    // client.on('subscribeToClassroom', (interval) => {
-    //     console.log('client is subscribing to timer with interval ', interval);
-    //     client.emit('subscribeSuccess') 
-    // });
+    socketCount++
+    socketID = serverside.id;
+    console.log("Somebody joined:" + socketCount, socketID);
+    serverside.emit('updateSocketCount', { socketID, socketCount})
+
+    serverside.on('disconnect', function () {
+        socketCount--,
+        serverside.emit('studentLeft', socketCount);
+      });
+
+    serverside.on('getSocketCount', function(){
+        console.log("Client has asked for socket count. It's " + socketCount);
+        serverside.emit('tellSocketCount', socketCount);
+    });
+
+    serverside.emit("studentJoined", "Welcome, " + serverside.id, (data) => {
+        ++studentsPresent
+
+        console.log(data);
+    });
+    // console.log("a user connected", socket.id);
+
+    serverside.emit("ferret", "tobi", (data) => {
+        console.log(data);
+    });
+    
+    serverside.on('newQuestion', function() {
+        console.log("joined classroom: " + serverside.id);
+        serverside.emit('message');
+    } );
+
+
+
 });
 
