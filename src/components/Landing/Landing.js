@@ -2,16 +2,29 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { generateRandomID, initializeUser } from '../../ducks/backend_reducer';
-
+import { generateRandomID, initializeUser, resetData } from '../../ducks/backend_reducer';
+import { emitClassSessionId } from '../../services/handle_sockets';
+import io from 'socket.io-client';
+const clientside = io.connect('http://localhost:4000/')
 
 class Landing extends Component {
-    componentDidMount() {
-        this.props.initializeUser('instructor')
-        this.props.generateRandomID()
+    constructor(props){
+        super(props)
+
+        initializeUser('instructor');
+        this.props.generateRandomID();
+        
+    }
+
+    componentDidMount(props) {
+        // this.props.initializeUser('instructor')
+        // this.props.generateRandomID()
+        
     }
 
     render() {
+
+        
 
         return (
             < div >
@@ -40,4 +53,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { generateRandomID, initializeUser })(Landing);
+export default connect(mapStateToProps, { generateRandomID, initializeUser, resetData })(Landing);

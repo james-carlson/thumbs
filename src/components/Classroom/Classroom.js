@@ -9,85 +9,46 @@ import { updateSocketCount } from '../../ducks/sockets_reducer';
 // import { updateSocketCount } from '../../api';
 import './Classroom.css';
 import io from 'socket.io-client';
+import { listenForClassroomNameRequest } from '../../services/handle_sockets';
 
 const clientside = io.connect('http://localhost:4000/')
 
 
 class Classroom extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
-
-    }
-
-        // var socketCount = 0;
-        // this.clientside.on("somebodyJoined", function(data) {
-        //     console.log("Welcome to " + data.socketID + "! SocketCount: " + data.socketCount);
-        //     // socketCount = data.socketCount;
-        //     console.log(socketCount);
-        //     // this.props.updateSocketCount(socketCount);
-        // }); 
-        // this.clientside.on("studentLeft", function(socketCount){
-        //     console.log("Some buddy left. SocketCount: " + socketCount);
-        //     // socketCount = socketCount
-        //     console.log(socketCount);
-        //     // this.props.updateSocketCount(socketCount);
-        // });
-        // this.clientside.on("somebodyJoined", function(data) {
-        //     console.log("Welcome to " + data.socketID + ". Somebody joined. SocketCount: " + data.buttonsocketCount);
-        //     props.updateSocketCount(socketCount);
-        // }); 
-        // this.clientside.on("studentLeft", function(socketCount){
-        //     console.log("Some buddy left. SocketCount: " + socketCount)
-        //     props.updateSocketCount(socketCount);
-
-
-    displaySocketCount() {
-
-            // return socketCount
-            // this.props.updateSocketCount(socketCount);
-    }
-
-
-    componentWillMount(props) {
-        clientside.on("getClassroom", function(){
-            console.log("This class_sessionID");
-            clientside.emit("giveClassroom", "this.class_sessionID") 
-        });
-        }
     
-    // classroomDisplayController(props) {
-    //     if (this.props.live === true) {
-    //         return <div>LIVE!</div>;
-    //     } else {
-    //         return <div></div>
-    //     }
-    // }
+        listenForClassroomNameRequest(props.displayNewTeacherQuestion, this.props.class_sessionID);
+    }
 
-    // handleNewConnection() {
-    //     () => this.props.subscribeToClassroom();
-    // }
 
     componentDidMount(props) {
+        
+        // clientside.on("getClassroom", function () {
+        //     console.log("This class_sessionID");
+        //     clientside.emit("giveClassroom", "this.class_sessionID")
+        // });
+
         // clientside.on("updateSocketCount", function(data){
         //     props.updateSocketCount(data.socketCount);
         //     console.log("Number of active sockets received from server: " + data.socketCount);
         // });
+        this.socketController(this.props.updateSocketCount)
 
-
-            // displaySocketCount = socketCount;
-            // console.log("displaySocketCount: " + displaySocketCount)
-            // this.clientside.on("ferret", (name, fn) => fn('woot' + name));
-            // clientside.on("Test", (name, fn) => fn('woot' + test));
+        // displaySocketCount = socketCount;
+        // console.log("displaySocketCount: " + displaySocketCount)
+        // this.clientside.on("ferret", (name, fn) => fn('woot' + name));
+        // clientside.on("Test", (name, fn) => fn('woot' + test));
     }
 
     socketController(updateSockets) {
 
-        clientside.on("updateSocketCount", function(data){
+        clientside.on("updateSocketCount", function (data) {
             console.log("Somebody joined: " + data.socketCount);
             updateSockets(data.socketCount);
         });
 
-            
+
         // var displaySocketCount = 0;
         // this.clientside.on("somebodyJoined", function(socketCount) {
         //     console.log("Somebody joined. SocketCount: " + socketCount);
@@ -101,28 +62,28 @@ class Classroom extends Component {
         //     console.log(displaySocketCount);
         //     // this.props.updateSocketCount(socketCount);
         // })
-        
-    
+
+
     }
 
     render() {
-
-
+        
+        
         return (
             <div>
                 <div><Header /></div>
                 <div><Subheader /></div>
+                <div className="present_count">
+                
+                {this.props.studentsPresent} {(this.props.studentsPresent === 1)? "person" : "people"} here.</div>
+                <div><NewQuestion /></div>
                 <div className="classroom">
-                Number in classroom: {this.props.studentsPresent}
-                {this.socketController(this.props.updateSocketCount)}
-                    <div>
-                        <div><NewQuestion /></div>
-                        <div><List /></div>
-                        {/* <button onClick={this.socketController(this.props.updateSocketCount)}>Click here to display socket count</button> */}
-                        {/* <button onClick={this.props.subscribeToClassroom}>Click here to join a classroom</button> */}
+                <div><List /></div>
+                            {/* <button onClick={this.socketController(this.props.updateSocketCount)}>Click here to display socket count</button> */}
+                            {/* <button onClick={this.props.subscribeToClassroom}>Click here to join a classroom</button> */}
 
-                        {/* <button onClick={this.props.getQuestions}>Get all the questions</button> */}
-                    </div>
+                            {/* <button onClick={this.props.getQuestions}>Get all the questions</button> */}
+
                         {/* {this.state.connectionCount} */}
 
                         {/* {this.classroomDisplayController()} */}
@@ -139,10 +100,10 @@ class Classroom extends Component {
                         </div>
                         <div className={"allStudentQuestions " + (this.props.currentView !== 'allStudentQuestions' ? "hidden" : '')}>
                             This is displayed because the current view is allStudentQuestions. */}
-                        
-                            {/* QUESTIONS:<br />
+
+                        {/* QUESTIONS:<br />
                             {JSON.stringify(this.props.questions)} */}
-{/* 
+                        {/* 
                             <div>
                             </div>
                         </div>
@@ -153,9 +114,9 @@ class Classroom extends Component {
                             <List />
                         </div> */}
 
-
+                        </div>
                     </div>
-                </div>
+
         );
     }
 }
@@ -169,7 +130,8 @@ function mapStateToProps(state) {
         loading: state.data.loading,
         live: state.data.live,
         class_sessionID: state.data.class_sessionID,
-        studentsPresent: state.sockets.studentsPresent
+        studentsPresent: state.sockets.studentsPresent,
+        socketQuestions: state.data.socketQuestions
     }
 }
 

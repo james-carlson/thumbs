@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { goLive } from '../../ducks/backend_reducer';
+import io from 'socket.io-client';
+
 
 class GoLive extends Component {
     constructor(props){

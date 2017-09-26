@@ -20,7 +20,7 @@ const GET_LIVE_PENDING = "GET_LIVE_PENDING"
 const GET_LIVE_FULFILLED = "GET_LIVE_FULFILLED"
 const END_LIVE = "END_LIVE"
 const INITIALIZE_USER_TYPE = "INITIALIZE_USER_TYPE"
-
+const RESET_DATA = "RESET_DATA"
 
 const initialState = { 
     loading: false,
@@ -39,6 +39,8 @@ const initialState = {
 export default function reducer(state = initialState, action) {
     // console.log("REDUCER HIT: " + state, action);
     switch (action.type) {
+        case CREATE_NEW_CLASS_SESSION_ID:
+        return Object.assign({}, state, {loading: false, class_sessionID: action.payload});
         case RECORD_CURRENT_TEXT:
             // console.log("RECORD_CURRENT_TEXT" + JSON.stringify(action))
             return Object.assign({}, state, {[action.key]: action.payload});
@@ -54,8 +56,6 @@ export default function reducer(state = initialState, action) {
             return Object.assign({}, state, {loading: true});
         case GET_QUESTIONS_FULFILLED:
             return Object.assign({}, state, {loading: false, questions: action.payload});
-        case CREATE_NEW_CLASS_SESSION_ID:
-            return Object.assign({}, state, {loading: false, class_sessionID: action.payload});
         case END_LIVE:
             return Object.assign({}, state, {live: false});
         case GO_LIVE_PENDING:
@@ -63,7 +63,7 @@ export default function reducer(state = initialState, action) {
         case GO_LIVE_FULFILLED:
             return Object.assign({}, state, {loading: false, db_session_id: action.payload, live: !state.live});
         case INITIALIZE_USER_TYPE:
-            console.log(action.payload + " view")
+            console.log(action.type, action.payload)
             return Object.assign({}, state, {userType: action.payload});
         case GET_LIVE_PENDING:
             console.log(action.type, action.payload)
@@ -76,6 +76,9 @@ export default function reducer(state = initialState, action) {
                 instructorName: action.payload.instructor_name, 
                 classTopic: action.payload.class_topic
                 });
+        case RESET_DATA:
+            console.log(action.type, action.payload)
+            return Object.assign({}, state = initialState, {userType: "instructor"})
         default:
             return state;
     }
@@ -148,6 +151,12 @@ export function initializeUser(typeOfUser) {
     return {
         type: INITIALIZE_USER_TYPE,
         payload: typeOfUser
+    }
+}
+
+export function resetData() {
+    return {
+        type: RESET_DATA
     }
 }
 

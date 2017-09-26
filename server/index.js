@@ -139,24 +139,37 @@ var socketID = '';
 var classroom = '';
 
 io.on('connection', (serverside) => {
-    serverside.emit('getClassroom')
-    serverside.on('giveClassroom', function(data){
-        console.log("given classRoom:" + data)
-    })
     socketCount++
     socketID = serverside.id;
-    console.log("Somebody joined:" + socketCount, socketID);
-    serverside.emit('updateSocketCount', { socketID, socketCount})
+    io.sockets.emit('updateSocketCount', { socketID, socketCount})
+    console.log("Socket connected: " + serverside.id + "Current # connected: " + socketCount)
+    
+    serverside.on('giveServerClassSessionId', function(data){
+        console.log("given classRoom:" + data)
+    })
 
-    serverside.on('disconnect', function () {
+    
+
+
+    serverside.on('disconnect', function() {
+        console.log("Socket disconnected: " + serverside.id)
         socketCount--,
         serverside.emit('studentLeft', socketCount);
+        io.sockets.emit('updateSocketCount', { socketID, socketCount})
       });
 
     serverside.on('getSocketCount', function(){
         console.log("Client has asked for socket count. It's " + socketCount);
         serverside.emit('tellSocketCount', socketCount);
     });
+
+    
+
+    serverside.on('newTeacherQuestion', function(data){
+        console.log("new teacher question emitted from client: " + data);
+        io.sockets.emit('addNewTeacherQuestion', (data))}
+        );
+
 
     serverside.emit("studentJoined", "Welcome, " + serverside.id, (data) => {
         ++studentsPresent

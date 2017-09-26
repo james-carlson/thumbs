@@ -3,8 +3,12 @@ import './NewQuestion.css';
 import { connect } from 'react-redux';
 import { recordCurrentText, recordNewQuestion, getQuestions } from '../../ducks/backend_reducer';
 import { viewInitial, toggleDisplayNewQuestionBox } from '../../ducks/view_reducer';
+import { newTeacherQuestion } from '../../ducks/sockets_reducer';
+import { broadcastNewTeacherQuestion } from '../../services/handle_sockets';
+
 
 class NewQuestion extends Component {
+
 
     askButton(e) {
         console.log('record new question:');
@@ -13,8 +17,32 @@ class NewQuestion extends Component {
         this.props.toggleDisplayNewQuestionBox();
         console.log('getting questions');
         this.props.getQuestions();
-
     }
+
+    askButton2(e) {
+        console.log('record new question:');
+        this.props.newTeacherQuestion(this.props.newQuestionText)
+        // this.props.recordNewQuestion(this.props.newQuestionText, this.props.class_sessionID);
+        // console.log('toggling display');
+        this.props.toggleDisplayNewQuestionBox();
+        console.log('getting questions');
+        // this.props.getQuestions();
+    }
+
+    askButton3() {
+        // this.props.recordNewQuestion(this.props.newQuestionText, this.props.class_sessionID);
+        // clientside.emit("newTeacherQuestion", this.props.newQuestionText);
+        { broadcastNewTeacherQuestion(this.props.newQuestionText) }
+        this.props.toggleDisplayNewQuestionBox();
+        // this.props.getQuestions();
+    }
+
+    // recordQuestionText(e) {
+    //     console.log(e);
+    //     var currentQuestionText = {"currentQuestionText": e};
+    //     console.log(currentQuestionText)
+    //     return currentQuestionText
+    // }
 
     newQuestionBoxController() {
         // console.log(this.props.displayNewQuestionBox);
@@ -27,10 +55,11 @@ class NewQuestion extends Component {
                         <h3>New Question:</h3>
                         <div className="new_question_container_textarea_box">
                         <textarea placeholder="Type your question." onChange={(e) => this.props.recordCurrentText(e.target.value, "newQuestionText")} required />
+                        {/* <textarea placeholder="Type your question." onChange={(e) => this.recordQuestionText(e.target.value)} required /> */}
                         </div>
                         <div className="new_question_container_buttons_box">
                             <div><button id="cancel" onClick={() => this.props.toggleDisplayNewQuestionBox()}>Cancel</button></div>
-                            <div><button id="ask" onClick={(e) => this.askButton(e)}>Ask</button></div>
+                            <div><button id="ask" onClick={(e) => this.askButton3(e)}>Ask</button></div>
                         </div>
                     </div>
                 )
@@ -42,7 +71,7 @@ class NewQuestion extends Component {
     render() {
 
         return (
-            <div>{this.newQuestionBoxController()}</div>
+            <div className="new_question_pre_container">{this.newQuestionBoxController()}</div>
         );
     }
 
@@ -57,8 +86,9 @@ function mapStateToProps(state) {
         class_sessionID: state.data.class_sessionID,
         userType: state.data.userType,
         newQuestionText: state.data.newQuestionText,
-        displayNewQuestionBox: state.views.displayNewQuestionBox
+        displayNewQuestionBox: state.views.displayNewQuestionBox,
+        socketQuestions: state.sockets.socketQuestions
     }
 }
 
-export default connect(mapStateToProps, { recordCurrentText, recordNewQuestion, viewInitial, toggleDisplayNewQuestionBox, getQuestions })(NewQuestion);
+export default connect(mapStateToProps, { recordCurrentText, recordNewQuestion, viewInitial, toggleDisplayNewQuestionBox, getQuestions, newTeacherQuestion })(NewQuestion);

@@ -1,11 +1,9 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux'; 
 import reduxPromiseMiddleware from 'redux-promise-middleware';
-// import createSocketIoMiddleware from 'redux-socket.io';
-// import io from 'socket.io-client';
+import thunk from 'redux-thunk';
 import view_reducer from './view_reducer';
 import backend_reducer from './backend_reducer';
 import sockets_reducer from './sockets_reducer';
-
 
 const reducer = combineReducers({
     views: view_reducer,
@@ -15,5 +13,5 @@ const reducer = combineReducers({
 
 export default createStore(
     reducer,
-    applyMiddleware(reduxPromiseMiddleware()) 
+    applyMiddleware(thunk, reduxPromiseMiddleware()) 
 );
