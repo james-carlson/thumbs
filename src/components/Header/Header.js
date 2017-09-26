@@ -7,6 +7,7 @@ import { goLive } from '../../ducks/backend_reducer';
 import { connect } from 'react-redux';
 import InstructorHeader from './InstructorHeader';
 import StudentHeader from './StudentHeader';
+import resetData from '../../ducks/backend_reducer';
 
 
 class Header extends Component {
@@ -26,7 +27,7 @@ class Header extends Component {
                 <div className="header">
                     <div className="logo_container">
                         <div className="logo">
-                            <Link to="/" className="logo">
+                            <Link to="/" className="logo" onClick={resetData}>
                             <img className="logo" src={logo} alt="DevMountain logo" />
                             <text className="appName">THUMBS</text>
                             </Link>

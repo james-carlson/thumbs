@@ -3,78 +3,50 @@ import Header from '../Header/Header';
 import Subheader from '../Subheader/Subheader';
 import NewQuestion from '../NewQuestion/NewQuestion';
 import List from '../List/List';
+import { listenForClassroomNameRequest,
+         listenForUpdateSocketCount,
+         listenForRoomNameRequest,
+         listenForUserTypeRequest } from '../../services/handle_sockets';
 import { connect } from 'react-redux';
 import { getQuestions } from '../../ducks/backend_reducer';
 import { updateSocketCount } from '../../ducks/sockets_reducer';
 // import { updateSocketCount } from '../../api';
 import './Classroom.css';
-import io from 'socket.io-client';
-import { listenForClassroomNameRequest } from '../../services/handle_sockets';
+// import io from 'socket.io-client';
 
-const clientside = io.connect('http://localhost:4000/')
+
+// const clientside = io.connect('http://localhost:4000/')
 
 
 class Classroom extends Component {
     constructor(props) {
         super(props)
-    
+
+        listenForUpdateSocketCount(this.props.updateSocketCount);
         listenForClassroomNameRequest(props.displayNewTeacherQuestion, this.props.class_sessionID);
+        listenForRoomNameRequest(this.props.class_sessionID);
+        
     }
-
-
+    
+    
     componentDidMount(props) {
-        
-        // clientside.on("getClassroom", function () {
-        //     console.log("This class_sessionID");
-        //     clientside.emit("giveClassroom", "this.class_sessionID")
-        // });
-
-        // clientside.on("updateSocketCount", function(data){
-        //     props.updateSocketCount(data.socketCount);
-        //     console.log("Number of active sockets received from server: " + data.socketCount);
-        // });
-        this.socketController(this.props.updateSocketCount)
-
-        // displaySocketCount = socketCount;
-        // console.log("displaySocketCount: " + displaySocketCount)
-        // this.clientside.on("ferret", (name, fn) => fn('woot' + name));
-        // clientside.on("Test", (name, fn) => fn('woot' + test));
+        var userType = (this.props.userIsInstructor === false? "student" : "instructor");
+        console.log(userType);
+        listenForUserTypeRequest(userType);
     }
-
-    socketController(updateSockets) {
-
-        clientside.on("updateSocketCount", function (data) {
-            console.log("Somebody joined: " + data.socketCount);
-            updateSockets(data.socketCount);
-        });
-
-
-        // var displaySocketCount = 0;
-        // this.clientside.on("somebodyJoined", function(socketCount) {
-        //     console.log("Somebody joined. SocketCount: " + socketCount);
-        //     displaySocketCount = socketCount;
-        //     console.log(displaySocketCount);
-        //     // this.props.updateSocketCount(socketCount);
-        // }); 
-        // this.clientside.on("studentLeft", function(socketCount){
-        //     console.log("Some buddy left. SocketCount: " + socketCount);
-        //     displaySocketCount = socketCount
-        //     console.log(displaySocketCount);
-        //     // this.props.updateSocketCount(socketCount);
-        // })
-
-
-    }
-
+    
+    
+    
+    
     render() {
-        
+        console.log(this.props);
         
         return (
             <div>
                 <div><Header /></div>
                 <div><Subheader /></div>
                 <div className="present_count">
-                
+                    
                 {this.props.studentsPresent} {(this.props.studentsPresent === 1)? "person" : "people"} here.</div>
                 <div><NewQuestion /></div>
                 <div className="classroom">
@@ -123,6 +95,8 @@ class Classroom extends Component {
 
 
 function mapStateToProps(state) {
+    // return state
+    // console.log(state)
     return {
         currentView: state.views.currentView,
         recordQuestion: state.recordQuestion,
@@ -131,7 +105,8 @@ function mapStateToProps(state) {
         live: state.data.live,
         class_sessionID: state.data.class_sessionID,
         studentsPresent: state.sockets.studentsPresent,
-        socketQuestions: state.data.socketQuestions
+        socketQuestions: state.data.socketQuestions,
+        userIsInstructor: state.data.userIsInstructor
     }
 }
 

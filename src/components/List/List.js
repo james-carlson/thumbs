@@ -15,33 +15,15 @@ class List extends Component {
         listenForNewQuestion(props.displayNewTeacherQuestion, this.props.newQuestionText);
     }
 
-    componentDidMount() {
-
-        // this.handleNewQuestion(props)
-
-
-        
-        
-        // this.displayNewTeacherQuestion(questionText)
-        
-    }
-
-    // componentWillReceiveProps(nextProps) {
-    //     this.handleNewQuestion(nextProps)
-    // }
-    
-    // () => clientside.on("addNewTeacherQuestion")
-
     subscribeToSockets(cb){
         // clientside.on("addNewTeacherQuestion", function (questionText) {
         //     console.log("event addNewTeacherQuestion received from server")
         //     displayNewTeacherQuestion(questionText)
         // });
-
     }
 
     displayController() {
-        console.log("display controller invoked");
+        // console.log("display controller invoked");
         if (this.props.socketQuestions.length === 0) {
             return <div className="no_data_to_list">New questions will appear here.</div>
         } else {
@@ -57,12 +39,11 @@ class List extends Component {
 
     render() {
 
-        console.log(this.props);
+        // console.log(this.props);
         return (
                 <div className="list_spacer">
                     {this.displayController()}
-                    {this.props.socketQuestions.length}
-                    {/* {this.displayNewTeacherQuestion} */}
+                    {this.props.socketQuestions.length} total questions.
                 </div>
         );
     }
@@ -70,7 +51,6 @@ class List extends Component {
 
 
 function mapStateToProps( state ) {
-    // return state
     return {
         class_sessionID: state.data.class_sessionID,
         db_session_id: state.data.db_session_id,

@@ -14,11 +14,13 @@ const DISPLAY_NEW_TEACHER_QUESTION = "DISPLAY_NEW_TEACHER_QUESTION"
 
 const initialState = { 
     studentsPresent: 0,
-    socketQuestions: []
+    socketQuestions: [],
+    teacherQuestions: [],
+    studentQuestions: []
 };
 
 export default function reducer(state = initialState, action) {
-    console.log("REDUCER HIT: " + JSON.stringify(action));
+    // console.log("REDUCER HIT: " + JSON.stringify(action));
     switch (action.type) {
         // case SUBSCRIBE_TO_CLASSROOM:
         //     console.log("USER SUBSCRIBED TO CLASSROOM", state.studentsPresent, ++state.studentsPresent);
@@ -28,7 +30,6 @@ export default function reducer(state = initialState, action) {
         //     return Object.assign({}, state, {studentsPresent: --state.studentsPresent});
         case UPDATE_SOCKET_COUNT:
             console.log("UPDATE_SOCKET_COUNT", action.payload);
-            console.log(JSON.stringify(state));
             return Object.assign({}, state, {studentsPresent: action.payload});
         case NEW_TEACHER_QUESTION:
             return Object.assign({}, state, {socketQuestions: [...state.socketQuestions, action.payload]})
@@ -58,6 +59,17 @@ export function newTeacherQuestion(questionText) {
     // }
 }
 
+export function displayNewTeacherQuestion(value) {
+    console.log('reducer function value: ' + value)
+    
+    return function(dispatch) {
+      dispatch(
+    {
+        type: 'DISPLAY_NEW_TEACHER_QUESTION',
+        payload: value
+      });
+    };
+  }
 // export function displayNewTeacherQuestion(questionText) {
 //     console.log("reducer: displayNewTeacherQuestion hit", questionText);
 //     return {
@@ -74,15 +86,6 @@ export function newTeacherQuestion(questionText) {
 //       };
 //     };
 
-export function displayNewTeacherQuestion(value) {
-    console.log('reducer function value: ' + value)
-    return function(dispatch) {
-      dispatch({
-        type: 'DISPLAY_NEW_TEACHER_QUESTION',
-        payload: value
-      });
-    };
-  }
 
 
 // export function displayNewTeacherQuestions(questionText) {
@@ -151,16 +154,6 @@ export function displayNewTeacherQuestion(value) {
 //     return {
 //         type: INITIALIZE_USER_TYPE,
 //         payload: typeOfUser
-//     }
-// }
-
-
-
-// export function receiveTimeStamp() {
-//     console.log('reducer: receiveTimeStamp hit');
-//     return {
-//         type: RECEIVE_TIMESTAMP,
-//         payload: socket.receiveTimeStamp()
 //     }
 // }
 

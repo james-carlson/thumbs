@@ -137,19 +137,39 @@ var io = socket(server);
 var socketCount = 0;
 var socketID = '';
 var classroom = '';
+// var userType = '';
 
 io.on('connection', (serverside) => {
-    socketCount++
-    socketID = serverside.id;
-    io.sockets.emit('updateSocketCount', { socketID, socketCount})
-    console.log("Socket connected: " + serverside.id + "Current # connected: " + socketCount)
     
-    serverside.on('giveServerClassSessionId', function(data){
-        console.log("given classRoom:" + data)
+    var refererSplit = serverside.request.headers.referer.split('/');
+    var roomName = refererSplit[refererSplit.length-1]; //Room name is at the end of the path.
+    // console.log(refererSplit);
+    // console.log("Room requested: ", roomName);
+    serverside.emit('requestUserType', console.log("Connection detected (socket.id: " + serverside.id + "). Room requested: " + roomName + " - Requesting user type."));
+    // socket.join(requestRoom);
+    
+    serverside.on('tellUserType', (data) => {
+        var userType = data;
+        console.log("UserType received for " + serverside.id + ", user is", userType)
+    })
+    
+
+    serverside.on('join room', function(room){
+        // serverside.set('room', room, function() { console.log('room ' + room + ' saved'); } );
+        classroom = room;
+        serverside.join(room);
+        console.log(userType + "joined room: " + classroom)
     })
 
+    socketCount++
+    socketID = serverside.id;
+    io.sockets.emit('updateSocketCount', { socketID, socketCount}).to(classroom)
+    console.log("Socket connected: " + serverside.id + " Current # connected: " + socketCount)
     
-
+    serverside.on('giveServerClassSessionId', function(data){
+        classroom = data
+        console.log("given classRoom:" + data)
+    })
 
     serverside.on('disconnect', function() {
         console.log("Socket disconnected: " + serverside.id)
@@ -164,7 +184,6 @@ io.on('connection', (serverside) => {
     });
 
     
-
     serverside.on('newTeacherQuestion', function(data){
         console.log("new teacher question emitted from client: " + data);
         io.sockets.emit('addNewTeacherQuestion', (data))}
@@ -176,7 +195,6 @@ io.on('connection', (serverside) => {
 
         console.log(data);
     });
-    // console.log("a user connected", socket.id);
 
     serverside.emit("ferret", "tobi", (data) => {
         console.log(data);

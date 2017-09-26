@@ -3,29 +3,21 @@ import logo from './logo.svg';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { generateRandomID, initializeUser, resetData } from '../../ducks/backend_reducer';
-import { emitClassSessionId } from '../../services/handle_sockets';
-import io from 'socket.io-client';
-const clientside = io.connect('http://localhost:4000/')
+
+
 
 class Landing extends Component {
-    constructor(props){
-        super(props)
-
-        initializeUser('instructor');
+    
+    componentWillMount(){
         this.props.generateRandomID();
-        
+        // this.props.initializeUser('instructor');
     }
 
-    componentDidMount(props) {
-        // this.props.initializeUser('instructor')
-        // this.props.generateRandomID()
-        
+    handleInitializeUser() {
+        this.props.initializeUser()
     }
 
     render() {
-
-        
-
         return (
             < div >
                 <div className="App-header">
@@ -37,9 +29,9 @@ class Landing extends Component {
                 </div>
                 <p className="App-intro">
                     This is the background info. 
-                    
                 </p>
-                <div>To get started, click <Link to={`/${this.props.class_sessionID}`}><button>here</button></Link> to open a class session as an {this.props.userType}.</div>
+                {/* <div>To get started, click <Link to={`/${this.props.class_sessionID}`}><button onClick={initializeUser('instructor')}>here</button></Link> to open a class session as an {this.props.userType}.</div> */}
+                <div>To get started, click <Link to={`/${this.props.class_sessionID}`}><button onClick={this.handleInitializeUser()}>here</button></Link> to open a class session as an instructor.</div>
             </div >
 
         );
@@ -49,7 +41,7 @@ class Landing extends Component {
 function mapStateToProps(state) {
     return {
         class_sessionID: state.data.class_sessionID,
-        userType: state.data.userType
+        userIsInstructor: state.data.userIsInstructor
     }
 }
 

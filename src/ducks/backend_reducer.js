@@ -19,14 +19,14 @@ const GET_LIVE = "GET_LIVE"
 const GET_LIVE_PENDING = "GET_LIVE_PENDING"
 const GET_LIVE_FULFILLED = "GET_LIVE_FULFILLED"
 const END_LIVE = "END_LIVE"
-const INITIALIZE_USER_TYPE = "INITIALIZE_USER_TYPE"
+const INITIALIZE_TEACHER = "INITIALIZE_TEACHER"
 const RESET_DATA = "RESET_DATA"
 
 const initialState = { 
     loading: false,
     live: false,
     class_sessionID: '',
-    userType: '',
+    userIsInstructor: false,
     instructorName: '',
     classTopic: '',
     questionType: '',
@@ -61,8 +61,8 @@ export default function reducer(state = initialState, action) {
         case GO_LIVE_PENDING:
             return Object.assign({}, state, {loading: true});
         case GO_LIVE_FULFILLED:
-            return Object.assign({}, state, {loading: false, db_session_id: action.payload, live: !state.live});
-        case INITIALIZE_USER_TYPE:
+            return Object.assign({}, state, {loading: false, db_session_id: action.payload, live: true});
+        case INITIALIZE_TEACHER:
             console.log(action.type, action.payload)
             return Object.assign({}, state, {userType: action.payload});
         case GET_LIVE_PENDING:
@@ -96,7 +96,7 @@ export function recordNewQuestion(questionText, class_sessionID, userType) {
 }
 
 export function recordCurrentText(value, stateproperty) {
-    console.log("recording current text: " + value, stateproperty)
+    // console.log("recording current text: " + value, stateproperty)
     return {
         type: RECORD_CURRENT_TEXT,
         payload: value,
@@ -147,10 +147,10 @@ export function endLive(generatedID) {
     }
 }
 
-export function initializeUser(typeOfUser) {
+export function initializeUser() {
     return {
-        type: INITIALIZE_USER_TYPE,
-        payload: typeOfUser
+        type: INITIALIZE_TEACHER,
+        payload: 'instructor'
     }
 }
 
@@ -161,11 +161,4 @@ export function resetData() {
 }
 
 
-// export function receiveTimeStamp() {
-//     console.log('reducer: receiveTimeStamp hit');
-//     return {
-//         type: RECEIVE_TIMESTAMP,
-//         payload: socket.receiveTimeStamp()
-//     }
-// }
 

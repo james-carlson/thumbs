@@ -3,7 +3,7 @@ import './NewQuestion.css';
 import { connect } from 'react-redux';
 import { recordCurrentText, recordNewQuestion, getQuestions } from '../../ducks/backend_reducer';
 import { viewInitial, toggleDisplayNewQuestionBox } from '../../ducks/view_reducer';
-import { newTeacherQuestion } from '../../ducks/sockets_reducer';
+// import { newTeacherQuestion } from '../../ducks/sockets_reducer';
 import { broadcastNewTeacherQuestion } from '../../services/handle_sockets';
 
 
@@ -30,8 +30,6 @@ class NewQuestion extends Component {
     }
 
     askButton3() {
-        // this.props.recordNewQuestion(this.props.newQuestionText, this.props.class_sessionID);
-        // clientside.emit("newTeacherQuestion", this.props.newQuestionText);
         { broadcastNewTeacherQuestion(this.props.newQuestionText) }
         this.props.toggleDisplayNewQuestionBox();
         // this.props.getQuestions();
@@ -45,7 +43,6 @@ class NewQuestion extends Component {
     // }
 
     newQuestionBoxController() {
-        // console.log(this.props.displayNewQuestionBox);
         // if (this.props.live === true) {
             if (this.props.displayNewQuestionBox === false) {
                 return ""
@@ -59,12 +56,13 @@ class NewQuestion extends Component {
                         </div>
                         <div className="new_question_container_buttons_box">
                             <div><button id="cancel" onClick={() => this.props.toggleDisplayNewQuestionBox()}>Cancel</button></div>
-                            <div><button id="ask" onClick={(e) => this.askButton3(e)}>Ask</button></div>
+                            <div><button id="ask" onClick={() => this.askButton3()}>Ask</button></div>
                         </div>
                     </div>
                 )
             }
         }
+    // }
         
     
 
@@ -91,4 +89,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { recordCurrentText, recordNewQuestion, viewInitial, toggleDisplayNewQuestionBox, getQuestions, newTeacherQuestion })(NewQuestion);
+export default connect(mapStateToProps, { recordCurrentText, recordNewQuestion, viewInitial, toggleDisplayNewQuestionBox, getQuestions })(NewQuestion);
