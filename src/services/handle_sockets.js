@@ -2,6 +2,19 @@ import io from 'socket.io-client';
 const clientside = io('http://localhost:4000');
 
 // Listeners
+export function listenForSuccessfulSocketConnection_Teacher(roomName) {
+    clientside.on('connectionDetected', function() {
+        clientside.emit('joinRoom', {"roomName": roomName, "userType": "teacher"})
+    })
+}
+
+export function listenForSuccessfulSocketConnection_Student(userType) {
+    clientside.on('connectionDetected', function() {
+        clientside.emit('joinRoom', {"roomName": "will be grabbed from URL", "userType": "student"})
+    })
+}
+
+
 export function listenForUserTypeRequest(data){
     console.log('listenForUserTypeRequest: userType: ', data);
     clientside.on('requestUserType', function () {

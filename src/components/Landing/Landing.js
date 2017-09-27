@@ -3,6 +3,8 @@ import logo from './logo.svg';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { generateRandomID, initializeUser, resetData } from '../../ducks/backend_reducer';
+import { listenForSuccessfulSocketConnection_Teacher } from '../../services/handle_sockets';
+
 
 
 
@@ -32,10 +34,12 @@ class Landing extends Component {
                 </p>
                 {/* <div>To get started, click <Link to={`/${this.props.class_sessionID}`}><button onClick={initializeUser('instructor')}>here</button></Link> to open a class session as an {this.props.userType}.</div> */}
                 <div>To get started, click <Link to={`/${this.props.class_sessionID}`}><button onClick={this.handleInitializeUser()}>here</button></Link> to open a class session as an instructor.</div>
+                {listenForSuccessfulSocketConnection_Teacher(this.props.class_sessionID)}
             </div >
 
         );
     }
+
 }
 
 function mapStateToProps(state) {
