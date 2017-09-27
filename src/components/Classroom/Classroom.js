@@ -6,11 +6,12 @@ import List from '../List/List';
 import { listenForClassroomNameRequest,
          listenForUpdateSocketCount,
          listenForRoomNameRequest,
-         listenForUserTypeRequest } from '../../services/handle_sockets';
+         listenForUserTypeRequest,
+         listenForNewQuestion,
+         joinRoom } from '../../services/handle_sockets';
 import { connect } from 'react-redux';
-import { getQuestions } from '../../ducks/backend_reducer';
-import { updateSocketCount } from '../../ducks/sockets_reducer';
-// import { updateSocketCount } from '../../api';
+import { getQuestions, initializeUser } from '../../ducks/backend_reducer';
+import { updateSocketCount, displayNewTeacherQuestion } from '../../ducks/sockets_reducer';
 import './Classroom.css';
 // import io from 'socket.io-client';
 
@@ -21,10 +22,11 @@ import './Classroom.css';
 class Classroom extends Component {
     constructor(props) {
         super(props)
-
         listenForUpdateSocketCount(this.props.updateSocketCount);
-        listenForClassroomNameRequest(props.displayNewTeacherQuestion, this.props.class_sessionID);
-        listenForRoomNameRequest(this.props.class_sessionID);
+        listenForNewQuestion(this.props.displayNewTeacherQuestion, this.props.newQuestionText);
+        console.log(this.props)
+        // listenForClassroomNameRequest(props.displayNewTeacherQuestion, this.props.class_sessionID);
+        // listenForRoomNameRequest(this.props.class_sessionID);
         
     }
     
@@ -32,7 +34,15 @@ class Classroom extends Component {
     componentDidMount(props) {
         var userType = (this.props.userIsInstructor === false? "student" : "instructor");
         console.log(userType);
+        debugger;
+        console.log("component Mounted");
         listenForUserTypeRequest(userType);
+        joinRoom();
+
+        const userIsInstructor = localStorage.getItem("userIsInstructor")
+        if (userIsInstructor) {
+            this.props.initializeUser();
+        }
     }
     
     
@@ -105,7 +115,7 @@ function mapStateToProps(state) {
         live: state.data.live,
         class_sessionID: state.data.class_sessionID,
         studentsPresent: state.sockets.studentsPresent,
-        socketQuestions: state.data.socketQuestions,
+        socketQuestions: state.sockets.socketQuestions,
         userIsInstructor: state.data.userIsInstructor
     }
 }
@@ -116,5 +126,5 @@ function mapStateToProps(state) {
 //     }
 // }
 
-export default connect(mapStateToProps, { getQuestions, updateSocketCount })(Classroom);
+export default connect(mapStateToProps, { getQuestions, updateSocketCount, initializeUser, displayNewTeacherQuestion })(Classroom);
 // export default connect(mapStateToProps, { getQuestions })(Classroom);

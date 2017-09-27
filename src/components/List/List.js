@@ -4,23 +4,24 @@ import './List.css';
 import { getQuestions } from '../../ducks/backend_reducer';
 import { connect } from 'react-redux';
 import { displayNewTeacherQuestion } from '../../ducks/sockets_reducer';
-import { listenForNewQuestion } from '../../services/handle_sockets';
+// import { listenForNewQuestion } from '../../services/handle_sockets';
 
 
 
 class List extends Component {
     constructor(props){
         super(props)
-        // this.handleNewQuestion = this.handleNewQuestion.bind(this);
-        listenForNewQuestion(props.displayNewTeacherQuestion, this.props.newQuestionText);
-    }
 
-    subscribeToSockets(cb){
-        // clientside.on("addNewTeacherQuestion", function (questionText) {
-        //     console.log("event addNewTeacherQuestion received from server")
-        //     displayNewTeacherQuestion(questionText)
-        // });
+        // listenForNewQuestion(props.displayNewTeacherQuestion, this.props.newQuestionText);
     }
+    
+
+    // subscribeToSockets(cb){
+    //     // clientside.on("addNewTeacherQuestion", function (questionText) {
+    //     //     console.log("event addNewTeacherQuestion received from server")
+    //     //     displayNewTeacherQuestion(questionText)
+    //     // });
+    // }
 
     displayController() {
         // console.log("display controller invoked");

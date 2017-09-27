@@ -8,7 +8,7 @@ const express = require('express')
     , path = require('path')
     , questions = require('./controllers/questions')
     , socket = require('socket.io')
-;
+    ;
 
 var port = 4000;
 
@@ -28,11 +28,11 @@ const app = express();
 const connectionInfo = process.env.DB_CONNECTIONSTRING
 
 massive(connectionInfo).then(db => { app.set('db', db) })
-    .catch( err => { console.log(err)})
+    .catch(err => { console.log(err) })
 
 
 // 3. BODY-PARSER
-app.use( bodyParser.json() );
+app.use(bodyParser.json());
 
 
 // 4. CORS
@@ -48,9 +48,9 @@ app.use(cors());
 
 
 // 5. START SERVER
-var server = app.listen(port, function(){
+var server = app.listen(port, function () {
     console.log('server listening on ' + port);
-    
+
 })
 
 
@@ -62,34 +62,35 @@ app.use(express.static('public'));
 var roomName = '';
 
 // GO_LIVE (New Class Session)
-app.post('/api/data/new-class-session', function(req, res, next) {
+app.post('/api/data/new-class-session', function (req, res, next) {
     // console.log(req.body)
-    const {class_session_id, instructorName, classTopic } = req.body
+    const { class_session_id, instructorName, classTopic } = req.body
     roomName = class_session_id;
     req.app.get('db').queries.newClassSession(class_session_id, instructorName, classTopic)
-    .then( data => res.status(200).send(res.data))
+        .then(data => res.status(200).send(res.data))
     // .catch(err => { res.status(500).send(err)})
-        // 'New class session created. Questions and responses will be logged.').status(200);
+    // 'New class session created. Questions and responses will be logged.').status(200);
     // console.log(req.body.url_id);
 })
 
 // Get live class session
-app.get('/api/data/class_sessions/:class_session_id', function(req, res, next) {
-    console.log(JSON.stringify(req.params.class_session_id));
-    console.log(req.params.class_session_id);
+app.get('/api/data/class_sessions/:class_session_id', function (req, res, next) {
+    // console.log(JSON.stringify(req.params.class_session_id));
+    // console.log(req.params.class_session_id);
     req.app.get('db').queries.startClass(req.params.class_session_id)
-    .then( data => {
-        res.status(200).send(data[0]);
-        console.log(data[0])})
-    .catch(err => { res.status(500).send(err)})
+        .then(data => {
+            res.status(200).send(data[0]);
+            // console.log(data[0])
+        })
+        .catch(err => { res.status(500).send(err) })
     // const {class_session_id} = req.params
 })
 
 // New Teacher Question
-app.post('/api/data/new-teacher-question', questions.add, function ( req, res, next ) {
+app.post('/api/data/new-teacher-question', questions.add, function (req, res, next) {
     req.app.get('db').queries.getAllQuestionsForSession()
-    .then(data => res.status(200).send(data))
-    .catch(err => { res.status(500).send(err)})    
+        .then(data => res.status(200).send(data))
+        .catch(err => { res.status(500).send(err) })
 });
 //  [( req, res, next ) => {
 //     console.log("add thing hit in module exports")
@@ -100,22 +101,22 @@ app.post('/api/data/new-teacher-question', questions.add, function ( req, res, n
 // } , ] );
 
 // New Student Question
-app.post('/api/data/new-student-question', function(req, res){
+app.post('/api/data/new-student-question', function (req, res) {
     res.send(['New student question created.']).status(200)
 })
 
 // Get Teacher Question by ID
-app.get('/api/data/questions/teacher/:id', function(req, res){
-    res.send({'id': 'Object of questions!', 'id': 'Sooooo many questions!'}).status(200)
+app.get('/api/data/questions/teacher/:id', function (req, res) {
+    res.send({ 'id': 'Object of questions!', 'id': 'Sooooo many questions!' }).status(200)
 })
 
 // Get Student Question by ID
-app.get('/api/data/questions/student/:id', function(req, res){
-    res.send({'id': 'Object of questions!', 'id': 'Sooooo many questions!'}).status(200)
+app.get('/api/data/questions/student/:id', function (req, res) {
+    res.send({ 'id': 'Object of questions!', 'id': 'Sooooo many questions!' }).status(200)
 })
 
 // Get All Teacher Questions for Session
-app.get('/api/data/questions/session/teacher', questions.refresh );
+app.get('/api/data/questions/session/teacher', questions.refresh);
 
 // function ( req, res, next ) {
 //     req.app.get('db').queries.getAllQuestionsForSession()
@@ -125,8 +126,8 @@ app.get('/api/data/questions/session/teacher', questions.refresh );
 
 
 // Get All Student Questions for Session
-app.get('/api/data/questions/session/student', function(req, res){
-    res.send({'id': 'Object of questions!', 'id': 'Sooooo many questions!'}).status(200)
+app.get('/api/data/questions/session/student', function (req, res) {
+    res.send({ 'id': 'Object of questions!', 'id': 'Sooooo many questions!' }).status(200)
 })
 
 
@@ -137,73 +138,66 @@ var io = socket(server);
 var socketCount = 0;
 var socketID = '';
 var classroom = '';
+var classrooms = [];
+var teacherSocketID = '';
+var roomCounts = { "roomNames": "counts" };
+
 // var userType = '';
 
 io.on('connection', (serverside) => {
-    
+    //update counter
+    socketCount++
+    socketID = serverside.id;
+
+    // getting room name off of the URL
     var refererSplit = serverside.request.headers.referer.split('/');
-    var roomName = refererSplit[refererSplit.length-1]; //Room name is at the end of the path.
+    var roomName = refererSplit[refererSplit.length - 1]; //Room name is at the end of the path.
     // console.log(refererSplit);
     // console.log("Room requested: ", roomName);
-    serverside.emit('requestUserType', console.log("Connection detected (socket.id: " + serverside.id + "). Room requested: " + roomName + " - Requesting user type."));
-    // socket.join(requestRoom);
-    
+    serverside.emit('requestUserType', console.log("Connection detected (socket.id: " + serverside.id + "). Room requested: " + roomName + " - Requesting user type. " + socketCount + "  users connected."));
+    serverside.join(roomName);
+
     serverside.on('tellUserType', (data) => {
         var userType = data;
         console.log("UserType received for " + serverside.id + ", user is", userType)
-    })
-    
+        console.log(serverside.id + "joined room " + roomName);
+        // let roomCounter = {roomName: roomCounter};
 
-    serverside.on('join room', function(room){
+        var clientsInRoom = io.sockets.adapter.rooms[roomName]
+        console.log("usersInRoom: " + JSON.stringify(clientsInRoom.length));
+        // console.log(JSON.stringify(roomCounts))
+        serverside.to(roomName).emit('updateSocketCount', { socketID, socketCount }).to(classroom)
         // serverside.set('room', room, function() { console.log('room ' + room + ' saved'); } );
-        classroom = room;
-        serverside.join(room);
-        console.log(userType + "joined room: " + classroom)
+
+        // if (classrooms.indexOf(roomName) !== -1) { serverside.join(roomName) };
+        // if (userType !== "student") { }
+        // classroom = room;
+
     })
 
-    socketCount++
-    socketID = serverside.id;
-    io.sockets.emit('updateSocketCount', { socketID, socketCount}).to(classroom)
-    console.log("Socket connected: " + serverside.id + " Current # connected: " + socketCount)
-    
-    serverside.on('giveServerClassSessionId', function(data){
+    serverside.on('newTeacherQuestion', function (data) {
+        console.log("new teacher question emitted from client: " + serverside.id + "to room: " + roomName + "data: " + data);
+        // serverside.to(roomName).emit('addNewTeacherQuestion', (data))
+        serverside.to(roomName).emit('addNewTeacherQuestion', (data))
+    }
+    );
+
+    serverside.on('giveServerClassSessionId', function (data) {
         classroom = data
         console.log("given classRoom:" + data)
     })
 
-    serverside.on('disconnect', function() {
+    serverside.on('disconnect', function () {
         console.log("Socket disconnected: " + serverside.id)
-        socketCount--,
-        serverside.emit('studentLeft', socketCount);
-        io.sockets.emit('updateSocketCount', { socketID, socketCount})
-      });
-
-    serverside.on('getSocketCount', function(){
-        console.log("Client has asked for socket count. It's " + socketCount);
-        serverside.emit('tellSocketCount', socketCount);
+        socketCount-- ,
+            serverside.emit('studentLeft', socketCount);
+        io.sockets.emit('updateSocketCount', { socketID, socketCount })
     });
 
-    
-    serverside.on('newTeacherQuestion', function(data){
-        console.log("new teacher question emitted from client: " + data);
-        io.sockets.emit('addNewTeacherQuestion', (data))}
-        );
-
-
-    serverside.emit("studentJoined", "Welcome, " + serverside.id, (data) => {
-        ++studentsPresent
-
-        console.log(data);
-    });
-
-    serverside.emit("ferret", "tobi", (data) => {
-        console.log(data);
-    });
-    
-    serverside.on('newQuestion', function() {
+    serverside.on('newQuestion', function () {
         console.log("joined classroom: " + serverside.id);
         serverside.emit('message');
-    } );
+    });
 
 
 

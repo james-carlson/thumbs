@@ -18,7 +18,7 @@ class Actions extends Component {
     }
 
     actionsDisplayControl(props) {
-        if (this.props.userType === 'instructor') {
+        if (this.props.userIsInstructor === 'instructor') {
             if (this.props.live === false) {
                 return <div>Enter your information and go live to share this Thumbs session with others.</div>
             } else {
@@ -57,7 +57,7 @@ function mapStateToProps(state) {
         live: state.data.live,
         class_sessionID: state.data.class_sessionID,
         displayNewQuestionBox: state.views.displayNewQuestionBox,
-        userType: state.data.userType
+        userIsInstructor: state.data.userIsInstructor
     }
 }
 

@@ -34,8 +34,7 @@ export default function reducer(state = initialState, action) {
         case NEW_TEACHER_QUESTION:
             return Object.assign({}, state, {socketQuestions: [...state.socketQuestions, action.payload]})
         case DISPLAY_NEW_TEACHER_QUESTION:
-            // console.log("Almost there..." + action.payload)
-            return Object.assign({}, state, {socketQuestions: [...state.socketQuestions, action.payload]})
+            return {...state, socketQuestions: [...state.socketQuestions, action.payload]}
             
         default:
             return state;
@@ -59,24 +58,25 @@ export function newTeacherQuestion(questionText) {
     // }
 }
 
-export function displayNewTeacherQuestion(value) {
-    console.log('reducer function value: ' + value)
+// export function displayNewTeacherQuestion(value) {
+//     console.log('reducer function value: ' + value)
     
-    return function(dispatch) {
-      dispatch(
-    {
-        type: 'DISPLAY_NEW_TEACHER_QUESTION',
-        payload: value
-      });
-    };
-  }
-// export function displayNewTeacherQuestion(questionText) {
-//     console.log("reducer: displayNewTeacherQuestion hit", questionText);
-//     return {
-//         type: DISPLAY_NEW_TEACHER_QUESTION,
-//         payload: questionText
-//     }
-// }
+//     return function(dispatch) {
+//       dispatch(
+//     {
+//         type: 'DISPLAY_NEW_TEACHER_QUESTION',
+//         payload: value
+//       });
+//     };
+//   }
+export function displayNewTeacherQuestion(questionText) {
+    // console.log("reducer: displayNewTeacherQuestion hit", questionText);
+    // debugger
+    return {
+        type: DISPLAY_NEW_TEACHER_QUESTION,
+        payload: questionText
+    }
+}
 
 
 // export function displayNewTeacherQuestion(value) {

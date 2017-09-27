@@ -7,9 +7,6 @@ import List from '../List/List';
 
 class StudentSubheader extends Component {
     render () {
-        const style = {
-            margin: 12,
-        };
 
         return (
             <div className="subheader">

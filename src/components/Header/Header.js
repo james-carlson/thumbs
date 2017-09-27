@@ -11,15 +11,9 @@ import resetData from '../../ducks/backend_reducer';
 
 
 class Header extends Component {
-    displayDynamicHeaderController(props) {
-        if (this.props.userType === 'instructor') {
-            return(<InstructorHeader />);
-        } else {
-            return(<StudentHeader />);
+    displayDynamicHeaderController() {
+        return this.props.userIsInstructor ? <InstructorHeader /> : <StudentHeader />
         }
-
-    }
-
 
     render() {
 
@@ -48,7 +42,8 @@ function mapStateToProps(state) {
     return {
         class_sessionID: state.data.class_sessionID,
         db_session_id: state.data.db_session_id,
-        userType: state.data.userType
+        userType: state.data.userType,
+        userIsInstructor: state.data.userIsInstructor
     }
 }
 

@@ -8,14 +8,15 @@ export function listenForUserTypeRequest(data){
         clientside.emit('tellUserType', data);
     }
     )
+
 }
 
-export function listenForClassroomNameRequest(cb, data){
-    clientside.on("getClassroom", function () {
-    console.log("This class_sessionID", data);
-    clientside.emit("giveClassroom", data)
-});
-}
+// export function listenForClassroomNameRequest(cb, data){
+//     clientside.on("getClassroom", function () {
+//     console.log("This class_sessionID", data);
+//     clientside.emit("giveClassroom", data)
+// });
+// }
 
 export function listenForNewQuestion(cb, data) {
     clientside.on("addNewTeacherQuestion", function (data) {
@@ -33,11 +34,11 @@ export function listenForUpdateSocketCount(cb) {
     })
 }
 
-export function listenForRoomNameRequest(cb){
-    clientside.on('requestRoomName', function joinRoom(class_sessionID){
-        clientside.emit('joinRoom', class_sessionID);
-    })
-}
+// export function listenForRoomNameRequest(cb){
+//     clientside.on('requestRoomName', function joinRoom(class_sessionID){
+//         clientside.emit('joinRoom', class_sessionID);
+//     })
+// }
 
 
 // Emit-only
@@ -50,6 +51,6 @@ export function broadcastNewTeacherQuestion(message) {
     clientside.emit("newTeacherQuestion", message)
 };
 
-export function joinRoom(class_sessionID){
-    clientside.emit('joinRoom', class_sessionID);
+export function joinRoom(){
+    clientside.emit('joinRoom', console.log("Joining room..."));
 }

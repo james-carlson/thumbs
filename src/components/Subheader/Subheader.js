@@ -15,26 +15,30 @@ class Subheader extends Component {
         //     margin: 12,
         // };
 
-        var dynamicPortion;
-        if (this.props.userType === 'instructor') {
-            dynamicPortion = <InstructorSubheader />
-        } else {
-            dynamicPortion = <StudentSubheader />
-        }
+        // var dynamicPortion;
+        // if (this.props.userType === 'instructor') {
+        //     dynamicPortion = <InstructorSubheader />
+        // } else {
+        //     dynamicPortion = <StudentSubheader />
+        // }
 
-        return (
-            <div>
-                {dynamicPortion}
-            </div>
-        );
+        return this.props.userIsInstructor ? <InstructorSubheader /> : <StudentSubheader />
+            // <div>
+            //     <div>
+
+            
+                {/* </div>
+            </div> */}
+        
     }
 }
 
 function mapStateToProps(state) {
     return {
         currentView: state.views.currentView,
-        userType: state.data.userType,
+        userIsInstructor: state.data.userIsInstructor,
         live: state.data.live
+
     }
 }
 

@@ -4,10 +4,15 @@ import { connect } from 'react-redux';
 import { recordCurrentText, recordNewQuestion, getQuestions } from '../../ducks/backend_reducer';
 import { viewInitial, toggleDisplayNewQuestionBox } from '../../ducks/view_reducer';
 // import { newTeacherQuestion } from '../../ducks/sockets_reducer';
-import { broadcastNewTeacherQuestion } from '../../services/handle_sockets';
+import { broadcastNewTeacherQuestion, listenForNewQuestion } from '../../services/handle_sockets';
+import { displayNewTeacherQuestion } from '../../ducks/sockets_reducer';
 
 
 class NewQuestion extends Component {
+    constructor(props){
+        super(props)
+
+    }
 
 
     askButton(e) {
@@ -29,9 +34,10 @@ class NewQuestion extends Component {
         // this.props.getQuestions();
     }
 
-    askButton3() {
-        { broadcastNewTeacherQuestion(this.props.newQuestionText) }
+    askButton3 = () => {
+        broadcastNewTeacherQuestion(this.props.newQuestionText)
         this.props.toggleDisplayNewQuestionBox();
+        this.props.displayNewTeacherQuestion(this.props.newQuestionText);
         // this.props.getQuestions();
     }
 
@@ -56,7 +62,7 @@ class NewQuestion extends Component {
                         </div>
                         <div className="new_question_container_buttons_box">
                             <div><button id="cancel" onClick={() => this.props.toggleDisplayNewQuestionBox()}>Cancel</button></div>
-                            <div><button id="ask" onClick={() => this.askButton3()}>Ask</button></div>
+                            <div><button id="ask" onClick={this.askButton3}>Ask</button></div>
                         </div>
                     </div>
                 )
@@ -82,11 +88,11 @@ function mapStateToProps(state) {
         questionID: state.data.questionID,
         currentView: state.views.currentView,
         class_sessionID: state.data.class_sessionID,
-        userType: state.data.userType,
         newQuestionText: state.data.newQuestionText,
         displayNewQuestionBox: state.views.displayNewQuestionBox,
-        socketQuestions: state.sockets.socketQuestions
+        socketQuestions: state.sockets.socketQuestions,
+        userIsInstructor: state.data.userIsInstructor
     }
 }
 
-export default connect(mapStateToProps, { recordCurrentText, recordNewQuestion, viewInitial, toggleDisplayNewQuestionBox, getQuestions })(NewQuestion);
+export default connect(mapStateToProps, { recordCurrentText, recordNewQuestion, viewInitial, toggleDisplayNewQuestionBox, getQuestions, displayNewTeacherQuestion })(NewQuestion);

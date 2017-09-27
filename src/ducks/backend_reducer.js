@@ -64,7 +64,7 @@ export default function reducer(state = initialState, action) {
             return Object.assign({}, state, {loading: false, db_session_id: action.payload, live: true});
         case INITIALIZE_TEACHER:
             console.log(action.type, action.payload)
-            return Object.assign({}, state, {userType: action.payload});
+            return Object.assign({}, state, {userIsInstructor: true});
         case GET_LIVE_PENDING:
             console.log(action.type, action.payload)
             return Object.assign({}, state, {loading: true});
@@ -78,7 +78,7 @@ export default function reducer(state = initialState, action) {
                 });
         case RESET_DATA:
             console.log(action.type, action.payload)
-            return Object.assign({}, state = initialState, {userType: "instructor"})
+            return initialState
         default:
             return state;
     }
@@ -148,9 +148,9 @@ export function endLive(generatedID) {
 }
 
 export function initializeUser() {
+    // localStorage.setItem("userIsInstructor", true)
     return {
-        type: INITIALIZE_TEACHER,
-        payload: 'instructor'
+        type: INITIALIZE_TEACHER
     }
 }
 
