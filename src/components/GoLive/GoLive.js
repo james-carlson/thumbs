@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { goLive } from '../../ducks/backend_reducer';
-import io from 'socket.io-client';
+import { emitJoinRoom } from '../../services/handle_sockets';
 
 
 class GoLive extends Component {
@@ -11,13 +11,19 @@ class GoLive extends Component {
         this.displayStatus = this.displayStatus.bind(this);
     }
 
+    handleGoLive(props) {
+        let userType = this.props.userIsInstructor ? "instructor" : "student"
+        console.log("about to emitJoinRoom with userType", userType, "and sessionID/room#: ", this.props.class_sessionID);
+        emitJoinRoom("instructor", this.props.class_sessionID)
+        this.props.goLive(this.props.class_sessionID, this.props.instructorName, this.props.classTopic);
+    }
+
     displayStatus(props) {
         if (this.props.live === true) {
             return <button onClick={() => this.props.endLive()}> END </button>
         } else {
-            return <button onClick={() => this.props.goLive(this.props.class_sessionID, this.props.instructorName, this.props.classTopic)}>GO LIVE</button>
+            return <button onClick={() => this.handleGoLive()}>GO LIVE</button>
         }
-    
     }
 
 
@@ -36,7 +42,8 @@ function mapStateToProps(state) {
         live: state.data.live,
         class_sessionID: state.data.class_sessionID,
         classTopic: state.data.classTopic,
-        instructorName: state.data.instructorName
+        instructorName: state.data.instructorName,
+        userIsInstructor: state.sockets.userIsInstructor
     }
 }
 

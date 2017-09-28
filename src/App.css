@@ -2,29 +2,27 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
+
 
 .App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
+  background-color: #f2f2f2;
+  /* height: .150rem; */
+  padding: .20rem;
+  font-family: 'Open Sans';
   color: white;
+  /* display: flex; */
 }
 
 .App-intro {
   font-size: large;
 }
 
-
-/* a {
+a {
   height: 100%;
-  width: 100%;
-
+  display: inline-block;
 }
-a button {
+
+/* a button {
   height: 100%;
   width: 100%;
   text-decoration: none;
@@ -66,6 +64,10 @@ button:hover {
   /* box-shadow: 0px 1px 1px rgb(37, 172, 225), 0px 1px 1px rgba(0,0,0,0.23); */
 }
 
+.title {
+  font-size: 3.5rem;
+  color: #444444;
+}
 
 
 textarea {
@@ -123,6 +125,11 @@ input:focus {
 
 
 @keyframes App-logo-spin {
+  from { transform: rotate(3deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes App-logo2-spin {
   from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  to { transform: rotate(3deg); }
 }

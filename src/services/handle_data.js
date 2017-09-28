@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { emitClassSessionId } from '../services/handle_sockets';
 
 export const recordNewQuestion = function (questionText, class_sessionID) {
     console.log("At the data handler: " + questionText, class_sessionID)
@@ -20,7 +19,7 @@ export const generateRandomID = function () {
     for (var i = 0; i < 6; i++)
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     // console.log(text);
-    emitClassSessionId(text);
+    // emitClassSessionId(text);
     return text;
 }
 

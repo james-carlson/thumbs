@@ -15,6 +15,10 @@ class Header extends Component {
         return this.props.userIsInstructor ? <InstructorHeader /> : <StudentHeader />
         }
 
+    handleReset(){
+        resetData()
+    }
+
     render() {
 
         return (

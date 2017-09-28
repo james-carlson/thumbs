@@ -27,7 +27,11 @@ const app = express();
 
 const connectionInfo = process.env.DB_CONNECTIONSTRING
 
-massive(connectionInfo).then(db => { app.set('db', db) })
+var database = ''
+massive(connectionInfo).then((db) => {
+    database = db;
+    app.set('db', db)
+})
     .catch(err => { console.log(err) })
 
 
@@ -136,96 +140,160 @@ app.get('/api/data/questions/session/student', function (req, res) {
 // Socket setup
 var io = socket(server);
 var socketCount = 0;
+var roomName = ''
 var socketID = '';
 var classroom = '';
 var classrooms = [];
 var teacherSocketID = '';
 var roomCounts = { "roomNames": "counts" };
+var teachersAndRooms = {};
+var clientsInRoom = 0;
+var tempData = {
+    "rooms": [
+        {
+            "roomName": "",
+            "instructor": "",
+            "count": 0,
+            "questions": [{ answer: 0 }]
+        }
 
-// var userType = '';
+    ],
+    "connectedUsers": []
+}
+var index = 0;
+
+var question =
+    [
+        {
+        question_id: 0,
+        "answers": [0],
+        "answersAvg": 0
+        }
+    ]
+
+var room = 
+    {
+    "roomName": "",
+    // "instructor": "",
+    // "count": 0,
+    // "questions": [question]
+    }
+
+var rooms = [room]
+
+function constructNewRoom(roomName) {
+    return (
+        [
+            {"roomName": roomName}
+        ]
+    )
+}
+
+
 
 io.on('connection', (serverside) => {
-    serverside.emit('connectionDetected');
-    serverside.on('joinRoom', data => { 
-        console.log(JSON.stringify(data))
-    }); 
-
-
-        // 1. Get user type
-        serverside.on('tellUserType', (data) => {
-        var userType = data;
-        console.log("UserType received for " + serverside.id + ", user is", userType)
-
-        //update counter
-        socketCount++
-        socketID = serverside.id;
-        
-        // getting room name 
-        // for instructors it's generatee and sent from the Landing component
-        
-        // off of the URL for students connecting from Classroom component
-        
-        var refererSplit = serverside.request.headers.referer.split('/');
-        // console.log(refererSplit);
-        
-        var roomName = refererSplit[refererSplit.length - 1]; //Room name is at the end of the path.
-        // console.log("Room requested: ", roomName);
+    serverside.emit('connectionDetected', serverside.id, console.log('connectionDetected', serverside.id));
+    serverside.on('joinRoom', data => {
+        console.log(data.userType + " requested to join room" + data.roomName + ". (socketID: " + serverside.id + ")")
 
         // add to teacher/room list/object
-        
-        // successful connection message
-        console.log(serverside.id + "joined room " + roomName);
-        serverside.emit('requestUserType', console.log("Connection detected (socket.id: " + serverside.id + "). Room requested: " + roomName + " - Requesting user type. " + socketCount + "  users connected."));
-        
+
+        // Save socket ID
+        socketID = serverside.id
+        // tempData.connectedUsers.push(socketID);
+
+        // if user is student, get room name off of the URL
+        if (data["userType"] === "student") {
+            var refererSplit = serverside.request.headers.referer.split('/');
+            // console.log(refererSplit);
+
+            roomName = refererSplit[refererSplit.length - 1]; //Room name is at the end of the path.
+            // console.log("Room requested: ", roomName);
+
+            // data.roomName = roomName;
+            // console.log("student roomName: ", data.roomName);
+
+        } else if (data["userType"] === "instructor") {
+            var teacherSocketID = socketID
+            roomName = data["roomName"]
+        }
+
+        // store room name
+
+            //check if room name is already stored
+
+            // console.log('handle room name inputs: ', rooms, roomName);
+            // for (let i = 0; i < rooms.length; i++){
+            //     if (rooms[i].roomName == roomName) {
+                    
+            //     }
+            // }
+
         // join room
         serverside.join(roomName);
 
-        // count people in room
-        // let roomCounter = {roomName: roomCounter};
-        var clientsInRoom = io.sockets.adapter.rooms[roomName]
-        console.log("usersInRoom: " + JSON.stringify(clientsInRoom.length));
-        // console.log(JSON.stringify(roomCounts))
         
-        // emit updated count of people in room
-        serverside.to(roomName).emit('updateSocketCount', { socketID, socketCount }).to(classroom)
+        io.to(roomName).emit('joinedRoom')
+        io.to(roomName).emit("giveRoomCount", {socketCount: io.sockets.adapter.rooms[roomName].length, roomName: roomName})
         
-        // join room success message
 
-
-
-        // TEACHER endpoints
-
-
-        // IDEA: same endpoint (e.g. teacher New Question) but then it sees your user type and then behaves appropriately. so there's one action type and each is processed and fed out to whoever it should be.
-        // Endpoints to catch both cases (e.g. teacher and student) in the front end.
-
-        // if userType is teacher:
-        serverside.on('newTeacherQuestion', function (data) {
-            console.log("new teacher question emitted from client: " + serverside.id + "to room: " + roomName + "data: " + data);
-            // serverside.to(roomName).emit('addNewTeacherQuestion', (data))
-            serverside.to(roomName).emit('addNewTeacherQuestion', (data))
+        // successful connection message
+        console.log(serverside.id + " successfully joined room " + roomName);
+        // console.log(JSON.stringify(rooms))
+    });
+    
+    // emit updated count of people in room
+    serverside.on("getRoomCount", function() {
+        console.log('room count requested')
+        if (roomName !== '') {
+            if (io.sockets.adapter.rooms[roomName] !== undefined) {
+                clientsInRoom = io.sockets.adapter.rooms[roomName].length 
+                io.in(roomName).emit("giveRoomCount emitted", {socketCount: io.sockets.adapter.rooms[roomName].length, roomName: roomName})
+                console.log("line 250:", roomName, "has", clientsInRoom);
+            }
         }
-        );
+    });
+    
+    // IDEA: same endpoint (e.g. teacher New Question) but then it sees your user type and then behaves appropriately. so there's one action type and each is processed and fed out to whoever it should be.
+    // Endpoints to catch both cases (e.g. teacher and student) in the front end.
 
-        // STUDENT endpoints
-        // if userType is student
-        serverside.on('newQuestion', function () {
-            console.log("joined classroom: " + serverside.id);
-            serverside.emit('message');
-        });
-        
-
-        serverside.on('disconnect', function () {
-            console.log("Socket disconnected: " + serverside.id)
-            socketCount-- ,
-                serverside.emit('studentLeft', socketCount);
-            io.sockets.emit('updateSocketCount', { socketID, socketCount })
-        });
+    // TEACHER endpoints
+    // go live
+    // database.queries.newClassSession(roomName, instructorName, classTopic)
+    // .then(data => res.status(200).send(res.data))
 
 
+    // if userType is teacher:
+    serverside.on('newTeacherQuestion', function (data) {
+        console.log("new teacher question emitted from client: " + serverside.id + "to room: " + roomName + "data: " + data);
+        // serverside.to(roomName).emit('addNewTeacherQuestion', (data))
+        io.in(roomName).emit('addNewTeacherQuestion', (data))
+    }
+    );
+
+    // STUDENT endpoints
+    // if userType is student
+    serverside.on('newQuestion', function () {
+        console.log("joined classroom: " + serverside.id);
+        serverside.emit('message');
+    });
+
+    serverside.on('disconnect', function () {
+        // console.log("clientsInRoom: ", clientsInRoom)
+        // serverside.to(roomName).emit("giveRoomCount", {socketCount: clientsInRoom, roomName: roomName})
+        console.log("Socket disconnected: " + serverside.id + "roomName: " + roomName)
+        if (roomName !== '') {
+            if (io.sockets.adapter.rooms[roomName] !== undefined) {
+                clientsInRoom = io.sockets.adapter.rooms[roomName].length 
+                io.in(roomName).emit("giveRoomCount", {socketCount: io.sockets.adapter.rooms[roomName].length, roomName: roomName})
+                console.log("line 250:", roomName, "has", clientsInRoom);
+            }
+    }});
 
 
-    })
+
+
+})
 
     // Do I need these? e.g. possibly connecting to database
     // serverside.on('giveServerClassSessionId', function (data) {
@@ -237,5 +305,5 @@ io.on('connection', (serverside) => {
 
 
 
-});
+
 

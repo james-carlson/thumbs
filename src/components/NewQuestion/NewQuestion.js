@@ -4,16 +4,11 @@ import { connect } from 'react-redux';
 import { recordCurrentText, recordNewQuestion, getQuestions } from '../../ducks/backend_reducer';
 import { viewInitial, toggleDisplayNewQuestionBox } from '../../ducks/view_reducer';
 // import { newTeacherQuestion } from '../../ducks/sockets_reducer';
-import { broadcastNewTeacherQuestion, listenForNewQuestion } from '../../services/handle_sockets';
+import { broadcastNewTeacherQuestion } from '../../services/handle_sockets';
 import { displayNewTeacherQuestion } from '../../ducks/sockets_reducer';
 
 
 class NewQuestion extends Component {
-    constructor(props){
-        super(props)
-
-    }
-
 
     askButton(e) {
         console.log('record new question:');

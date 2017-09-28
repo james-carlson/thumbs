@@ -3,14 +3,19 @@ import Header from '../Header/Header';
 import Subheader from '../Subheader/Subheader';
 import NewQuestion from '../NewQuestion/NewQuestion';
 import List from '../List/List';
-import { listenForClassroomNameRequest,
-         listenForUpdateSocketCount,
-         listenForRoomNameRequest,
-         listenForUserTypeRequest,
-         listenForNewQuestion,
-         joinRoom } from '../../services/handle_sockets';
+import {
+    listenForJoinedRoom,
+    listenForUpdateSocketCount,
+    listenForNewQuestion,
+    listenForGiveRoomCount,
+    //  listenForSuccessfulSocketConnection_Student,
+    //  listenForSuccessfulSocketConnection_Student,
+    listenForSuccessfulSocketConnection,
+    // emitDisconnect,
+    emitGetRoomCount
+} from '../../services/handle_sockets';
 import { connect } from 'react-redux';
-import { getQuestions, initializeUser } from '../../ducks/backend_reducer';
+import { getQuestions, getLive } from '../../ducks/backend_reducer';
 import { updateSocketCount, displayNewTeacherQuestion } from '../../ducks/sockets_reducer';
 import './Classroom.css';
 // import io from 'socket.io-client';
@@ -22,55 +27,76 @@ import './Classroom.css';
 class Classroom extends Component {
     constructor(props) {
         super(props)
+
+        getLive(this.uniqueID)
+        // listenForJoinedRoom();
         listenForUpdateSocketCount(this.props.updateSocketCount);
+        listenForGiveRoomCount(this.props.updateSocketCount);
         listenForNewQuestion(this.props.displayNewTeacherQuestion, this.props.newQuestionText);
         console.log(this.props)
         // listenForClassroomNameRequest(props.displayNewTeacherQuestion, this.props.class_sessionID);
         // listenForRoomNameRequest(this.props.class_sessionID);
-        
-    }
-    
-    
-    componentDidMount(props) {
-        var userType = (this.props.userIsInstructor === false? "student" : "instructor");
-        console.log(userType);
-        debugger;
-        console.log("component Mounted");
-        listenForUserTypeRequest(userType);
-        joinRoom();
-
-        const userIsInstructor = localStorage.getItem("userIsInstructor")
-        if (userIsInstructor) {
-            this.props.initializeUser();
+        if (this.props.userIsInstructor) {
+            listenForSuccessfulSocketConnection("instructor", this.props.class_sessionID)
+        } else {
+            listenForSuccessfulSocketConnection("student", this.props.class_sessionID)
         }
+        console.log(this.props.class_sessionID);
     }
-    
-    
-    
-    
+
+    componentWillMount(props) {
+    }
+
+
+    componentDidMount(props) {
+
+
+        // === false) {
+        //     listenForSuccessfulSocketConnection_Student(userType)
+        // } else {
+        //     listenForSuccessfulSocketConnection_Teacher(this.props.class_sessionID)
+        // }
+        // debugger;
+        // console.log("component Mounted");
+        // listenForUserTypeRequest(userType);
+        // joinRoom();
+
+        // const userIsInstructor = localStorage.getItem("userIsInstructor")
+        // if (userIsInstructor) {
+        //     this.props.initializeUser();
+        // }
+    }
+
+
+
+
     render() {
-        console.log(this.props);
-        
+        // console.log(this.props);
+        // console.log(this.props.userIsInstructor)
+        if (this.props.class_sessionID !== '') {
+            emitGetRoomCount(this.props.class_sessionID)
+        }
+
         return (
             <div>
                 <div><Header /></div>
                 <div><Subheader /></div>
                 <div className="present_count">
-                    
-                {this.props.studentsPresent} {(this.props.studentsPresent === 1)? "person" : "people"} here.</div>
+
+                    {this.props.studentsPresent} {(this.props.studentsPresent === 1) ? "person" : "people"} here.</div>
                 <div><NewQuestion /></div>
                 <div className="classroom">
-                <div><List /></div>
-                            {/* <button onClick={this.socketController(this.props.updateSocketCount)}>Click here to display socket count</button> */}
-                            {/* <button onClick={this.props.subscribeToClassroom}>Click here to join a classroom</button> */}
+                    <div><List /></div>
+                    {/* <button onClick={this.socketController(this.props.updateSocketCount)}>Click here to display socket count</button> */}
+                    {/* <button onClick={this.props.subscribeToClassroom}>Click here to join a classroom</button> */}
 
-                            {/* <button onClick={this.props.getQuestions}>Get all the questions</button> */}
+                    {/* <button onClick={this.props.getQuestions}>Get all the questions</button> */}
 
-                        {/* {this.state.connectionCount} */}
+                    {/* {this.state.connectionCount} */}
 
-                        {/* {this.classroomDisplayController()} */}
-                        {/* <div>Timer: {this.props.subscribeToClassroom(this.props.receiveTimeStamp)}</div> */}
-                        {/* <div>This is the classroom. The current view is: {this.props.currentView}. </div>
+                    {/* {this.classroomDisplayController()} */}
+                    {/* <div>Timer: {this.props.subscribeToClassroom(this.props.receiveTimeStamp)}</div> */}
+                    {/* <div>This is the classroom. The current view is: {this.props.currentView}. </div>
                         <div className={"inital " + (this.props.currentView !== 'initial' ? "hidden" : '')}>
                             This is displayed because the current view is the initial view.
                     </div>
@@ -83,9 +109,9 @@ class Classroom extends Component {
                         <div className={"allStudentQuestions " + (this.props.currentView !== 'allStudentQuestions' ? "hidden" : '')}>
                             This is displayed because the current view is allStudentQuestions. */}
 
-                        {/* QUESTIONS:<br />
+                    {/* QUESTIONS:<br />
                             {JSON.stringify(this.props.questions)} */}
-                        {/* 
+                    {/* 
                             <div>
                             </div>
                         </div>
@@ -96,10 +122,14 @@ class Classroom extends Component {
                             <List />
                         </div> */}
 
-                        </div>
-                    </div>
+                </div>
+            </div>
 
         );
+    }
+
+    componentWillUnmount() {
+        // emitDisconnect(this.props.class_sessionID)
     }
 }
 
@@ -126,5 +156,5 @@ function mapStateToProps(state) {
 //     }
 // }
 
-export default connect(mapStateToProps, { getQuestions, updateSocketCount, initializeUser, displayNewTeacherQuestion })(Classroom);
+export default connect(mapStateToProps, { getQuestions, getLive, updateSocketCount, displayNewTeacherQuestion })(Classroom);
 // export default connect(mapStateToProps, { getQuestions })(Classroom);

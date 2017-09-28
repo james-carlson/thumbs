@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Actions from '../Actions/Actions';
-import List from '../List/List';
-
-
 
 class StudentSubheader extends Component {
     render () {

@@ -15,20 +15,17 @@ class Subheader extends Component {
         //     margin: 12,
         // };
 
-        // var dynamicPortion;
-        // if (this.props.userType === 'instructor') {
-        //     dynamicPortion = <InstructorSubheader />
-        // } else {
-        //     dynamicPortion = <StudentSubheader />
-        // }
+        var dynamicPortion;
+        if (this.props.userIsInstructor === true) {
+            dynamicPortion = <InstructorSubheader />
+        } else {
+            dynamicPortion = <StudentSubheader />
+        }
 
-        return this.props.userIsInstructor ? <InstructorSubheader /> : <StudentSubheader />
-            // <div>
-            //     <div>
-
-            
-                {/* </div>
-            </div> */}
+        return (<div>
+            {dynamicPortion}
+            </div>
+        )
         
     }
 }

@@ -1,41 +1,52 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import './Landing.css';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { generateRandomID, initializeUser, resetData } from '../../ducks/backend_reducer';
-import { listenForSuccessfulSocketConnection_Teacher } from '../../services/handle_sockets';
-
-
+import thumbs from './thumbs.svg';
+import {listenForSuccessfulSocketConnection, emitJoinRoom} from '../../services/handle_sockets';
 
 
 class Landing extends Component {
     
-    componentWillMount(){
+    componentWillMount() {
         this.props.generateRandomID();
         // this.props.initializeUser('instructor');
     }
-
-    handleInitializeUser() {
-        this.props.initializeUser()
+    
+    handleInitializeUser(props) {
+        this.props.initializeUser();
     }
-
+    
+    handleSocketListener(props) {
+        if (props.class_sessionID !== null) {
+            
+        }
+    }
+    
     render() {
         return (
-            < div >
-                <div className="App-header">
-                    <div>
-                        <img src={logo} className="App-logo" alt="logo" />
-                        <h2>Thumbs: Instant, Accurate Feedback</h2>
+            <div>
+                {/* {listenForSuccessfulSocketConnection('instructor', this.props.class_sessionID)} */}
+                <Link to={`/${this.props.class_sessionID}`} onClick={this.handleInitializeUser()}>
+                    <div className="landing_header">
+                        <div className="landing_logo">
+                            <div className="landing_overlay">
+                                <div className="landing_appName">THUMBS</div>
+                                <div className="tagline">Instant, Accurate Feedback</div>
+                            </div>
+                        </div>
+                        <div>
+                            <img src={thumbs} alt="logo" className="thumb" />
+                        </div>
                     </div>
-                    <div></div>
+                    <div>To get started, click above and open a class session as an instructor.</div>
+                    <div className="App-intro">
+                        This is the background info.
                 </div>
-                <p className="App-intro">
-                    This is the background info. 
-                </p>
-                {/* <div>To get started, click <Link to={`/${this.props.class_sessionID}`}><button onClick={initializeUser('instructor')}>here</button></Link> to open a class session as an {this.props.userType}.</div> */}
-                <div>To get started, click <Link to={`/${this.props.class_sessionID}`}><button onClick={this.handleInitializeUser()}>here</button></Link> to open a class session as an instructor.</div>
-                {listenForSuccessfulSocketConnection_Teacher(this.props.class_sessionID)}
-            </div >
+                </Link>
+            </div>
+
 
         );
     }

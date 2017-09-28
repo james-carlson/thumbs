@@ -1,28 +1,14 @@
 import React, { Component } from 'react';
 import './List.css';
 // import axios from 'axios';
-import { getQuestions } from '../../ducks/backend_reducer';
+// import { getQuestions } from '../../ducks/backend_reducer';
 import { connect } from 'react-redux';
-import { displayNewTeacherQuestion } from '../../ducks/sockets_reducer';
+import { displayNewTeacherQuestion } from '../../ducks/sockets_reducer'
 // import { listenForNewQuestion } from '../../services/handle_sockets';
 
 
-
 class List extends Component {
-    constructor(props){
-        super(props)
-
-        // listenForNewQuestion(props.displayNewTeacherQuestion, this.props.newQuestionText);
-    }
     
-
-    // subscribeToSockets(cb){
-    //     // clientside.on("addNewTeacherQuestion", function (questionText) {
-    //     //     console.log("event addNewTeacherQuestion received from server")
-    //     //     displayNewTeacherQuestion(questionText)
-    //     // });
-    // }
-
     displayController() {
         // console.log("display controller invoked");
         if (this.props.socketQuestions.length === 0) {

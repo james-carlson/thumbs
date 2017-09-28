@@ -1,27 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 // import { goLive } from '../../ducks/backend_reducer';
 import { toggleDisplayNewQuestionBox } from '../../ducks/view_reducer';
 import './Actions.css';
-import link from '../Subheader/link_icon.svg';
+
 
 class Actions extends Component {
     constructor(props) {
         super(props)
 
-        this.actionsDisplayControl = this.actionsDisplayControl.bind(this);
-    }
-
-    goToQueue(){
-        window.open("https://q.devmountain.com/#/studentDashboard", "The Queue");
+        // this.actionsDisplayControl = this.actionsDisplayControl.bind(this);
     }
 
     actionsDisplayControl(props) {
-        if (this.props.userIsInstructor === 'instructor') {
-            if (this.props.live === false) {
-                return <div>Enter your information and go live to share this Thumbs session with others.</div>
-            } else {
+        if (this.props.userIsInstructor === true) {
                 return (
                     <div className="subheader_dynamic_portion_item ">
                         <div className="action_button_wrapper">
@@ -30,12 +22,11 @@ class Actions extends Component {
                         </div>
                     </div>
                 )
-            }
         } else {
             return(<div className="subheader_dynamic_portion_item ">
             <div className="action_button_wrapper">
                 <button onClick={() => this.props.toggleDisplayNewQuestionBox()}>Ask A Question</button>
-                <button onClick={() => this.goToQueue()}>The Queue &#x2197;</button>
+                <button onClick={() => window.open("https://q.devmountain.com/#/studentDashboard", "The Queue")}>The Queue &#x2197;</button>
             </div>
         </div>)
 

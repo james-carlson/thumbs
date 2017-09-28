@@ -1,0 +1,65 @@
+.landing_header {
+    /* display: flex; */
+    /* position: relative; */
+    /* min-height: 20rem; */
+    /* min-width: 20rem; */
+    /* background: #222222; */
+    /* text-align: center; */
+
+}
+
+.landing_subheader {
+    /* position: absolute; */
+}
+
+.landing_appName {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: .01rem; 
+    color: #25aae1;
+}
+
+.tagline {
+    font-size: 1rem;
+    color: #444444;
+  }
+
+.landing_overlay {
+    position: absolute;
+    flex-direction: column;
+    /* height: 100%; */
+}
+
+.landing_logo {
+    display: flex;
+    /* align-items: stretch; */
+    justify-content: center;
+    height: 100%;
+    /* animation: App-logo-spin infinite 1.5s linear; */
+    /* width: 100%; */
+    /* position: relative; */
+}
+  
+/* .landing_logo2 {
+    animation: App-logo2-spin infinite 1.5s linear;
+    width: 100%;
+    /* position: relative; */
+*/
+
+.thumb {
+    width: 100%;
+    position: absolute;
+    background: #f2f2f2;
+}
+
+.landing_logo_text {
+    /* position: absolute; */
+    font-size: 6rem;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    color: #25aae1;
+    /* left: 40px; */
+    /* position: absolute; */
+}

@@ -15,7 +15,7 @@ class StudentHeader extends Component {
     }
 
     componentDidMount() {
-        { this.props.getLive(this.uniqueID) }
+        this.props.getLive(this.uniqueID)
     }
 
     render() {

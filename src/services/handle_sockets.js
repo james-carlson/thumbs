@@ -1,21 +1,44 @@
 import io from 'socket.io-client';
 const clientside = io('http://localhost:4000');
 
-// Listeners
-export function listenForSuccessfulSocketConnection_Teacher(roomName) {
-    clientside.on('connectionDetected', function() {
-        clientside.emit('joinRoom', {"roomName": roomName, "userType": "teacher"})
+
+export function listenForSuccessfulSocketConnection(userType, roomName) {
+    if (userType !== undefined && roomName !== undefined) {
+        clientside.on('connectionDetected', function (data) {
+            console.log("connection detected", data);
+            clientside.emit('joinRoom', { "userType": userType, "roomName": roomName })
+        })
+    }
+}
+
+export function emitJoinRoom(userType, roomName) {
+    if (userType !== undefined && roomName !== undefined) {
+        console.log('clientside emitJoinRoom emitted', userType, roomName);
+        clientside.on('connectionDetected', function () {
+            clientside.emit('joinRoom', { "userType": userType, "roomName": roomName })
+        })
+    }
+}
+
+export function listenForJoinedRoom() {
+    clientside.on('joinedRoom', function (data) {
+        clientside.emit('getRoomCount', data)
     })
 }
 
-export function listenForSuccessfulSocketConnection_Student(userType) {
-    clientside.on('connectionDetected', function() {
-        clientside.emit('joinRoom', {"roomName": "will be grabbed from URL", "userType": "student"})
+export function emitGetRoomCount() {
+    console.log('attempting to get room count');
+    clientside.emit("getRoomCount")
+};
+
+export function listenForGiveRoomCount(cb) {
+    clientside.on("giveRoomCount", function (data) {
+        console.log("New room count " + data);
+        cb(data.socketCount, data.roomName);
     })
 }
 
-
-export function listenForUserTypeRequest(data){
+export function listenForUserTypeRequest(data) {
     console.log('listenForUserTypeRequest: userType: ', data);
     clientside.on('requestUserType', function () {
         clientside.emit('tellUserType', data);
@@ -24,37 +47,22 @@ export function listenForUserTypeRequest(data){
 
 }
 
-// export function listenForClassroomNameRequest(cb, data){
-//     clientside.on("getClassroom", function () {
-//     console.log("This class_sessionID", data);
-//     clientside.emit("giveClassroom", data)
-// });
-// }
-
 export function listenForNewQuestion(cb, data) {
     clientside.on("addNewTeacherQuestion", function (data) {
-    console.log("event addNewTeacherQuestion received from server")
-    console.log("question text", data)
-    // props.displayNewTeacherQuestion("Whatever")
-    cb(data)
-});
+        console.log("event addNewTeacherQuestion received from server")
+        console.log("question text", data)
+        // props.displayNewTeacherQuestion("Whatever")
+        cb(data)
+    });
 }
 
 export function listenForUpdateSocketCount(cb) {
-    clientside.on("updateSocketCount", function(data) {
-        console.log("Somebody joined: " + data.socketCount);
-        cb(data.socketCount);
+    clientside.on("updateSocketCount", function (data) {
+        console.log("Somebody joined " + data.socketCount);
+        cb(data.socketCount, data.roomName);
     })
 }
 
-// export function listenForRoomNameRequest(cb){
-//     clientside.on('requestRoomName', function joinRoom(class_sessionID){
-//         clientside.emit('joinRoom', class_sessionID);
-//     })
-// }
-
-
-// Emit-only
 export function emitClassSessionId(data) {
     console.log("socket function: emitClassSessionId, data: ", data);
     clientside.emit("giveServerClassSessionId", data)
@@ -64,6 +72,37 @@ export function broadcastNewTeacherQuestion(message) {
     clientside.emit("newTeacherQuestion", message)
 };
 
-export function joinRoom(){
-    clientside.emit('joinRoom', console.log("Joining room..."));
-}
+// CAN I COMBINE ALL LISTENING FUNCTIONS?
+// export function masterListener(data, cb, userType) {
+//     clientside.on('connectionDetected', function () {
+//         clientside.emit('joinRoom', { "userType": userType })
+//     })
+
+//     clientside.on('joinedRoom', function (data) {
+//         clientside.emit('getRoomCount', data)
+//     })
+
+//     clientside.on("giveRoomCount", function (data) {
+//         console.log("New room count " + data);
+//         cb(data.socketCount, data.roomName);
+//     })
+
+//     clientside.on('requestUserType', function () {
+//         console.log('listenForUserTypeRequest: userType: ', data);
+//         clientside.emit('tellUserType', data);
+//     })
+
+
+//     clientside.on("addNewTeacherQuestion", function (data) {
+//         console.log("event addNewTeacherQuestion received from server")
+//         console.log("question text", data)
+//         // props.displayNewTeacherQuestion("Whatever")
+//         cb(data)
+//     })
+
+//     clientside.on("updateSocketCount", function (data) {
+//         console.log("Somebody joined " + data.socketCount);
+//         cb(data.socketCount, data.roomName);
+//     })
+
+// }
