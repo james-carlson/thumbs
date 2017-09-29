@@ -27,15 +27,13 @@ import './Classroom.css';
 class Classroom extends Component {
     constructor(props) {
         super(props)
-
-        getLive(this.uniqueID)
-        // listenForJoinedRoom();
+        
+        // console.log(this.props)
+        listenForJoinedRoom();
         listenForUpdateSocketCount(this.props.updateSocketCount);
         listenForGiveRoomCount(this.props.updateSocketCount);
-        listenForNewQuestion(this.props.displayNewTeacherQuestion, this.props.newQuestionText);
-        console.log(this.props)
-        // listenForClassroomNameRequest(props.displayNewTeacherQuestion, this.props.class_sessionID);
-        // listenForRoomNameRequest(this.props.class_sessionID);
+        listenForNewQuestion(this.props.displayNewTeacherQuestion);
+
         if (this.props.userIsInstructor) {
             listenForSuccessfulSocketConnection("instructor", this.props.class_sessionID)
         } else {
@@ -67,6 +65,15 @@ class Classroom extends Component {
         // }
     }
 
+    numQuestions(props) {
+        {if (this.props.socketQuestions.length < 1) { 
+            return " No questions yet."
+        } else if (this.props.socketQuestions.length == 1) {
+            return " 1 question so far."
+        } else {
+            return " " + (this.props.socketQuestions.length) + " questions asked so far."}
+        }
+    }
 
 
 
@@ -77,13 +84,17 @@ class Classroom extends Component {
             emitGetRoomCount(this.props.class_sessionID)
         }
 
+
+
         return (
             <div>
                 <div><Header /></div>
                 <div><Subheader /></div>
                 <div className="present_count">
 
-                    {this.props.studentsPresent} {(this.props.studentsPresent === 1) ? "person" : "people"} here.</div>
+                    {this.props.studentsPresent} {(this.props.studentsPresent === 1) ? "person" : "people"} here.
+                    {this.numQuestions()}
+                    </div>
                 <div><NewQuestion /></div>
                 <div className="classroom">
                     <div><List /></div>

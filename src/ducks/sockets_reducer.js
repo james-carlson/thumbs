@@ -15,6 +15,7 @@ const initialState = {
     socketQuestions: [],
     teacherQuestions: [],
     studentQuestions: [],
+    db_q_id: [],
     roomName: ''
 };
 
@@ -30,10 +31,14 @@ export default function reducer(state = initialState, action) {
         case UPDATE_SOCKET_COUNT:
             console.log("UPDATE_SOCKET_COUNT", action.payload);
             return Object.assign({}, state, {studentsPresent: action.payload, roomName: action.roomName});
-        case NEW_TEACHER_QUESTION:
-            return Object.assign({}, state, {socketQuestions: [...state.socketQuestions, action.payload]})
+        // case NEW_TEACHER_QUESTION:
+        //     return Object.assign({}, state, {socketQuestions: [...state.socketQuestions, action.payload]})
         case DISPLAY_NEW_TEACHER_QUESTION:
-            return {...state, socketQuestions: [...state.socketQuestions, action.payload]}
+            console.log(action.type, action.payload);
+            return {...state, 
+                socketQuestions: [...state.socketQuestions, action.payload.questiontext],
+                db_q_id: [...state.db_q_id, action.payload.id]
+                    }
             
         default:
             return state;
@@ -58,23 +63,14 @@ export function newTeacherQuestion(questionText) {
     // }
 }
 
-// export function displayNewTeacherQuestion(value) {
-//     console.log('reducer function value: ' + value)
-    
-//     return function(dispatch) {
-//       dispatch(
-//     {
-//         type: 'DISPLAY_NEW_TEACHER_QUESTION',
-//         payload: value
-//       });
-//     };
-//   }
 
-export function displayNewTeacherQuestion(questionText) {
+export function displayNewTeacherQuestion(data) {
     // console.log("reducer: displayNewTeacherQuestion hit", questionText);
     // debugger
+    console.log(data)
     return {
         type: DISPLAY_NEW_TEACHER_QUESTION,
-        payload: questionText
+        payload: data
     }
 }
+

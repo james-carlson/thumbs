@@ -33,18 +33,23 @@ class Landing extends Component {
                         <div className="landing_logo">
                             <div className="landing_overlay">
                                 <div className="landing_appName">THUMBS</div>
-                                <div className="tagline">Instant, Accurate Feedback</div>
+                                <div className="tagline">Instant,</div>
+                                <div className="tagline">Accurate</div>
+                                <div className="tagline">Feedback</div>
                             </div>
                         </div>
                         <div>
-                            <img src={thumbs} alt="logo" className="thumb" />
+                            {/* <img src={thumbs} alt="logo" className="thumb" /> */}
                         </div>
                     </div>
                     <div>To get started, click above and open a class session as an instructor.</div>
-                    <div className="App-intro">
-                        This is the background info.
-                </div>
                 </Link>
+                    <div className="App-intro">
+                        <h1>Welcome to Thumbs.</h1>
+                        <p>This is the background info.</p>
+                        <p>Here's how you use Thumbs.</p>
+                        <p>Blah, blah, blah.</p>
+                </div>
             </div>
 
 

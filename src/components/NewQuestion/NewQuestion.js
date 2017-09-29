@@ -30,18 +30,12 @@ class NewQuestion extends Component {
     }
 
     askButton3 = () => {
-        broadcastNewTeacherQuestion(this.props.newQuestionText)
+        broadcastNewTeacherQuestion({roomName: this.props.class_sessionID, questionText: this.props.newQuestionText})
         this.props.toggleDisplayNewQuestionBox();
-        this.props.displayNewTeacherQuestion(this.props.newQuestionText);
+        // this.props.displayNewTeacherQuestion(this.props.newQuestionText);
         // this.props.getQuestions();
     }
 
-    // recordQuestionText(e) {
-    //     console.log(e);
-    //     var currentQuestionText = {"currentQuestionText": e};
-    //     console.log(currentQuestionText)
-    //     return currentQuestionText
-    // }
 
     newQuestionBoxController() {
         // if (this.props.live === true) {
@@ -50,10 +44,8 @@ class NewQuestion extends Component {
             } else {
                 return (
                     <div className="new_question_container">
-                        <h3>New Question:</h3>
                         <div className="new_question_container_textarea_box">
-                        <textarea placeholder="Type your question." onChange={(e) => this.props.recordCurrentText(e.target.value, "newQuestionText")} required />
-                        {/* <textarea placeholder="Type your question." onChange={(e) => this.recordQuestionText(e.target.value)} required /> */}
+                        <textarea placeholder="On a scale of 1 to 5..." onChange={(e) => this.props.recordCurrentText(e.target.value, "newQuestionText")} required />
                         </div>
                         <div className="new_question_container_buttons_box">
                             <div><button id="cancel" onClick={() => this.props.toggleDisplayNewQuestionBox()}>Cancel</button></div>
@@ -86,7 +78,9 @@ function mapStateToProps(state) {
         newQuestionText: state.data.newQuestionText,
         displayNewQuestionBox: state.views.displayNewQuestionBox,
         socketQuestions: state.sockets.socketQuestions,
-        userIsInstructor: state.data.userIsInstructor
+        userIsInstructor: state.data.userIsInstructor,
+        instructorName: state.data.instructorName,
+        classTopic: state.data.classTopic
     }
 }
 

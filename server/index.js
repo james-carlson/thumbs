@@ -27,8 +27,9 @@ const app = express();
 
 const connectionInfo = process.env.DB_CONNECTIONSTRING
 
-var database = ''
+let database;
 massive(connectionInfo).then((db) => {
+    // console.log(db);rs
     database = db;
     app.set('db', db)
 })
@@ -145,50 +146,7 @@ var socketID = '';
 var classroom = '';
 var classrooms = [];
 var teacherSocketID = '';
-var roomCounts = { "roomNames": "counts" };
-var teachersAndRooms = {};
 var clientsInRoom = 0;
-var tempData = {
-    "rooms": [
-        {
-            "roomName": "",
-            "instructor": "",
-            "count": 0,
-            "questions": [{ answer: 0 }]
-        }
-
-    ],
-    "connectedUsers": []
-}
-var index = 0;
-
-var question =
-    [
-        {
-        question_id: 0,
-        "answers": [0],
-        "answersAvg": 0
-        }
-    ]
-
-var room = 
-    {
-    "roomName": "",
-    // "instructor": "",
-    // "count": 0,
-    // "questions": [question]
-    }
-
-var rooms = [room]
-
-function constructNewRoom(roomName) {
-    return (
-        [
-            {"roomName": roomName}
-        ]
-    )
-}
-
 
 
 io.on('connection', (serverside) => {
@@ -196,80 +154,56 @@ io.on('connection', (serverside) => {
     serverside.on('joinRoom', data => {
         console.log(data.userType + " requested to join room" + data.roomName + ". (socketID: " + serverside.id + ")")
 
-        // add to teacher/room list/object
-
         // Save socket ID
         socketID = serverside.id
-        // tempData.connectedUsers.push(socketID);
 
         // if user is student, get room name off of the URL
         if (data["userType"] === "student") {
             var refererSplit = serverside.request.headers.referer.split('/');
-            // console.log(refererSplit);
-
             roomName = refererSplit[refererSplit.length - 1]; //Room name is at the end of the path.
-            // console.log("Room requested: ", roomName);
-
-            // data.roomName = roomName;
-            // console.log("student roomName: ", data.roomName);
 
         } else if (data["userType"] === "instructor") {
             var teacherSocketID = socketID
             roomName = data["roomName"]
         }
 
-        // store room name
-
-            //check if room name is already stored
-
-            // console.log('handle room name inputs: ', rooms, roomName);
-            // for (let i = 0; i < rooms.length; i++){
-            //     if (rooms[i].roomName == roomName) {
-                    
-            //     }
-            // }
-
         // join room
         serverside.join(roomName);
-
-        
         io.to(roomName).emit('joinedRoom')
-        io.to(roomName).emit("giveRoomCount", {socketCount: io.sockets.adapter.rooms[roomName].length, roomName: roomName})
-        
-
-        // successful connection message
+        io.to(roomName).emit("giveRoomCount", { socketCount: io.sockets.adapter.rooms[roomName].length, roomName: roomName })
         console.log(serverside.id + " successfully joined room " + roomName);
-        // console.log(JSON.stringify(rooms))
     });
-    
+
     // emit updated count of people in room
-    serverside.on("getRoomCount", function() {
+    serverside.on("getRoomCount", function () {
         console.log('room count requested')
         if (roomName !== '') {
             if (io.sockets.adapter.rooms[roomName] !== undefined) {
-                clientsInRoom = io.sockets.adapter.rooms[roomName].length 
-                io.in(roomName).emit("giveRoomCount emitted", {socketCount: io.sockets.adapter.rooms[roomName].length, roomName: roomName})
+                clientsInRoom = io.sockets.adapter.rooms[roomName].length
+                io.to(roomName).emit("giveRoomCount emitted", { socketCount: io.sockets.adapter.rooms[roomName].length, roomName: roomName })
                 console.log("line 250:", roomName, "has", clientsInRoom);
             }
         }
     });
-    
+
     // IDEA: same endpoint (e.g. teacher New Question) but then it sees your user type and then behaves appropriately. so there's one action type and each is processed and fed out to whoever it should be.
     // Endpoints to catch both cases (e.g. teacher and student) in the front end.
 
     // TEACHER endpoints
     // go live
-    // database.queries.newClassSession(roomName, instructorName, classTopic)
-    // .then(data => res.status(200).send(res.data))
 
 
     // if userType is teacher:
     serverside.on('newTeacherQuestion', function (data) {
-        console.log("new teacher question emitted from client: " + serverside.id + "to room: " + roomName + "data: " + data);
-        // serverside.to(roomName).emit('addNewTeacherQuestion', (data))
-        io.in(roomName).emit('addNewTeacherQuestion', (data))
-    }
-    );
+        database.queries.newTeacherQuestion(data.roomName, data.questionText)
+            .then(res => {
+                // console.log(res)
+                // console.log("New Teacher saved to " + roomName + " with data: " + data))
+                    serverside.to(roomName).emit('addNewTeacherQuestion', (res[0]))
+                console.log("new teacher question emitted from client: " + serverside.id + " to room: " + roomName + " data: " + data);
+            })
+    })
+
 
     // STUDENT endpoints
     // if userType is student
@@ -284,22 +218,16 @@ io.on('connection', (serverside) => {
         console.log("Socket disconnected: " + serverside.id + "roomName: " + roomName)
         if (roomName !== '') {
             if (io.sockets.adapter.rooms[roomName] !== undefined) {
-                clientsInRoom = io.sockets.adapter.rooms[roomName].length 
-                io.in(roomName).emit("giveRoomCount", {socketCount: io.sockets.adapter.rooms[roomName].length, roomName: roomName})
+                clientsInRoom = io.sockets.adapter.rooms[roomName].length
+                io.to(roomName).emit("giveRoomCount", { socketCount: io.sockets.adapter.rooms[roomName].length, roomName: roomName })
                 console.log("line 250:", roomName, "has", clientsInRoom);
             }
-    }});
-
-
+        }
+    });
 
 
 })
 
-    // Do I need these? e.g. possibly connecting to database
-    // serverside.on('giveServerClassSessionId', function (data) {
-    //     classroom = data
-    //     console.log("given classRoom:" + data)
-    // })
 
 
 

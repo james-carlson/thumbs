@@ -16,6 +16,11 @@
     /* padding: 2rem; */
 }
 
+.answer_buttons {
+    display: flex;
+    flex-direction: row;
+}
+
 
 .list_box {
     box-shadow: .1rem .1rem .1rem rgba(0, 0, 0, 0.29), .1rem .1rem .3rem rgba(0, 0, 0, 0.27), -.1rem .1rem .3rem rgba(0, 0, 0, 0.27);

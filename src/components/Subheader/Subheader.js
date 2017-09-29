@@ -11,9 +11,6 @@ import StudentSubheader from '../Subheader/StudentSubheader';
 
 class Subheader extends Component {
     render() {
-        // const style = {
-        //     margin: 12,
-        // };
 
         var dynamicPortion;
         if (this.props.userIsInstructor === true) {

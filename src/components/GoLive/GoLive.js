@@ -20,7 +20,7 @@ class GoLive extends Component {
 
     displayStatus(props) {
         if (this.props.live === true) {
-            return <button onClick={() => this.props.endLive()}> END </button>
+            return <button onClick={() => this.props.endLive()}>END</button>
         } else {
             return <button onClick={() => this.handleGoLive()}>GO LIVE</button>
         }
@@ -28,7 +28,7 @@ class GoLive extends Component {
 
 
     render () {
-
+        // console.log(this.props);
         return (
             <div className="subheader_dynamic_portion_item">
             {this.displayStatus()}
