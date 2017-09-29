@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux'; 
+
 import reduxPromiseMiddleware from 'redux-promise-middleware';
 import thunk from 'redux-thunk';
 import view_reducer from './view_reducer';

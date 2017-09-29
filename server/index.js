@@ -29,7 +29,7 @@ const connectionInfo = process.env.DB_CONNECTIONSTRING
 
 let database;
 massive(connectionInfo).then((db) => {
-    // console.log(db);rs
+    // console.log(db);
     database = db;
     app.set('db', db)
 })
@@ -199,11 +199,27 @@ io.on('connection', (serverside) => {
             .then(res => {
                 // console.log(res)
                 // console.log("New Teacher saved to " + roomName + " with data: " + data))
-                    serverside.to(roomName).emit('addNewTeacherQuestion', (res[0]))
+                io.to(roomName).emit('addNewTeacherQuestion', (res[0]))
                 console.log("new teacher question emitted from client: " + serverside.id + " to room: " + roomName + " data: " + data);
             })
     })
 
+    serverside.on('newAnswer', function (data) {
+        var refererSplit = serverside.request.headers.referer.split('/');
+        roomName = refererSplit[refererSplit.length - 1];
+        console.log('newAnswer: ', JSON.stringify(data));
+        database.queries.newAnswer(data.questionid[0], data.responseVal)
+            .then(res => {
+                console.log("Calculating new average for question: ", res[0].question_id);
+                emit.to(roomName).emit("newQuestionScore", res[0].question_id);
+            })
+        });
+        //     database.queries.getQuestionScore(res[0].question_id)
+        //         .then(res2 => {
+        //             console.log("roomName: ", roomName, "averaged: ", res2[0].avg);
+        //             sendBack = res2[0].avg;
+        //         })
+        // })
 
     // STUDENT endpoints
     // if userType is student

@@ -3,27 +3,25 @@ import './Landing.css';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { generateRandomID, initializeUser, resetData } from '../../ducks/backend_reducer';
-import thumbs from './thumbs.svg';
-import {listenForSuccessfulSocketConnection, emitJoinRoom} from '../../services/handle_sockets';
 
 
 class Landing extends Component {
-    
+
     componentWillMount() {
         this.props.generateRandomID();
         // this.props.initializeUser('instructor');
     }
-    
+
     handleInitializeUser(props) {
         this.props.initializeUser();
     }
-    
+
     handleSocketListener(props) {
         if (props.class_sessionID !== null) {
-            
+
         }
     }
-    
+
     render() {
         return (
             <div>
@@ -37,18 +35,15 @@ class Landing extends Component {
                                 <div className="tagline">Accurate</div>
                                 <div className="tagline">Feedback</div>
                             </div>
-                        </div>
-                        <div>
-                            {/* <img src={thumbs} alt="logo" className="thumb" /> */}
+                        <div className="instructions">To get started, click above and open a class session as an instructor.</div>
                         </div>
                     </div>
-                    <div>To get started, click above and open a class session as an instructor.</div>
                 </Link>
-                    <div className="App-intro">
-                        <h1>Welcome to Thumbs.</h1>
-                        <p>This is the background info.</p>
-                        <p>Here's how you use Thumbs.</p>
-                        <p>Blah, blah, blah.</p>
+                <div className="App-intro">
+                    <span className="welcome_header">Welcome to Thumbs.</span>
+                    <p>Respond anonymously to teacher.</p>
+                    <p>Here's how you use Thumbs.</p>
+                    <p>Blah, blah, blah.</p>
                 </div>
             </div>
 

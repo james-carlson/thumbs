@@ -6,11 +6,6 @@ import './Actions.css';
 
 
 class Actions extends Component {
-    constructor(props) {
-        super(props)
-
-        // this.actionsDisplayControl = this.actionsDisplayControl.bind(this);
-    }
 
     actionsDisplayControl(props) {
         if (this.props.userIsInstructor === true) {

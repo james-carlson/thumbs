@@ -21,13 +21,12 @@
     flex-direction: row;
 }
 
-
 .list_box {
     box-shadow: .1rem .1rem .1rem rgba(0, 0, 0, 0.29), .1rem .1rem .3rem rgba(0, 0, 0, 0.27), -.1rem .1rem .3rem rgba(0, 0, 0, 0.27);
     border-radius: .3rem;
     width: 90%;
     margin-bottom: .25em;
     margin-top: .75rem;
-    padding-top: .5rem;
-    padding-bottom: .5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }

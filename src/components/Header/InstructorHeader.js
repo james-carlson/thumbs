@@ -8,7 +8,7 @@ class InstructorHeader extends Component {
 
     copyTextToClipboard(text) {
         var textArea = document.createElement("textarea");
-      
+
         //
         // *** This styling is an extra step which is likely not required. ***
         //
@@ -23,67 +23,67 @@ class InstructorHeader extends Component {
         // is visible whilst the popup box asking the user for permission for
         // the web page to copy to the clipboard.
         //
-      
+
         // Place in top-left corner of screen regardless of scroll position.
         textArea.style.position = 'fixed';
         textArea.style.top = 0;
         textArea.style.left = 0;
-      
+
         // Ensure it has a small width and height. Setting to 1px / 1em
         // doesn't work as this gives a negative w/h on some browsers.
         textArea.style.width = '2em';
         textArea.style.height = '2em';
-      
+
         // We don't need padding, reducing the size if it does flash render.
         textArea.style.padding = 0;
-      
+
         // Clean up any borders.
         textArea.style.border = 'none';
         textArea.style.outline = 'none';
         textArea.style.boxShadow = 'none';
-      
+
         // Avoid flash of white box if rendered for any reason.
         textArea.style.background = 'transparent';
-      
-      
+
+
         textArea.value = text;
-      
+
         document.body.appendChild(textArea);
-      
+
         textArea.select();
-      
+
         try {
-          var successful = document.execCommand('copy');
-          var msg = successful ? 'successful' : 'unsuccessful';
-          console.log('Copying text command was ' + msg);
+            var successful = document.execCommand('copy');
+            var msg = successful ? 'successful' : 'unsuccessful';
+            console.log('Copying text command was ' + msg);
         } catch (err) {
-          console.log('Oops, unable to copy');
+            console.log('Oops, unable to copy');
         }
-      
+
         document.body.removeChild(textArea);
-      }
-      
-    CopyLink() {
+    }
+
+    copyLink = () => {
         this.copyTextToClipboard(this.window.location.href);
     }
-    
+
     displayLiveController(props) {
         if (this.props.live === true) {
             return (
                 <div className="header_dynamic_portion_content">
                     <div>
-            <div className="header_dynamic_portion_content">Welcome, {this.props.instructorName}!</div>
-            <div className="header_dynamic_portion_content">Topic: {this.props.classTopic}</div>
+                        <div className="header_dynamic_portion_content">Welcome, {this.props.instructorName}!</div>
+                        <div className="header_dynamic_portion_content">Topic: {this.props.classTopic}</div>
+                    </div>
+                    <div>
+                        <div className="header_dynamic_portion_content_live">
+                            <div><div className="live_indicator"></div></div>LIVE!</div>
+                    </div>
+                    <div><button onClick={() => this.copyLink}>Copy URL</button></div>
+                    <div>
+                        <div className="header_dynamic_portion_content_end" onClick={this.props.endLive}>END</div>
+                    </div>
                 </div>
-                <div>
-            <div className="header_dynamic_portion_content_live">
-                <div><div className="live_indicator"></div></div>LIVE!</div>
-            </div>
-            <div><button onClick={this.CopyLink}>Copy URL</button></div>
-            <div>   
-            <div className="header_dynamic_portion_content_end" onClick={this.props.endLive}>END</div>
-            </div>
-            </div>
             )
         } else {
             return <div></div>
@@ -91,10 +91,10 @@ class InstructorHeader extends Component {
     }
 
     displayInstructorInfoController(props) {
-        
+
     }
 
-    
+
     render() {
         return (
             <div className="">

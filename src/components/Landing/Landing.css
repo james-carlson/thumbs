@@ -1,12 +1,5 @@
 .landing_header {
-    /* display: flex; */
-    /* position: absolute; */
-    /* min-height: 20rem; */
-    /* min-width: 20rem; */
-    /* background: #222222; */
-    /* text-align: center; */
     height: 60vh;
-
 }
 
 .landing_subheader {
@@ -16,16 +9,17 @@
 .landing_appName {
     font-family: "Open Sans", sans-serif;
     font-weight: 700;
-    font-size: 1.4rem;
+    font-size: 3.4vh;
     letter-spacing: .01rem; 
     color: #25aae1;
     padding-left: 3.5rem;
-    padding-top: 2.2rem;
+    padding-top: 4.5rem;
+    /* margin-bottom: 1.5rem; */
     /* transform: rotate(7deg); */
 }
 
 .tagline {
-    font-size: 1rem;
+    font-size: 3vh;
     color: #444444;
     /* transform: rotate(7deg); */
     padding-left: 3rem;
@@ -71,4 +65,30 @@
     color: #25aae1;
     /* left: 40px; */
     /* position: absolute; */
+}
+
+.welcome_header {
+    font-family: 'Open Sans';
+    font-weight: 200;
+    font-size: 1.8rem;
+    text-align: left;
+    padding-left: .5rem;
+    padding-bottom: 1rem;
+}
+
+instructions {
+    position: absolute;
+    bottom: 10px;
+    text-align: center;
+}
+
+p {
+    font-family: Hind;
+    font-weight: 200;
+    font-size: 1rem;
+    text-align: left;
+    padding-left: .5rem;
+    padding-right: .5rem;
+    /* padding-top: 0; */
+    /* padding-bottom: .5rem; */
 }

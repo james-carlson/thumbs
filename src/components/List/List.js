@@ -22,7 +22,7 @@ class List extends Component {
         } else {
             return (this.props.socketQuestions.map((questions, i) => (
                 <div className="list_box" key={i}>
-                { this.props.userIsInstructor ? "" : "On a scale from 1 to 5," }  
+                {/* { this.props.userIsInstructor ? "" : "On a scale from 1 to 5," }   */}
                     <div>{questions}</div>
                 { this.props.userIsInstructor ? this.displayQuestionAnswers() :
                  <StudentAnswerOptions 

@@ -82,6 +82,10 @@ export function emitAnswer(data) {
     clientside.emit("newAnswer", data)
 }
 
+export function listenForNewQuestionScore(data) {
+    clientside.on('newQuestionScore', console.log(data))
+    console.log(data);
+}
 // CAN I COMBINE ALL LISTENING FUNCTIONS?
 // export function masterListener(data, cb, userType) {
 //     clientside.on('connectionDetected', function () {

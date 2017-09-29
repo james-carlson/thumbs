@@ -10,30 +10,9 @@ import { displayNewTeacherQuestion } from '../../ducks/sockets_reducer';
 
 class NewQuestion extends Component {
 
-    askButton(e) {
-        console.log('record new question:');
-        this.props.recordNewQuestion(this.props.newQuestionText, this.props.class_sessionID);
-        console.log('toggling display');
+    askButton = () => {
+        broadcastNewTeacherQuestion({roomName: this.props.class_sessionID, questionText: this.props.newQuestionText});
         this.props.toggleDisplayNewQuestionBox();
-        console.log('getting questions');
-        this.props.getQuestions();
-    }
-
-    askButton2(e) {
-        console.log('record new question:');
-        this.props.newTeacherQuestion(this.props.newQuestionText)
-        // this.props.recordNewQuestion(this.props.newQuestionText, this.props.class_sessionID);
-        // console.log('toggling display');
-        this.props.toggleDisplayNewQuestionBox();
-        console.log('getting questions');
-        // this.props.getQuestions();
-    }
-
-    askButton3 = () => {
-        broadcastNewTeacherQuestion({roomName: this.props.class_sessionID, questionText: this.props.newQuestionText})
-        this.props.toggleDisplayNewQuestionBox();
-        // this.props.displayNewTeacherQuestion(this.props.newQuestionText);
-        // this.props.getQuestions();
     }
 
 
@@ -49,7 +28,7 @@ class NewQuestion extends Component {
                         </div>
                         <div className="new_question_container_buttons_box">
                             <div><button id="cancel" onClick={() => this.props.toggleDisplayNewQuestionBox()}>Cancel</button></div>
-                            <div><button id="ask" onClick={this.askButton3}>Ask</button></div>
+                            <div><button id="ask" onClick={this.askButton}>Ask</button></div>
                         </div>
                     </div>
                 )

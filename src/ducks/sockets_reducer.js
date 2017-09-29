@@ -2,7 +2,7 @@
 
 // SOCKETS
 const UPDATE_SOCKET_COUNT = "UPDATE_SOCKET_COUNT"
-const NEW_TEACHER_QUESTION = "NEW_TEACHER_QUESTION"
+// const NEW_TEACHER_QUESTION = "NEW_TEACHER_QUESTION"
 const DISPLAY_NEW_TEACHER_QUESTION = "DISPLAY_NEW_TEACHER_QUESTION"
 // const SUBSCRIBE_TO_CLASSROOM_PENDING = "SUBSCRIBE_TO_CLASSROOM_PENDING"
 // const SUBSCRIBE_TO_CLASSROOM_FULFILLED = "SUBSCRIBE_TO_CLASSROOM_FULFILLED"
@@ -22,12 +22,6 @@ const initialState = {
 export default function reducer(state = initialState, action) {
     // console.log("REDUCER HIT: " + JSON.stringify(action));
     switch (action.type) {
-        // case SUBSCRIBE_TO_CLASSROOM:
-        //     console.log("USER SUBSCRIBED TO CLASSROOM", state.studentsPresent, ++state.studentsPresent);
-        //     return Object.assign({}, state, {studentsPresent: ++state.studentsPresent});
-        // case LEAVE_CLASSROOM:
-        //     console.log("USER LEFT CLASSROOM", state.studentsPresent, --state.studentsPresent)
-        //     return Object.assign({}, state, {studentsPresent: --state.studentsPresent});
         case UPDATE_SOCKET_COUNT:
             console.log("UPDATE_SOCKET_COUNT", action.payload);
             return Object.assign({}, state, {studentsPresent: action.payload, roomName: action.roomName});
@@ -67,7 +61,7 @@ export function newTeacherQuestion(questionText) {
 export function displayNewTeacherQuestion(data) {
     // console.log("reducer: displayNewTeacherQuestion hit", questionText);
     // debugger
-    console.log(data)
+    console.log(JSON.stringify(data));
     return {
         type: DISPLAY_NEW_TEACHER_QUESTION,
         payload: data
