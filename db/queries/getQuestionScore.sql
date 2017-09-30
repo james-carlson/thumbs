@@ -1,4 +1,3 @@
 SELECT AVG(response)
 FROM student_responses
-WHERE question_id = $1
-RETURNING AVG(response);
+WHERE question_id = ($1);

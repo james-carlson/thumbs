@@ -14,7 +14,7 @@ import {
 } from '../../services/handle_sockets';
 import { connect } from 'react-redux';
 import { getQuestions, getLive } from '../../ducks/backend_reducer';
-import { updateSocketCount, displayNewTeacherQuestion } from '../../ducks/sockets_reducer';
+import { updateSocketCount, displayNewTeacherQuestion, updateQuestionAverage } from '../../ducks/sockets_reducer';
 import './Classroom.css';
 // import io from 'socket.io-client';
 
@@ -31,7 +31,7 @@ class Classroom extends Component {
         listenForUpdateSocketCount(this.props.updateSocketCount);
         listenForGiveRoomCount(this.props.updateSocketCount);
         listenForNewQuestion(this.props.displayNewTeacherQuestion);
-        listenForNewQuestionScore();
+        listenForNewQuestionScore(this.props.updateQuestionAverage);
         if (this.props.userIsInstructor) {
             listenForSuccessfulSocketConnection("instructor", this.props.class_sessionID)
         } else {
@@ -48,7 +48,7 @@ class Classroom extends Component {
     }
 
     numQuestions(props) {
-        
+
         if (this.props.socketQuestions.length < 1) {
             return " No questions yet."
         } else if (this.props.socketQuestions.length === 1) {
@@ -58,6 +58,29 @@ class Classroom extends Component {
         }
 
     }
+
+    studentMessageController(props) {
+        if (!this.props.userIsInstructor) {
+            if (this.props.socketQuestions.length < 1) {
+                return (
+                    <div className="welcome_content">
+                        <p><b>What's Thumbs?</b><br />
+                            Thumbs is a companion environment to the classroom, where students can answer questions anonymously.</p>
+
+                        <p><b>What's wrong with our physical thumbs and regular questions?</b><br />
+                            Nothing! Except you lie sometimes.</p>
+
+                        <p><b>What?!</b><br />
+                            Remember that one time you didn't really understand yet, but when the instructors asked for "thumbs," you gave a solid thumbs up anyway? (Don't worry, we've all done it.) Thumbs lets everyone win -- you can save a little face, and your instructors get a better idea of what's going on.</p>
+                    </div>
+                )
+
+            }
+        }
+
+    }
+
+
 
     render() {
         // console.log(this.props);
@@ -77,6 +100,7 @@ class Classroom extends Component {
                 <div><NewQuestion /></div>
                 <div><List /></div>
                 <div className="classroom">
+                    {this.studentMessageController()}
                 </div>
             </div>
 
@@ -101,7 +125,7 @@ function mapStateToProps(state) {
         class_sessionID: state.data.class_sessionID,
         studentsPresent: state.sockets.studentsPresent,
         socketQuestions: state.sockets.socketQuestions,
-        userIsInstructor: state.data.userIsInstructor
+        userIsInstructor: state.data.userIsInstructor,
     }
 }
 
@@ -111,5 +135,5 @@ function mapStateToProps(state) {
 //     }
 // }
 
-export default connect(mapStateToProps, { getQuestions, getLive, updateSocketCount, displayNewTeacherQuestion })(Classroom);
+export default connect(mapStateToProps, { getQuestions, getLive, updateSocketCount, displayNewTeacherQuestion, updateQuestionAverage })(Classroom);
 // export default connect(mapStateToProps, { getQuestions })(Classroom);

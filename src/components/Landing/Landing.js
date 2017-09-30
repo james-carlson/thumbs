@@ -35,15 +35,18 @@ class Landing extends Component {
                                 <div className="tagline">Accurate</div>
                                 <div className="tagline">Feedback</div>
                             </div>
-                        <div className="instructions">To get started, click above and open a class session as an instructor.</div>
                         </div>
+                        <div className="landing_instructions">To get started, click above and open a class session as an instructor.</div>
                     </div>
                 </Link>
-                <div className="App-intro">
+                <div className="landing_main">
                     <span className="welcome_header">Welcome to Thumbs.</span>
-                    <p>Respond anonymously to teacher.</p>
-                    <p>Here's how you use Thumbs.</p>
-                    <p>Blah, blah, blah.</p>
+                    <div className="welcome_content">
+                        <p><b>What is Thumbs?</b><br />
+                            Thumbs lets you know what students (or others) are <i>really</i> thinking, in real-time.</p>
+                        <p><b>How does it work?</b><br />
+                            Click on the logo above, and fill out the information about your session of Thumbs. Then click "Go Live", send the URL out, and people will be able to connect to your session. You'll be able to send questions and see responses in real-time.</p>
+                    </div>
                 </div>
             </div>
 

@@ -207,19 +207,18 @@ io.on('connection', (serverside) => {
     serverside.on('newAnswer', function (data) {
         var refererSplit = serverside.request.headers.referer.split('/');
         roomName = refererSplit[refererSplit.length - 1];
+        var questionNum;
         console.log('newAnswer: ', JSON.stringify(data));
-        database.queries.newAnswer(data.questionid[0], data.responseVal)
+        database.queries.newAnswer(data.questionid, data.responseVal)
             .then(res => {
-                console.log("Calculating new average for question: ", res[0].question_id);
-                emit.to(roomName).emit("newQuestionScore", res[0].question_id);
+                    database.queries.getQuestionScore(data.questionid)
+                        .then(res => {
+                            console.log("roomName: ", roomName, "averaged: ", res[0].avg);
+                            serverside.to(roomName).emit("newQuestionScore", {questionid: data.questionid, avg:res[0].avg});
+                            // sendBack = res2[0].avg;
+                        })
             })
         });
-        //     database.queries.getQuestionScore(res[0].question_id)
-        //         .then(res2 => {
-        //             console.log("roomName: ", roomName, "averaged: ", res2[0].avg);
-        //             sendBack = res2[0].avg;
-        //         })
-        // })
 
     // STUDENT endpoints
     // if userType is student

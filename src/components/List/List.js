@@ -11,24 +11,25 @@ import StudentAnswerOptions from '../StudentAnswerOptions/StudentAnswerOptions';
 class List extends Component {
 
 
-    displayQuestionAnswers(){
-        return <div>ANSWERS</div> 
+    displayQuestionAnswers(id){
+        return <div>{this.props.questionAverages[id]}</div> 
     }
 
     displayController() {
-        // console.log("display controller invoked");
+        console.log("questionAverages: ", this.props.questionAverages);
+        console.log("socketQuestions: ", this.props.socketQuestions);
         if (this.props.socketQuestions.length === 0) {
             return <div className="no_data_to_list">New questions will appear here.</div>
         } else {
-            return (this.props.socketQuestions.map((questions, i) => (
-                <div className="list_box" key={i}>
+            return (this.props.socketQuestions.map((question, i) => (
+                <div className="list_box" key={question.id}>
                 {/* { this.props.userIsInstructor ? "" : "On a scale from 1 to 5," }   */}
-                    <div>{questions}</div>
-                { this.props.userIsInstructor ? this.displayQuestionAnswers() :
+                    <div>{question.questiontext}</div>
+                { this.props.userIsInstructor ? this.displayQuestionAnswers(question.id) :
                  <StudentAnswerOptions 
                  userIsInstructor={false} 
                  socketQuestions={this.props.socketQuestions} 
-                 db_q_id={this.props.db_q_id} /> }
+                 questionid={question.id} /> }
                 </div>)))
         }
 
@@ -58,7 +59,8 @@ function mapStateToProps(state) {
         socketQuestions: state.sockets.socketQuestions,
         newQuestionText: state.data.newQuestionText,
         userIsInstructor: state.data.userIsInstructor,
-        db_q_id: state.sockets.db_q_id
+        db_q_id: state.sockets.db_q_id,
+        questionAverages: state.sockets.questionAverages
     }
 }
 

@@ -12,10 +12,10 @@ export default class StudentAnswerOptions extends Component {
     }
 
     handleAnswerSubmission(response) {
-        console.log(this.props.db_q_id)
-        console.log(this.props.socketQuestions)
+        // console.log(this.props.questionid);
+        // console.log(this.props.socketQuestions)
         console.log(response)
-        emitAnswer({questionid: this.props.db_q_id, responseVal: response})
+        emitAnswer({questionid: this.props.questionid, responseVal: response})
         this.setState({ 
             answerSubmitted: true,
             answers: [...this.state.answers, response] 
@@ -23,29 +23,22 @@ export default class StudentAnswerOptions extends Component {
     }
 
     render() {
-        // const answerArr = [1, 2, 3, 4, 5]
+        const answerArr = [1, 2, 3, 4, 5]
 
         return (
             <div>
                 {!this.state.answerSubmitted
-                    ?
-                    <div className="answer_buttons">
-                        <button onClick={() => this.handleAnswerSubmission(1)}>1</button>
-                        <button onClick={() => this.handleAnswerSubmission(2)}>2</button>
-                        <button onClick={() => this.handleAnswerSubmission(3)}>3</button>
-                        <button onClick={() => this.handleAnswerSubmission(4)}>4</button>
-                        <button onClick={() => this.handleAnswerSubmission(5)}>5</button>
+                    ? <div className="answer_buttons">
+                        { answerArr.map(buttonVal => 
+                            <button key={buttonVal} onClick={() => this.handleAnswerSubmission(buttonVal)}>
+                             {buttonVal}
+                         </button>)
+                        }
                     </div>
                     : ''
                 }
             </div>
 
-                // {/* {   
-                // answerArr.map((buttonDisplay, buttonVal)  =>
-                //         <button key={buttonVal} onClick={() => this.handleAnswerSubmission(buttonVal)}>
-                //             {buttonVal}
-                //         </button>)
-                // } */}
         );
     }
 }

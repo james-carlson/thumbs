@@ -9,6 +9,9 @@
     /* padding: 5% 5% 5% 5%; */
     /* position: relative; */
     z-index: 4;
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
     /* border: .1rem solid #CCCCCC; */
     /* margin: 1.5rem; */
     /* padding: 1.2rem; */

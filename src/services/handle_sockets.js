@@ -79,13 +79,14 @@ export function broadcastNewTeacherQuestion(data) {
 };
 
 export function emitAnswer(data) {
+    console.log(data);
     clientside.emit("newAnswer", data)
 }
 
-export function listenForNewQuestionScore(data) {
-    clientside.on('newQuestionScore', console.log(data))
-    console.log(data);
-}
+export function listenForNewQuestionScore(cb) {
+    clientside.on('newQuestionScore', (data) => {
+    cb(data)})
+};
 // CAN I COMBINE ALL LISTENING FUNCTIONS?
 // export function masterListener(data, cb, userType) {
 //     clientside.on('connectionDetected', function () {

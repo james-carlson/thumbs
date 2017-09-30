@@ -62,9 +62,10 @@ class InstructorHeader extends Component {
 
         document.body.removeChild(textArea);
     }
-
+    
     copyLink = () => {
-        this.copyTextToClipboard(this.window.location.href);
+        this.copyTextToClipboard(window.location.href);
+        window.open(window.location.href)
     }
 
     displayLiveController(props) {
@@ -79,7 +80,7 @@ class InstructorHeader extends Component {
                         <div className="header_dynamic_portion_content_live">
                             <div><div className="live_indicator"></div></div>LIVE!</div>
                     </div>
-                    <div><button onClick={() => this.copyLink}>Copy URL</button></div>
+                    <div><button onClick={this.copyLink}>Copy URL</button></div>
                     <div>
                         <div className="header_dynamic_portion_content_end" onClick={this.props.endLive}>END</div>
                     </div>
@@ -100,57 +101,6 @@ class InstructorHeader extends Component {
             <div className="">
                 {this.displayLiveController()}
             </div>
-            // <div className="dynamicPortion_container">
-            //      <div className="dynamicPortion_item">
-            //      <input placeholder={"What's your name, instructor?"} />
-
-
-            //          {/* <MuiThemeProvider>
-            //              <TextField
-            //                  width="30%"
-            //                  hintText="Instructor"
-            //                  autoFocus="true"
-            //                  floatingLabelStyle={{
-            //                      height: '45px',
-            //                      paddingTop: '0px',
-            //                      margin: '0px'
-            //                  }}
-            //                  style={{
-            //                      width: '100%',
-            //                      margin: '0px',
-            //                      border: '2px solid #25aae1;',
-            //                      backgroundColor: '#fff',
-            //                      fontSize: '.7rem',
-            //                      lineHeight: '.7rem',
-            //                  }}
-            //                  underlineFocusStyle={{
-            //                      color: '#25aae1',
-            //                  }}
-            //              />
-            //          </MuiThemeProvider> */}
-            //      </div>
-            //      <div className="dynamicPortion_item">
-            //      <input placeholder={"Today's class is about ..."} />
-            //          {/* <MuiThemeProvider>
-            //              <TextField
-            //                  width="30%"
-            //                  hintText=""
-            //                  floatingLabelText="Today's class is about ..."
-            //                  style={{
-            //                      width: '100%',
-            //                      margin: '0',
-            //                      border: '2px solid #25aae1;',
-            //                      backgroundColor: '#fff',
-            //                  }}
-            //              />
-            //          </MuiThemeProvider> */}
-            //      </div>
-            //      <div className="dynamicPortion_item">
-            //          <button onClick={() => this.props.goLive(this.props.class_sessionID)}>GO LIVE</button>
-            //          <button> END </button>
-            //      </div>
-            //  </div>
-            // </div>
         );
     }
 }
