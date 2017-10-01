@@ -8,7 +8,7 @@ const RECORD_CURRENT_TEXT = "RECORD_CURRENT_TEXT"
 const RECORD_NEW_QUESTION = "RECORD_NEW_QUESTION"
 const RECORD_NEW_QUESTION_PENDING = "RECORD_NEW_QUESTION_PENDING"
 const RECORD_NEW_QUESTION_FULFILLED = "RECORD_NEW_QUESTION_FULFILLED"
-const GET_QUESTIONS = "GET_QUESTIONS"
+// const GET_QUESTIONS = "GET_QUESTIONS"
 const GET_QUESTIONS_PENDING = "GET_QUESTIONS_PENDING"
 const GET_QUESTIONS_FULFILLED = "GET_QUESTIONS_FULFILLED"
 const CREATE_NEW_CLASS_SESSION_ID = "CREATE_NEW_CLASS_SESSION_ID"
@@ -104,20 +104,20 @@ export function recordCurrentText(value, stateproperty) {
         }
 }
 
-export function getQuestions(userType) {
-    if (userType === 'instructor') {
-        return {
-            type: GET_QUESTIONS,
-            payload: handler.getQuestions('instructor')
-        }
-    } else {
-        return {
-            type: GET_QUESTIONS,
-            payload: handler.getQuestions()
-        }
-    }
+// export function getQuestions(userType) {
+//     if (userType === 'instructor') {
+//         return {
+//             type: GET_QUESTIONS,
+//             payload: handler.getQuestions('instructor')
+//         }
+//     } else {
+//         return {
+//             type: GET_QUESTIONS,
+//             payload: handler.getQuestions()
+//         }
+//     }
 
-}
+// }
 
 export function generateRandomID() {
         return {

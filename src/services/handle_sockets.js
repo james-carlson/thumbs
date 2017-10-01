@@ -62,6 +62,8 @@ export function listenForNewQuestion(cb) {
     });
 }
 
+
+
 export function listenForUpdateSocketCount(cb) {
     clientside.on("updateSocketCount", function (data) {
         console.log("Somebody joined " + data.socketCount);
@@ -78,6 +80,10 @@ export function broadcastNewTeacherQuestion(data) {
     clientside.emit("newTeacherQuestion", data)
 };
 
+export function broadcastNewStudentQuestion(data) {
+    clientside.emit("newStudentQuestion", data)
+};
+
 export function emitAnswer(data) {
     console.log(data);
     clientside.emit("newAnswer", data)
@@ -87,6 +93,13 @@ export function listenForNewQuestionScore(cb) {
     clientside.on('newQuestionScore', (data) => {
     cb(data)})
 };
+
+export function listenForNewStudentQuestions(cb) {
+    clientside.on('addNewStudentQuestion', (data) => {
+        console.log('new student question received', data)
+    cb(data)})
+};
+
 // CAN I COMBINE ALL LISTENING FUNCTIONS?
 // export function masterListener(data, cb, userType) {
 //     clientside.on('connectionDetected', function () {

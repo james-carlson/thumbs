@@ -2,6 +2,7 @@
 // const ASK_NEW_TEACHER_QUESTION = "ASK_NEW_TEACHER_QUESTION"
 // const ASK_NEW_STUDENT_QUESTION = "ASK_NEW_STUDENT_QUESTION"
 const DISPLAY_NEW_QUESTION_BOX = "DISPLAY_NEW_QUESTION_BOX"
+const TOGGLE_STUDENT_QUESTIONS = "TOGGLE_STUDENT_QUESTIONS"
 const VIEW_STUDENT_QUESTIONS = "VIEW_STUDENT_QUESTIONS"
 const VIEW_QUESTION_RESPONSES = "VIEW_QUESTION_RESPONSES"
 const VIEW_INITIAL = "VIEW_INITIAL"
@@ -9,15 +10,16 @@ const VIEW_INITIAL = "VIEW_INITIAL"
 
 const initialState = { 
     currentView: 'initial',
-    displayNewQuestionBox: false
+    displayNewQuestionBox: false,
+    displayStudentQuestions: false
 };
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case DISPLAY_NEW_QUESTION_BOX:
             return Object.assign({}, state, {currentView: 'teacherNewQuestion', displayNewQuestionBox: !state.displayNewQuestionBox });
-        // case ASK_NEW_STUDENT_QUESTION:
-        //     return Object.assign({}, state, {currentView: 'studentNewQuestion' });
+        case TOGGLE_STUDENT_QUESTIONS:
+            return {...state, displayStudentQuestions: !state.displayStudentQuestions};
         case VIEW_STUDENT_QUESTIONS:
             return Object.assign({}, state, {currentView: 'allStudentQuestions' });
         case VIEW_QUESTION_RESPONSES:
@@ -31,6 +33,10 @@ export default function reducer(state = initialState, action) {
 
 export function toggleDisplayNewQuestionBox() {
     return { type: DISPLAY_NEW_QUESTION_BOX }
+}
+
+export function toggleStudentQuestionsDisplay() {
+    return { type: TOGGLE_STUDENT_QUESTIONS }
 }
 
 // export function studentNewQuestion() {

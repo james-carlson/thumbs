@@ -6,29 +6,52 @@ import { connect } from 'react-redux';
 import { displayNewTeacherQuestion } from '../../ducks/sockets_reducer'
 // import { listenForNewQuestion } from '../../services/handle_sockets';
 import StudentAnswerOptions from '../StudentAnswerOptions/StudentAnswerOptions';
-
+import Gauge from '../../components/Gauge/Gauge';
 
 class List extends Component {
 
 
     displayQuestionAnswers(id){
-        return <div>{this.props.questionAverages[id]}</div> 
+        return <div>
+            {this.props.questionAverages[id]}
+            <Gauge id={id} avg={this.props.questionAverages[id]}/>
+        </div> 
+
     }
 
-    displayController() {
-        console.log("questionAverages: ", this.props.questionAverages);
-        console.log("socketQuestions: ", this.props.socketQuestions);
-        if (this.props.socketQuestions.length === 0) {
+    studentQuestionsDisplayController() {
+        if (this.props.studentQuestions.length === 0) {
             return <div className="no_data_to_list">New questions will appear here.</div>
         } else {
-            return (this.props.socketQuestions.map((question, i) => (
+            return (this.props.studentQuestions.map((question, i) => (
+                <div className="list_box" key={question.id}>
+                    <div>{question.questiontext}</div>
+
+                {/* 
+                if functionality to talk back to students is desired, here's is where it would happen: 
+                { this.props.userIsInstructor ? this.displayQuestionAnswers(question.id) :
+                 <StudentAnswerOptions 
+                 userIsInstructor={false} 
+                 teacherQuestions={this.props.teacherQuestions} 
+                 questionid={question.id} /> } */}
+                </div>)))
+        }
+    }
+
+    teacherQuestionsDisplayController() {
+        console.log("questionAverages: ", this.props.questionAverages);
+        console.log("teacherQuestions: ", this.props.teacherQuestions);
+        if (this.props.teacherQuestions.length === 0) {
+            return <div className="no_data_to_list">New questions will appear here.</div>
+        } else {
+            return (this.props.teacherQuestions.map((question, i) => (
                 <div className="list_box" key={question.id}>
                 {/* { this.props.userIsInstructor ? "" : "On a scale from 1 to 5," }   */}
                     <div>{question.questiontext}</div>
                 { this.props.userIsInstructor ? this.displayQuestionAnswers(question.id) :
                  <StudentAnswerOptions 
                  userIsInstructor={false} 
-                 socketQuestions={this.props.socketQuestions} 
+                 teacherQuestions={this.props.teacherQuestions} 
                  questionid={question.id} /> }
                 </div>)))
         }
@@ -42,7 +65,7 @@ class List extends Component {
         // console.log(this.props);
         return (
             <div className="list_spacer">
-                {this.displayController()}
+                {this.props.displayStudentQuestions ? this.studentQuestionsDisplayController() : this.teacherQuestionsDisplayController()}
                 </div>
         );
     }
@@ -53,14 +76,15 @@ function mapStateToProps(state) {
     return {
         class_sessionID: state.data.class_sessionID,
         db_session_id: state.data.db_session_id,
-        questions: state.data.questions,
         loading: state.data.loading,
         live: state.data.live,
-        socketQuestions: state.sockets.socketQuestions,
+        teacherQuestions: state.sockets.teacherQuestions,
+        studentQuestions: state.sockets.studentQuestions,
         newQuestionText: state.data.newQuestionText,
         userIsInstructor: state.data.userIsInstructor,
         db_q_id: state.sockets.db_q_id,
-        questionAverages: state.sockets.questionAverages
+        questionAverages: state.sockets.questionAverages,
+        displayStudentQuestions: state.views.displayStudentQuestions
     }
 }
 

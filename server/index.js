@@ -199,10 +199,22 @@ io.on('connection', (serverside) => {
             .then(res => {
                 // console.log(res)
                 // console.log("New Teacher saved to " + roomName + " with data: " + data))
-                io.to(roomName).emit('addNewTeacherQuestion', (res[0]))
+                io.in(data.roomName).emit('addNewTeacherQuestion', (res[0]))
                 console.log("new teacher question emitted from client: " + serverside.id + " to room: " + roomName + " data: " + data);
             })
     })
+
+
+    serverside.on('newStudentQuestion', function (data) {
+        var refererSplit = serverside.request.headers.referer.split('/');
+        roomName = refererSplit[refererSplit.length - 1];
+        database.queries.newStudentQuestion(roomName, data.questionText)
+            .then(res => {
+                io.in(roomName).emit('addNewStudentQuestion', (res[0]))
+                console.log("new student question emitted from client: " + serverside.id + " to room: " + roomName + " data: " + data.questionText);
+            })
+    })
+
 
     serverside.on('newAnswer', function (data) {
         var refererSplit = serverside.request.headers.referer.split('/');

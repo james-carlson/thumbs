@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // import { goLive } from '../../ducks/backend_reducer';
-import { toggleDisplayNewQuestionBox } from '../../ducks/view_reducer';
+import { toggleDisplayNewQuestionBox, toggleStudentQuestionsDisplay } from '../../ducks/view_reducer';
 import './Actions.css';
 
 
@@ -12,8 +12,8 @@ class Actions extends Component {
                 return (
                     <div className="subheader_dynamic_portion_item ">
                         <div className="action_button_wrapper">
-                            <button onClick={() => this.props.toggleDisplayNewQuestionBox()}>Ask A Question</button>
-                            <button onClick={() => this.props.getQuestions(this.props.userType, 'student')}>See Student Questions</button>
+                            <button onClick={this.props.toggleDisplayNewQuestionBox}>Ask A Question</button>
+                            <button onClick={this.props.toggleStudentQuestionsDisplay}>See Student Questions</button>
                         </div>
                     </div>
                 )
@@ -47,4 +47,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { toggleDisplayNewQuestionBox })(Actions);
+export default connect(mapStateToProps, { toggleDisplayNewQuestionBox, toggleStudentQuestionsDisplay })(Actions);

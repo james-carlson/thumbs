@@ -4,21 +4,17 @@
 const UPDATE_SOCKET_COUNT = "UPDATE_SOCKET_COUNT"
 const UPDATE_QUESTION_AVERAGE = "UPDATE_QUESTION_AVERAGE"
 const DISPLAY_NEW_TEACHER_QUESTION = "DISPLAY_NEW_TEACHER_QUESTION"
-// const NEW_TEACHER_QUESTION = "NEW_TEACHER_QUESTION"
-// const SUBSCRIBE_TO_CLASSROOM_PENDING = "SUBSCRIBE_TO_CLASSROOM_PENDING"
-// const SUBSCRIBE_TO_CLASSROOM_FULFILLED = "SUBSCRIBE_TO_CLASSROOM_FULFILLED"
-// const RECEIVE_TIMESTAMP = "RECEIVE_TIMESTAMP"
-// const VIEW_QUESTION_RESPONSES = "VIEW_QUESTION_RESPONSES"
-// const HANDLE_NEW_SOCKET_CONNECTION = "HANDLE_NEW_SOCKET_CONNECTION"
+const ADD_STUDENT_QUESTIONS = "ADD_STUDENT_QUESTIONS"
+
 
 const initialState = { 
     studentsPresent: 0,
-    socketQuestions: [],
     teacherQuestions: [],
     studentQuestions: [],
     db_q_id: [],
     roomName: '',
-    questionAverages: {}
+    questionAverages: {},
+    unseenQuestions: false
 };
 
 export default function reducer(state = initialState, action) {
@@ -30,10 +26,13 @@ export default function reducer(state = initialState, action) {
         case UPDATE_QUESTION_AVERAGE:
             console.log("UPDATE_QUESTION_AVERAGE", action.payload);
             return {...state, questionAverages: {...state.questionAverages, [action.payload.questionid]:action.payload.avg } }
+        case ADD_STUDENT_QUESTIONS:
+            console.log("ADD_STUDENT_QUESTIONS", action.payload);
+            return {...state, studentQuestions: [action.payload, ...state.studentQuestions], unseenQuestions: true }
         case DISPLAY_NEW_TEACHER_QUESTION:
             console.log(action.type, action.payload);
             return {...state, 
-                socketQuestions: [...state.socketQuestions, action.payload],
+                teacherQuestions: [action.payload, ...state.teacherQuestions],
                 db_q_id: [...state.db_q_id, action.payload.id]
                     }
             
@@ -75,6 +74,14 @@ export function updateQuestionAverage(data) {
     console.log(JSON.stringify(data));
     return {
         type: UPDATE_QUESTION_AVERAGE,
+        payload: data
+    }
+}
+
+export function addNewStudentQuestion(data) {
+    console.log(JSON.stringify(data));
+    return {
+        type: ADD_STUDENT_QUESTIONS,
         payload: data
     }
 }

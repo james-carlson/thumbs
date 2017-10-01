@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import GoLive from '../GoLive/GoLive';
 import Actions from '../Actions/Actions';
 import { connect } from 'react-redux';
-import { recordCurrentText, recordNewQuestion, getQuestions } from '../../ducks/backend_reducer';
+import { recordCurrentText, recordNewQuestion } from '../../ducks/backend_reducer';
 
 class InstructorSubheader extends Component {
 
@@ -44,4 +44,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { recordCurrentText, recordNewQuestion, getQuestions })(InstructorSubheader);
+export default connect(mapStateToProps, { recordCurrentText, recordNewQuestion })(InstructorSubheader);

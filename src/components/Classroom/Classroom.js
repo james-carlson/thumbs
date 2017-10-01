@@ -10,11 +10,12 @@ import {
     listenForGiveRoomCount,
     listenForSuccessfulSocketConnection,
     emitGetRoomCount,
+    listenForNewStudentQuestions,
     listenForNewQuestionScore
 } from '../../services/handle_sockets';
 import { connect } from 'react-redux';
-import { getQuestions, getLive } from '../../ducks/backend_reducer';
-import { updateSocketCount, displayNewTeacherQuestion, updateQuestionAverage } from '../../ducks/sockets_reducer';
+import { getLive } from '../../ducks/backend_reducer';
+import { updateSocketCount, displayNewTeacherQuestion, updateQuestionAverage, addNewStudentQuestion } from '../../ducks/sockets_reducer';
 import './Classroom.css';
 // import io from 'socket.io-client';
 
@@ -34,6 +35,7 @@ class Classroom extends Component {
         listenForNewQuestionScore(this.props.updateQuestionAverage);
         if (this.props.userIsInstructor) {
             listenForSuccessfulSocketConnection("instructor", this.props.class_sessionID)
+            listenForNewStudentQuestions(this.props.addNewStudentQuestion)
         } else {
             listenForSuccessfulSocketConnection("student", this.props.class_sessionID)
         }
@@ -49,19 +51,19 @@ class Classroom extends Component {
 
     numQuestions(props) {
 
-        if (this.props.socketQuestions.length < 1) {
+        if (this.props.teacherQuestions.length < 1) {
             return " No questions yet."
-        } else if (this.props.socketQuestions.length === 1) {
+        } else if (this.props.teacherQuestions.length === 1) {
             return " 1 question so far."
         } else {
-            return " " + (this.props.socketQuestions.length) + " questions so far."
+            return " " + (this.props.teacherQuestions.length) + " questions so far."
         }
 
     }
 
     studentMessageController(props) {
         if (!this.props.userIsInstructor) {
-            if (this.props.socketQuestions.length < 1) {
+            if (this.props.teacherQuestions.length < 1) {
                 return (
                     <div className="welcome_content">
                         <p><b>What's Thumbs?</b><br />
@@ -124,7 +126,7 @@ function mapStateToProps(state) {
         live: state.data.live,
         class_sessionID: state.data.class_sessionID,
         studentsPresent: state.sockets.studentsPresent,
-        socketQuestions: state.sockets.socketQuestions,
+        teacherQuestions: state.sockets.teacherQuestions,
         userIsInstructor: state.data.userIsInstructor,
     }
 }
@@ -135,5 +137,5 @@ function mapStateToProps(state) {
 //     }
 // }
 
-export default connect(mapStateToProps, { getQuestions, getLive, updateSocketCount, displayNewTeacherQuestion, updateQuestionAverage })(Classroom);
+export default connect(mapStateToProps, { getLive, updateSocketCount, displayNewTeacherQuestion, updateQuestionAverage, addNewStudentQuestion })(Classroom);
 // export default connect(mapStateToProps, { getQuestions })(Classroom);

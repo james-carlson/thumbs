@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
 import './NewQuestion.css';
 import { connect } from 'react-redux';
-import { recordCurrentText, recordNewQuestion, getQuestions } from '../../ducks/backend_reducer';
+import { recordCurrentText, recordNewQuestion } from '../../ducks/backend_reducer';
 import { viewInitial, toggleDisplayNewQuestionBox } from '../../ducks/view_reducer';
 // import { newTeacherQuestion } from '../../ducks/sockets_reducer';
-import { broadcastNewTeacherQuestion } from '../../services/handle_sockets';
+import { broadcastNewTeacherQuestion, broadcastNewStudentQuestion } from '../../services/handle_sockets';
 import { displayNewTeacherQuestion } from '../../ducks/sockets_reducer';
 
 
 class NewQuestion extends Component {
 
     askButton = () => {
-        broadcastNewTeacherQuestion({roomName: this.props.class_sessionID, questionText: this.props.newQuestionText});
+        if (this.props.userIsInstructor){
+            broadcastNewTeacherQuestion({roomName: this.props.class_sessionID, questionText: this.props.newQuestionText});
+        } else {
+            broadcastNewStudentQuestion({roomName: this.props.class_sessionID, questionText: this.props.newQuestionText});
+        }
+
         this.props.toggleDisplayNewQuestionBox();
     }
 
@@ -63,4 +68,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { recordCurrentText, recordNewQuestion, viewInitial, toggleDisplayNewQuestionBox, getQuestions, displayNewTeacherQuestion })(NewQuestion);
+export default connect(mapStateToProps, { recordCurrentText, recordNewQuestion, viewInitial, toggleDisplayNewQuestionBox, displayNewTeacherQuestion })(NewQuestion);

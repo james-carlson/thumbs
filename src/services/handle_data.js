@@ -7,10 +7,6 @@ export const recordNewQuestion = function (questionText, class_sessionID) {
         .then(res => res.data)
 }
 
-export const getQuestions = function () {
-    return axios.get('http://localhost:4000/api/data/questions/session/teacher')
-        .then(res => res.data)
-}
 
 export const generateRandomID = function () {
     var text = "";
