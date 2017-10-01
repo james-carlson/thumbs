@@ -12,11 +12,13 @@ class StudentSubheader extends Component {
         listenForSuccessfulSocketConnection_Student();
 
     }
-    render () {
+    render() {
 
         return (
             <div className="subheader">
-            <div className="subheader_dynamic_portion_item"><Actions /></div>
+                <div className="top_padding"><b>Instructor:</b> {this.props.instructorName}<span id="medium_space"></span>
+                <b>Topic:</b> {this.props.classTopic}</div>
+                <div className="subheader_dynamic_portion_item"><Actions /></div>
             </div>
         );
     }
@@ -26,6 +28,8 @@ function mapStateToProps(state) {
     return {
         currentview: state.views.currentview,
         live: state.data.live,
+        instructorName: state.data.instructorName,
+        classTopic: state.data.classTopic
     }
 }
 

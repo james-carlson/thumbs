@@ -9,21 +9,6 @@ class InstructorHeader extends Component {
     copyTextToClipboard(text) {
         var textArea = document.createElement("textarea");
 
-        //
-        // *** This styling is an extra step which is likely not required. ***
-        //
-        // Why is it here? To ensure:
-        // 1. the element is able to have focus and selection.
-        // 2. if element was to flash render it has minimal visual impact.
-        // 3. less flakyness with selection and copying which **might** occur if
-        //    the textarea element is not visible.
-        //
-        // The likelihood is the element won't even render, not even a flash,
-        // so some of these are just precautions. However in IE the element
-        // is visible whilst the popup box asking the user for permission for
-        // the web page to copy to the clipboard.
-        //
-
         // Place in top-left corner of screen regardless of scroll position.
         textArea.style.position = 'fixed';
         textArea.style.top = 0;
@@ -62,28 +47,24 @@ class InstructorHeader extends Component {
 
         document.body.removeChild(textArea);
     }
-    
+
     copyLink = () => {
         this.copyTextToClipboard(window.location.href);
-        window.open(window.location.href)
+        // window.open(window.location.href)
     }
 
     displayLiveController(props) {
         if (this.props.live === true) {
             return (
-                <div className="header_dynamic_portion_content">
-                    <div>
-                        <div className="header_dynamic_portion_content">Welcome, {this.props.instructorName}!</div>
-                        <div className="header_dynamic_portion_content">Topic: {this.props.classTopic}</div>
-                    </div>
-                    <div>
-                        <div className="header_dynamic_portion_content_live">
-                            <div><div className="live_indicator"></div></div>LIVE!</div>
-                    </div>
-                    <div><button onClick={this.copyLink}>Copy URL</button></div>
-                    <div>
-                        <div className="header_dynamic_portion_content_end" onClick={this.props.endLive}>END</div>
-                    </div>
+                <div className="header_dynamic_portion_content" id="small_space">
+                    <div className="header_dynamic_portion_content_live">
+                        <div className="live_indicator"></div><div id="space" className="header_dynamic_portion_content">LIVE!</div>
+                        <div id="space" className="clipboard" onClick={this.copyLink}>
+                            <svg aria-hidden="true" height="18" version="1.1" viewBox="0 0 14 16" width="18"><path fillRule="evenodd" d="M2 13h4v1H2v-1zm5-6H2v1h5V7zm2 3V8l-3 3 3 3v-2h5v-2H9zM4.5 9H2v1h2.5V9zM2 12h2.5v-1H2v1zm9 1h1v2c-.02.28-.11.52-.3.7-.19.18-.42.28-.7.3H1c-.55 0-1-.45-1-1V4c0-.55.45-1 1-1h3c0-1.11.89-2 2-2 1.11 0 2 .89 2 2h3c.55 0 1 .45 1 1v5h-1V6H1v9h10v-2zM2 5h8c0-.55-.45-1-1-1H8c-.55 0-1-.45-1-1s-.45-1-1-1-1 .45-1 1-.45 1-1 1H3c-.55 0-1 .45-1 1z">
+                            </path>
+                            </svg>
+                        </div>
+                        <span className="header_dynamic_portion_content" onClick={this.props.endLive}><button>END</button></span></div>
                 </div>
             )
         } else {
@@ -98,7 +79,7 @@ class InstructorHeader extends Component {
 
     render() {
         return (
-            <div className="">
+            <div>
                 {this.displayLiveController()}
             </div>
         );

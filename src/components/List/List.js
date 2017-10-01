@@ -13,7 +13,7 @@ class List extends Component {
 
     displayQuestionAnswers(id){
         return <div>
-            {this.props.questionAverages[id]}
+            AVERAGE: {this.props.questionAverages[id]}
             <Gauge id={id} avg={this.props.questionAverages[id]}/>
         </div> 
 

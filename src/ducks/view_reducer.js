@@ -8,7 +8,7 @@ const VIEW_QUESTION_RESPONSES = "VIEW_QUESTION_RESPONSES"
 const VIEW_INITIAL = "VIEW_INITIAL"
 
 
-const initialState = { 
+const initialState = {
     currentView: 'initial',
     displayNewQuestionBox: false,
     displayStudentQuestions: false
@@ -38,10 +38,6 @@ export function toggleDisplayNewQuestionBox() {
 export function toggleStudentQuestionsDisplay() {
     return { type: TOGGLE_STUDENT_QUESTIONS }
 }
-
-// export function studentNewQuestion() {
-//     return { type: ASK_NEW_STUDENT_QUESTION }
-// }
 
 export function viewStudentQuestion() {
     return { type: VIEW_STUDENT_QUESTIONS }

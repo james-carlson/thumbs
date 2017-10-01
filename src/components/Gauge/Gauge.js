@@ -1,36 +1,38 @@
 import React, { Component } from 'react';
 import {Gauge} from 'gaugeJS';
+import thumbs from '../Landing/thumbs.svg';
 
 var opts = {
     angle: 0.15, // The span of the gauge arc
     lineWidth: 0.44, // The line thickness
-    radiusScale: 1, // Relative radius
+    radiusScale: .86, // Relative radius
     pointer: {
       length: 0.6, // // Relative to gauge radius
       strokeWidth: 0.035, // The thickness
-      color: '#000000' // Fill color
+      color: '#25AAE1' // Fill color
     },
     limitMax: false,     // If false, max value increases automatically if value > maxValue
     limitMin: false,     // If true, the min value of the gauge will be fixed
-    colorStart: '#6FADCF',   // Colors
-    colorStop: '#8FC0DA',    // just experiment with them
-    strokeColor: '#E0E0E0',  // to see which ones work best for you
+    colorStart: '#25AAE1',   // Colors
+    colorStop: '#F2F2F2',    // just experiment with them
+    strokeColor: '#F2F2F2',  // to see which ones work best for you
     generateGradient: true,
     highDpiSupport: true,     // High resolution support
     staticLabels: {
-        font: "1rem sans-serif",  // Specifies font
+        font: "1rem Hind",  // Specifies font
         labels: [1,2,3,4,5],  // Print labels at these values
         color: "#000000",  // Optional: Label text color
         fractionDigits: 0  // Optional: Numerical precision. 0=round off.
       },
+    // pointer: {
+    //     // Extra optional pointer options:
+    //     iconPath: 'myicon.png',  // Icon image source
+    //     iconScale: 1,    // Size scaling factor
+    //     iconAngle: 90.0  // Rotation offset angle, degrees
+    //   },
   };
 
 export default class GaugeDisplay extends Component {
-    constructor(props){
-        super(props)
-
-    }
-
 
     componentWillReceiveProps(nextProps){
         this.gauge.set(nextProps.avg || 1)

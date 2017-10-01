@@ -20,55 +20,70 @@
 }
 
 
+
 .header_dynamic_portion_container {
     width: 70vw;
-    display: flex;
-    align-items: center;
-    /* flex-direction: row; */
+    /* display: flex; */
+    /* align-items: center; */
 }
 
 .header_dynamic_portion_content {
-    /* width: 100%; */
     font-size: .7rem;
     font-family: 'Hind', sans-serif;
     display: flex;
-    /* height: 100%; */
+    justify-content: space-around;
 }
 
+
+#space {
+    margin-right: 2rem;
+}
+
+#small_space {
+    margin-right: .4rem;
+}
+
+#medium_space {
+    margin-right: 1rem;
+}
+
+#clipboard:hover {
+    background-color: #444;
+}
+
+.header_dynamic_portion_content button {
+    width: 100%;
+    min-width: 3rem;
+    font-family: 'Hind', sans-serif;
+}
+
+
 .header_dynamic_portion_content_live {
-    /* width: auto; */
     font-size: .7rem;
-    border: 1px solid #333;
-    border-radius: 3px;
-    /* padding-left: 25%; */
-    /* padding-right: 25%; */
-    /* height: 100%; */
+    /* border: 1px solid #C5C5C5; */
+    border-radius: .3rem;
+    align-items: flex-end;
     display: flex;
     align-items: center;
-    padding: 5%;
-
+    padding: .4rem;
+    /* box-shadow: .1rem .1rem .1rem rgba(0, 0, 0, 0.29), .1rem .1rem .3rem rgba(0, 0, 0, 0.27), -.1rem .1rem .3rem rgba(0, 0, 0, 0.27); */
+    /* background-color: #f2f2f2; */
 }
 
 .live_indicator {
-    /* width: auto; */
-    width: 5px;
-    height: 5px;
-    /* font-size: .7rem; */
-    /* border: 1px solid rgb(255, 0, 0); */
+    width: .5rem;
+    height: .5rem;
     border-radius: 100%;
     background-color: #FF0000;
-    /* padding: 1px; */
-    /* height: 100%; */
+    margin-right: .2rem;
 }
 
 .header_dynamic_portion_content_end {
-    /* width: auto; */
     font-size: .7rem;
     border: 1px solid #333;
     border-radius: 3px;
     padding-left: 2%;
     padding-right: 2%;
-    /* height: 100%; */
 }
 
 .logo_container {
@@ -140,6 +155,13 @@ subheader_dynamic_portion_container {
         100% { opacity: 0; }
 }
 
+.student_header {
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-around;
+    font-weight: 300;
+    /* align-items: center; */
+}
 
 /* @media (max-width: 767px) {
 

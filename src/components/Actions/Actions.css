@@ -1,8 +1,8 @@
 .action_button_wrapper {
-    width: 100%;
+    /* width: 100%; */
     display: flex;
-    justify-content: space-between;
-    padding: 1rem;
+    justify-content: space-around;
+    padding: .5rem;
     /* margin-bottom: 1rem; */
 }
 
@@ -14,7 +14,6 @@
 
 .action_button_wrapper button:hover {
     width: 100%;
-    white-space: nowrap;
     background: linear-gradient(to bottom right, rgb(255, 255, 255), #F5F5F5);
     /* border: 1px solid #444; */
 }

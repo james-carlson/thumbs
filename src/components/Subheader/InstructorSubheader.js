@@ -18,7 +18,15 @@ class InstructorSubheader extends Component {
                 </div>
             )
         } else {
-            return <div className="subheader_dynamic_portion_item"><Actions /></div>
+            return  <div className="subheader">
+                    <div id="hideMe">
+                    <div className="subheader_instructor_welcome greeting">
+                        Welcome, {this.props.instructorName ? this.props.instructorName : "instructor"}! {'   '}
+                        <b>Topic</b>: <i>{this.props.classTopic ? this.props.classTopic : "Class topic"}</i>
+                    </div>
+                    </div>
+                    <div className="subheader_dynamic_portion_item"><Actions /></div>
+                    </div>
         }
     }
 
@@ -27,7 +35,7 @@ class InstructorSubheader extends Component {
 
 
         return (
-            <div className="subheader">
+            <div>
                 {this.displayInputFieldsController()}
             </div>
 

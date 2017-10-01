@@ -5,9 +5,7 @@ import { goLive, getLive, endLive } from '../../ducks/backend_reducer';
 
 
 class StudentHeader extends Component {
-    // constructor(props){
-    //     super(props)
-    // }
+
     componentWillMount(props) {
         var pathName = (this.props.location.pathname);
         this.uniqueID = (pathName[0] === '/') ? pathName.substring(1) : pathName
@@ -20,14 +18,15 @@ class StudentHeader extends Component {
 
     render() {
         return (
-            <div className="header_dynamic_portion_content">
+            <div className="header_student_dynamic_portion_content">
                 <div className="student_header">
-                    {/* Student Header @ {this.uniqueID} */}
-                    <div>Instructor: {this.props.instructorName}</div>
-                    <div>Topic: {this.props.classTopic}</div>
-                    <div>{this.props.live}</div>
+                    {/* <div><b>Instructor:</b></div>
+                    <div id="medium_space">{this.props.instructorName}</div>
+                    <div><b>Topic:</b></div>
+                    <div>{this.props.classTopic}</div> */}
                 </div>
             </div>
+
         );
     }
 }
