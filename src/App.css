@@ -2,8 +2,6 @@
   text-align: center;
 }
 
-
-
 .App-header {
   background-color: #f2f2f2;
   /* height: .150rem; */
@@ -12,8 +10,6 @@
   color: white;
   /* display: flex; */
 }
-
-
 
 a {
   height: 100%;
@@ -27,10 +23,10 @@ button {
   border-radius: .5rem;
   background-color: #E6E6E6;
   border: 1px solid #B4B4B4;
-  /* transition-duration: 0.39s; */
-  margin: 1%;
-  padding: 3%;
-  font-size: 100%;
+  transition-duration: 0.39s;
+  margin: 1.5vh;
+  padding: 1vh;
+  font-size: 1rem;
   /* box-shadow: 0rem .1rem .1rem rgb(153, 153, 153), 0rem .1rem .1rem rgba(0,0,0,0.23); */
   outline-width: 0;
   height: 100%;
@@ -77,14 +73,14 @@ textarea:focus {
 
 
 input {
-  margin: 3%;
+  /* margin: 3%; */
   border-bottom: solid 1px rgb(184, 184, 184);
   border-top: 0px;
   border-right: 0px;
   border-left: 0px;
   background: transparent;
   font-size: 150%;
-  width: 100%;
+  width: 90%;
   margin-top: .5rem;
   margin-bottom: .25rem;
   padding-top: .25rem;
@@ -111,4 +107,18 @@ input:focus {
 @keyframes App-logo2-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(3deg); }
+}
+
+
+@media (max-width: 767px) {
+
+  button {
+    margin: 1.5vh;
+    padding: 1vh;
+    font-size: 1rem;
+    height: 100%;
+    /* width: 100%; */
+  }
+
+
 }

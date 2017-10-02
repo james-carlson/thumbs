@@ -16,7 +16,6 @@
     z-index: 5;
 }
 
-
 .subheader_instructor_welcome {
     padding-top: 1rem;
     font-family: Hind;
@@ -25,21 +24,22 @@
 
 }
 
-
 .subheader_dynamic_portion_item {
-    /* display: flex; */
     flex-direction: row;
     width: 100%;
     height: 100%;
     justify-content: space-around;
     align-content: center;
     text-align: center;
-    /* padding-top: .4rem; */
 }
 
 .subheader_dynamic_portion_item button{
     font-size: .8rem;
     width: 30%;
+    /* min-width: 5vw;
+    min-height: 5vh;
+    max-height: 13vh;
+    max-width: 13vw; */
 
 }
 
@@ -47,6 +47,24 @@
     padding-top: 1rem;
 }
 
+#top_margin {
+    padding-top: 1rem;
+}
+
+#goLive {
+    background: linear-gradient(to bottom right, rgba(37, 175, 225, 0.38), #25aae1);
+    border: 1px solid #1A7EA5;
+    color: #f2f2f2;
+    min-width: 70px;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-weight: 700;
+    border-radius: .3rem;
+    font-size: 1rem;
+    box-shadow: 0px 1px 1px rgb(153, 153, 153), 0px 1px 1px rgba(0,0,0,0.23);
+}
 
 #hideMe {
     -moz-animation: cssAnimation 0s ease-in 2s forwards;
@@ -82,5 +100,15 @@
 
     .instructor_subheader {
         display: none;
+    }
+}
+
+@media screen (min-width: 768px) {
+    .subheader_dynamic_portion_item {
+        width: 80%;
+        display: flex;
+        justify-content: space-around;
+        align-content: center;
+        text-align: center;
     }
 }

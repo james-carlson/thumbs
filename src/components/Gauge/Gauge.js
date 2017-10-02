@@ -13,7 +13,7 @@ var opts = {
     },
     limitMax: false,     // If false, max value increases automatically if value > maxValue
     limitMin: false,     // If true, the min value of the gauge will be fixed
-    colorStart: '#25AAE1',   // Colors
+    colorStart: '#c1c1c1',   // Colors
     colorStop: '#F2F2F2',    // just experiment with them
     strokeColor: '#F2F2F2',  // to see which ones work best for you
     generateGradient: true,

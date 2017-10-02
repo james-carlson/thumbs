@@ -12,8 +12,6 @@ export default class StudentAnswerOptions extends Component {
     }
 
     handleAnswerSubmission(response) {
-        // console.log(this.props.questionid);
-        // console.log(this.props.socketQuestions)
         console.log(response)
         emitAnswer({questionid: this.props.questionid, responseVal: response})
         this.setState({ 

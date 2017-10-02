@@ -29,11 +29,11 @@ class NewQuestion extends Component {
                 return (
                     <div className="new_question_container">
                         <div className="new_question_container_textarea_box">
-                        <textarea placeholder="On a scale of 1 to 5..." onChange={(e) => this.props.recordCurrentText(e.target.value, "newQuestionText")} required />
+                        <textarea placeholder={(this.props.userIsInstructor ? "On a scale of 1 to 5..." : "Type your anonymous question here...")} onChange={(e) => this.props.recordCurrentText(e.target.value, "newQuestionText")} required />
                         </div>
                         <div className="new_question_container_buttons_box">
-                            <div><button id="cancel" onClick={() => this.props.toggleDisplayNewQuestionBox()}>Cancel</button></div>
-                            <div><button id="ask" onClick={this.askButton}>Ask</button></div>
+                            <button id="cancel" onClick={() => this.props.toggleDisplayNewQuestionBox()}>Cancel</button>
+                            <button id="ask" onClick={this.askButton}>Ask</button>
                         </div>
                     </div>
                 )

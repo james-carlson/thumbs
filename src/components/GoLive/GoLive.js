@@ -22,7 +22,7 @@ class GoLive extends Component {
         if (this.props.live === true) {
             return <button onClick={() => this.props.endLive()}>END</button>
         } else {
-            return <button onClick={() => this.handleGoLive()}>GO LIVE</button>
+            return <button id="goLive" onClick={() => this.handleGoLive()}>GO LIVE</button>
         }
     }
 

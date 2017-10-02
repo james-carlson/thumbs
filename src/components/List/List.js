@@ -11,11 +11,11 @@ import Gauge from '../../components/Gauge/Gauge';
 class List extends Component {
 
 
-    displayQuestionAnswers(id){
+    displayQuestionAnswers(id) {
         return <div>
-            AVERAGE: {this.props.questionAverages[id]}
-            <Gauge id={id} avg={this.props.questionAverages[id]}/>
-        </div> 
+            { isNaN(this.props.questionAverages[id]) ? '' : "Average: " + Math.round(this.props.questionAverages[id], 2) }<br />
+            <Gauge id={id} avg={this.props.questionAverages[id]} />
+        </div>
 
     }
 
@@ -27,7 +27,7 @@ class List extends Component {
                 <div className="list_box" key={question.id}>
                     <div>{question.questiontext}</div>
 
-                {/* 
+                    {/* 
                 if functionality to talk back to students is desired, here's is where it would happen: 
                 { this.props.userIsInstructor ? this.displayQuestionAnswers(question.id) :
                  <StudentAnswerOptions 
@@ -46,13 +46,12 @@ class List extends Component {
         } else {
             return (this.props.teacherQuestions.map((question, i) => (
                 <div className="list_box" key={question.id}>
-                {/* { this.props.userIsInstructor ? "" : "On a scale from 1 to 5," }   */}
-                    <div>{question.questiontext}</div>
-                { this.props.userIsInstructor ? this.displayQuestionAnswers(question.id) :
-                 <StudentAnswerOptions 
-                 userIsInstructor={false} 
-                 teacherQuestions={this.props.teacherQuestions} 
-                 questionid={question.id} /> }
+                    <div><b>Question:</b> "{question.questiontext}"</div>
+                    {this.props.userIsInstructor ? this.displayQuestionAnswers(question.id) :
+                        <StudentAnswerOptions
+                            userIsInstructor={false}
+                            teacherQuestions={this.props.teacherQuestions}
+                            questionid={question.id} />}
                 </div>)))
         }
 
@@ -66,7 +65,7 @@ class List extends Component {
         return (
             <div className="list_spacer">
                 {this.props.displayStudentQuestions ? this.studentQuestionsDisplayController() : this.teacherQuestionsDisplayController()}
-                </div>
+            </div>
         );
     }
 }
