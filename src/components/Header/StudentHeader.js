@@ -20,7 +20,7 @@ class StudentHeader extends Component {
         return (
             <div className="header_student_dynamic_portion_content">
                 <div className="student_header">
-                <div className="header_dynamic_portion_content" id="small_space"><div className="live_indicator"></div>LIVE!</div>
+                <div className="header_dynamic_portion_content" id="space"><div className="live_indicator"></div>LIVE</div>
                 </div>
             </div>
 

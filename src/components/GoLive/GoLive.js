@@ -11,7 +11,7 @@ class GoLive extends Component {
         this.displayStatus = this.displayStatus.bind(this);
     }
 
-    handleGoLive(props) {
+    handleGoLive() {
         let userType = this.props.userIsInstructor ? "instructor" : "student"
         console.log("about to emitJoinRoom with userType", userType, "and sessionID/room#: ", this.props.class_sessionID);
         emitJoinRoom("instructor", this.props.class_sessionID)

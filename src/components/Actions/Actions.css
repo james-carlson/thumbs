@@ -7,8 +7,9 @@
 }
 
 .action_button_wrapper button {
-    width: 100%;
+    width: 90%;
     white-space: nowrap;
+    font-size: 1rem;
     background: linear-gradient(to bottom right, rgb(255, 255, 255), #EBEBEB);
 }
 

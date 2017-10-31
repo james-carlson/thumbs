@@ -17,10 +17,10 @@ import { connect } from 'react-redux';
 import { getLive } from '../../ducks/backend_reducer';
 import { updateSocketCount, displayNewTeacherQuestion, updateQuestionAverage, addNewStudentQuestion } from '../../ducks/sockets_reducer';
 import './Classroom.css';
-// import io from 'socket.io-client';
+import io from 'socket.io-client';
 
 
-// const clientside = io.connect('http://localhost:4000/')
+const clientside = io.connect('http://localhost:4000/')
 
 
 class Classroom extends Component {

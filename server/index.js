@@ -61,7 +61,8 @@ var server = app.listen(port, function () {
 
 // SERVE STATIC FILES
 // var path = 'app/server/'
-app.use(express.static('public'));
+app.use(express.static('public'))
+// app.use(express.static(`${__dirname}/../public` ));
 
 // ENDPOINTS
 var roomName = '';
@@ -80,8 +81,7 @@ app.post('/api/data/new-class-session', function (req, res, next) {
 
 // Get live class session
 app.get('/api/data/class_sessions/:class_session_id', function (req, res, next) {
-    // console.log(JSON.stringify(req.params.class_session_id));
-    // console.log(req.params.class_session_id);
+    console.log(JSON.stringify(req.params.class_session_id));
     req.app.get('db').queries.startClass(req.params.class_session_id)
         .then(data => {
             res.status(200).send(data[0]);
@@ -258,6 +258,11 @@ io.on('connection', (serverside) => {
 
 
 
+// const path = require('path')
+
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
+// })
 
 
 

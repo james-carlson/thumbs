@@ -65,7 +65,7 @@ class InstructorHeader extends Component {
                             </svg>
                             {/* </button> */}
                         </div>
-                        <div className="live_indicator"></div><div className="header_dynamic_portion_content" id="small_space"> LIVE!</div>
+                        <div className="live_indicator"></div><div className="header_dynamic_portion_content" id="small_space"> LIVE</div>
                         <div className="header_dynamic_portion_content" onClick={this.props.endLive}><button>END</button></div>
                     </div>
                 </div>
