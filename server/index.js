@@ -55,14 +55,13 @@ app.use(cors());
 // 5. START SERVER
 var server = app.listen(port, function () {
     console.log('server listening on ' + port);
-
 })
 
 
 // SERVE STATIC FILES
 // var path = 'app/server/'
-app.use(express.static('public'))
-// app.use(express.static(`${__dirname}/../public` ));
+// app.use(express.static('public'))
+app.use( express.static( `${__dirname}/../build` ));
 
 // ENDPOINTS
 var roomName = '';
@@ -260,9 +259,9 @@ io.on('connection', (serverside) => {
 
 // const path = require('path')
 
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
-// })
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
+})
 
 
 
