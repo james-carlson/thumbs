@@ -1,5 +1,6 @@
 .landing_header {
     height: 45vh;
+    width: 100vw;
 }
 
 .landing_subheader {
@@ -26,10 +27,6 @@
   }
 
 .landing_overlay {
-    /* position: absolute; */
-    /* overflow: ; */
-    /* min-height: 100%; */
-    /* width: auto; */
     background-image: url('./thumbs.svg');
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -37,18 +34,14 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-
 }
 
 .landing_logo {
-    /* display: flex; */
-    /* justify-content: center; */
     height: 100%;
-    /* width: 90vw; */
+    /* padding-left: 30vw; */
+    /* padding-right: 30vw; */
 }
   
-
-
 .thumb {
     max-width: 100%;
     height: auto;
@@ -56,23 +49,19 @@
     background: #f2f2f2;
 }
 
-
 .landing_logo_text {
     font-size: 6rem;
     text-align: center;
     margin-left: auto;
     margin-right: auto;
     color: #25aae1;
-    /* left: 40px; */
-    /* position: absolute; */
 }
 
 .welcome_header {
     font-family: 'Open Sans';
     font-weight: 200;
     font-size: 1.8rem;
-    text-align: left;
-    /* padding-left: 3rem; */
+    text-align: center;
     padding-bottom: 1rem;
 }
 
@@ -81,7 +70,9 @@ landing_instructions {
     bottom: 10px;
     text-align: left;
     padding: 4rem;
-    width: 90%;
+    width: 60vw;
+
+
 }
 
 p {
@@ -91,29 +82,32 @@ p {
     text-align: left;
     padding-left: .5rem;
     padding-right: .5rem;
-    /* padding-top: 0; */
-    /* padding-bottom: .5rem; */
 }
 
 .landing_main {
     font-size: large;
     padding-top: 5rem;
     padding-bottom: 0;
+    padding-left: 1rem;
+    padding-right: 1rem;
     display: flex;
     flex-direction: column;
-    align-items: left;
-    color: #444444
+    align-items: center;
+    color: #444444;
+
+
+    /* margin: auto; */
+
   }
 
 .welcome_content {
     background-color: #f2f2f2;
     color: #222222;
     box-shadow: .1rem .1rem .4rem rgba(0, 0, 0, 0.29), .1rem .1rem .3rem rgba(0, 0, 0, 0.27), .1rem .1rem .3rem rgba(0, 0, 0, 0.27);
-    width: 90vw;
-    min-width: 300px;
+    max-width: 500px;
     border-radius: .4rem;
-    padding-left: .4rem;
-    padding-right: .4rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
     font-size: 70%;
     margin-bottom: 4rem;
   }

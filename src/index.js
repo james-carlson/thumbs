@@ -13,4 +13,4 @@ ReactDOM.render(
             <App />
         </Provider>
     </BrowserRouter>, document.getElementById('root'));
-registerServiceWorker();
+// registerServiceWorker();  //This is commented out for hosting on Digital Ocean. 
