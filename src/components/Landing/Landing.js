@@ -35,7 +35,7 @@ class Landing extends Component {
                                     <div className="tagline">Feedback</div>
                                 </div>
                             </div>
-                            <div className="landing_instructions top_padding">To get started, click.</div>
+                            <div className="landing_instructions top_padding">To get started, click anywhere.</div>
                         </div>
                         <div className="landing_main">
                             <div className="welcome_content">
