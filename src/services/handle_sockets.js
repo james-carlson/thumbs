@@ -1,7 +1,6 @@
 import io from 'socket.io-client';
-const clientside = io('http://localhost:4000');
+const clientside = io();
 // const clientside = io.connect();
-
 
 export function listenForSuccessfulSocketConnection(userType, roomName) {
         clientside.on('connectionDetected', function (data) {

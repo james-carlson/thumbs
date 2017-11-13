@@ -20,7 +20,7 @@ import './Classroom.css';
 import io from 'socket.io-client';
 
 
-const clientside = io.connect('http://localhost:4000/')
+const clientside = io();
 
 
 class Classroom extends Component {
