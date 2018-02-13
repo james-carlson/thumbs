@@ -96,7 +96,6 @@ export function recordNewQuestion(questionText, class_sessionID, userType) {
 }
 
 export function recordCurrentText(value, stateproperty) {
-    // console.log("recording current text: " + value, stateproperty)
     return {
         type: RECORD_CURRENT_TEXT,
         payload: value,
@@ -104,20 +103,6 @@ export function recordCurrentText(value, stateproperty) {
         }
 }
 
-// export function getQuestions(userType) {
-//     if (userType === 'instructor') {
-//         return {
-//             type: GET_QUESTIONS,
-//             payload: handler.getQuestions('instructor')
-//         }
-//     } else {
-//         return {
-//             type: GET_QUESTIONS,
-//             payload: handler.getQuestions()
-//         }
-//     }
-
-// }
 
 export function generateRandomID() {
         return {
