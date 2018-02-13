@@ -28,7 +28,6 @@ class GoLive extends Component {
 
 
     render () {
-        // console.log(this.props);
         return (
             <div className="subheader_dynamic_portion_item">
             {this.displayStatus()}

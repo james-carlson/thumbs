@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-// import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-// import TextField from 'material-ui/TextField';
 import GoLive from '../GoLive/GoLive';
 import Actions from '../Actions/Actions';
 import { connect } from 'react-redux';

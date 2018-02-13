@@ -1,5 +1,3 @@
-// import * as sockethandler from '../services/handle_socket';
-
 // SOCKETS
 const UPDATE_SOCKET_COUNT = "UPDATE_SOCKET_COUNT"
 const UPDATE_QUESTION_AVERAGE = "UPDATE_QUESTION_AVERAGE"
@@ -18,7 +16,6 @@ const initialState = {
 };
 
 export default function reducer(state = initialState, action) {
-    // console.log("REDUCER HIT: " + JSON.stringify(action));
     switch (action.type) {
         case UPDATE_SOCKET_COUNT:
             console.log("UPDATE_SOCKET_COUNT", action.payload);
@@ -53,16 +50,10 @@ export function updateSocketCount(numSockets, roomName) {
 
 export function newTeacherQuestion(questionText) {
     console.log("reducer: newTeacherQuestion hit", questionText);
-    // return {
-    //     type: NEW_TEACHER_QUESTION,
-    //     payload: questionText
-    // }
 }
 
 
 export function displayNewTeacherQuestion(data) {
-    // console.log("reducer: displayNewTeacherQuestion hit", questionText);
-    // debugger
     console.log("display: ", JSON.stringify(data));
     return {
         type: DISPLAY_NEW_TEACHER_QUESTION,

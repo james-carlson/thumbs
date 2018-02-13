@@ -14,13 +14,10 @@ export const generateRandomID = function () {
 
     for (var i = 0; i < 6; i++)
         text += possible.charAt(Math.floor(Math.random() * possible.length));
-    // console.log(text);
-    // emitClassSessionId(text);
     return text;
 }
 
 export const goLive = function (class_sessionID, instructorName, classTopic) {
-    // console.log("goLive handler generated ID: " + class_sessionID, instructorName, classTopic)
     return axios.post('/api/data/new-class-session', {
         "class_session_id": class_sessionID,
         "instructorName": instructorName,
@@ -33,8 +30,6 @@ export const getLive = function (class_sessionID) {
     console.log("getLive handler class_session_ID: " + class_sessionID)
     return axios.get(`/api/data/class_sessions/${class_sessionID}`)
     .then(res => res.data);
-    // .then(payload => payload.data);
-
 
 }
 

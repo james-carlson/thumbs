@@ -12,6 +12,3 @@ module.exports = {
         next();
     }
 };
-
-
-// then( () => res.send(`Question (${req.body.questiontext}) saved to the database.`).status(200)

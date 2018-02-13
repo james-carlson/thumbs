@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { goLive } from '../../ducks/backend_reducer';
 import { toggleDisplayNewQuestionBox, toggleStudentQuestionsDisplay } from '../../ducks/view_reducer';
 import './Actions.css';
 

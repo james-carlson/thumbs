@@ -9,7 +9,6 @@ class Landing extends Component {
 
     componentWillMount() {
         this.props.generateRandomID();
-        // this.props.initializeUser('instructor');
     }
 
     handleInitializeUser(props) {
