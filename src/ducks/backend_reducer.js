@@ -63,7 +63,7 @@ export default function reducer(state = initialState, action) {
         case GO_LIVE_FULFILLED:
             return Object.assign({}, state, {loading: false, db_session_id: action.payload, live: true});
         case INITIALIZE_TEACHER:
-            console.log(action.type, action.payload)
+            console.log(action.type, "New session started, user is instructor.")
             return Object.assign({}, state, {userIsInstructor: true});
         case GET_LIVE_PENDING:
             console.log(action.type, action.payload)
