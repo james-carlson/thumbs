@@ -84,8 +84,6 @@ export default function reducer(state = initialState, action) {
     }
 }
 
-
-
 export function recordNewQuestion(questionText, class_sessionID, userType) {
     console.log("At the reducer: " + questionText, class_sessionID);
     return {
@@ -102,7 +100,6 @@ export function recordCurrentText(value, stateproperty) {
         key: stateproperty
         }
 }
-
 
 export function generateRandomID() {
         return {
@@ -133,7 +130,6 @@ export function endLive(generatedID) {
 }
 
 export function initializeUser() {
-    // localStorage.setItem("userIsInstructor", true)
     return {
         type: INITIALIZE_TEACHER
     }

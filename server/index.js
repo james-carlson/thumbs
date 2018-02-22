@@ -15,7 +15,6 @@ var port = 4000;
 // 1. EXPRESS
 const app = express();
 
-
 const connectionInfo = process.env.DB_CONNECTIONSTRING
 
 let database;

@@ -7,17 +7,19 @@ class SessionInfo extends Component {
         if (this.props.userType === 'instructor') {
 
 
-        return (
-            <div className="dynamic_portion_container">
-                <div className="subheader_view">
-                <div className="header_view">    
+            return (
+                <div className="dynamic_portion_container">
+                    <div className="subheader_view">
+                        <div className="header_view">
 
+                        </div>
+                    </div>
                 </div>
-                </div>
-            </div>
-        );
+            );
+        }
+
     }
-
+}
 
 function mapStateToProps(state) {
     return {
