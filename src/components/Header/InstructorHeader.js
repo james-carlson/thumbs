@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { goLive, endLive } from '../../ducks/backend_reducer';
 import { connect } from 'react-redux';
-// import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-// import TextField from 'material-ui/TextField';
 
 class InstructorHeader extends Component {
 
@@ -50,7 +48,7 @@ class InstructorHeader extends Component {
 
     copyLink = () => {
         this.copyTextToClipboard(window.location.href);
-        // window.open(window.location.href)
+
     }
 
     displayLiveController(props) {

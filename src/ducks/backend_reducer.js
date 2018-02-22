@@ -63,7 +63,7 @@ export default function reducer(state = initialState, action) {
         case GO_LIVE_FULFILLED:
             return Object.assign({}, state, {loading: false, db_session_id: action.payload, live: true});
         case INITIALIZE_TEACHER:
-            console.log(action.type, action.payload)
+            console.log(action.type, "New session started, user is instructor.")
             return Object.assign({}, state, {userIsInstructor: true});
         case GET_LIVE_PENDING:
             console.log(action.type, action.payload)
@@ -84,8 +84,6 @@ export default function reducer(state = initialState, action) {
     }
 }
 
-
-
 export function recordNewQuestion(questionText, class_sessionID, userType) {
     console.log("At the reducer: " + questionText, class_sessionID);
     return {
@@ -96,28 +94,12 @@ export function recordNewQuestion(questionText, class_sessionID, userType) {
 }
 
 export function recordCurrentText(value, stateproperty) {
-    // console.log("recording current text: " + value, stateproperty)
     return {
         type: RECORD_CURRENT_TEXT,
         payload: value,
         key: stateproperty
         }
 }
-
-// export function getQuestions(userType) {
-//     if (userType === 'instructor') {
-//         return {
-//             type: GET_QUESTIONS,
-//             payload: handler.getQuestions('instructor')
-//         }
-//     } else {
-//         return {
-//             type: GET_QUESTIONS,
-//             payload: handler.getQuestions()
-//         }
-//     }
-
-// }
 
 export function generateRandomID() {
         return {
@@ -148,7 +130,6 @@ export function endLive(generatedID) {
 }
 
 export function initializeUser() {
-    // localStorage.setItem("userIsInstructor", true)
     return {
         type: INITIALIZE_TEACHER
     }

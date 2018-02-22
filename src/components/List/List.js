@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import './List.css';
-// import axios from 'axios';
-// import { getQuestions } from '../../ducks/backend_reducer';
 import { connect } from 'react-redux';
 import { displayNewTeacherQuestion } from '../../ducks/sockets_reducer'
-// import { listenForNewQuestion } from '../../services/handle_sockets';
 import StudentAnswerOptions from '../StudentAnswerOptions/StudentAnswerOptions';
 import Gauge from '../../components/Gauge/Gauge';
 
@@ -61,7 +58,6 @@ class List extends Component {
 
     render() {
 
-        // console.log(this.props);
         return (
             <div className="list_spacer">
                 {this.props.displayStudentQuestions ? this.studentQuestionsDisplayController() : this.teacherQuestionsDisplayController()}
@@ -86,13 +82,5 @@ function mapStateToProps(state) {
         displayStudentQuestions: state.views.displayStudentQuestions
     }
 }
-
-// const mapDispatchToProps = dispatch =>
-// (
-//     {
-//         displayNewTeacherQuestion: (data) => {dispatch(displayNewTeacherQuestion(data))},
-//         getQuestions: () => {dispatch(getQuestions())}
-//     }
-// )
 
 export default connect(mapStateToProps, { displayNewTeacherQuestion })(List);

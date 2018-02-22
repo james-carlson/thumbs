@@ -7,8 +7,7 @@ import { listenForSuccessfulSocketConnection_Student } from '../../services/hand
 class StudentSubheader extends Component {
     constructor(props) {
         super(props);
-
-        // getLive(this.uniqueID)
+        
         listenForSuccessfulSocketConnection_Student();
 
     }

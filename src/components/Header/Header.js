@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './Header.css';
 import logo from './dmlogo.png';
-// import Subheader from '../Subheader/Subheader';
 import { Link } from 'react-router-dom';
 import { goLive } from '../../ducks/backend_reducer';
 import { connect } from 'react-redux';

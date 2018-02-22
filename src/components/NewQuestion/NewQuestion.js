@@ -3,7 +3,6 @@ import './NewQuestion.css';
 import { connect } from 'react-redux';
 import { recordCurrentText, recordNewQuestion } from '../../ducks/backend_reducer';
 import { viewInitial, toggleDisplayNewQuestionBox } from '../../ducks/view_reducer';
-// import { newTeacherQuestion } from '../../ducks/sockets_reducer';
 import { broadcastNewTeacherQuestion, broadcastNewStudentQuestion } from '../../services/handle_sockets';
 import { displayNewTeacherQuestion } from '../../ducks/sockets_reducer';
 
@@ -22,7 +21,6 @@ class NewQuestion extends Component {
 
 
     newQuestionBoxController() {
-        // if (this.props.live === true) {
             if (this.props.displayNewQuestionBox === false) {
                 return ""
             } else {
@@ -39,7 +37,7 @@ class NewQuestion extends Component {
                 )
             }
         }
-    // }
+
         
     
 

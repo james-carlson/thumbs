@@ -15,16 +15,6 @@ var port = 4000;
 // 1. EXPRESS
 const app = express();
 
-
-// 2. MASSIVE
-// const connectionInfo = {
-//     host: process.env.DB_HOST,
-//     port: process.env.DB_PORT, 
-//     database: process.env.DB_NAME,
-//     user: process.env.DB_USER,
-//     password: process.env.DB_PASS,
-// }
-
 const connectionInfo = process.env.DB_CONNECTIONSTRING
 
 let database;
@@ -73,9 +63,6 @@ app.post('/api/data/new-class-session', function (req, res, next) {
     roomName = class_session_id;
     req.app.get('db').queries.newClassSession(class_session_id, instructorName, classTopic)
         .then(data => res.status(200).send(res.data))
-    // .catch(err => { res.status(500).send(err)})
-    // 'New class session created. Questions and responses will be logged.').status(200);
-    // console.log(req.body.url_id);
 })
 
 // Get live class session
@@ -87,7 +74,7 @@ app.get('/api/data/class_sessions/:class_session_id', function (req, res, next) 
             // console.log(data[0])
         })
         .catch(err => { res.status(500).send(err) })
-    // const {class_session_id} = req.params
+
 })
 
 // New Teacher Question
@@ -96,13 +83,7 @@ app.post('/api/data/new-teacher-question', questions.add, function (req, res, ne
         .then(data => res.status(200).send(data))
         .catch(err => { res.status(500).send(err) })
 });
-//  [( req, res, next ) => {
-//     console.log("add thing hit in module exports")
-//     const { questiontext , class_session_id } = req.body
 
-//     req.app.get('db').queries.recordNewTeacherQuestion([questiontext, class_session_id])
-//     .then( data => res.status(200).send(res.data))
-// } , ] );
 
 // New Student Question
 app.post('/api/data/new-student-question', function (req, res) {
@@ -121,12 +102,6 @@ app.get('/api/data/questions/student/:id', function (req, res) {
 
 // Get All Teacher Questions for Session
 app.get('/api/data/questions/session/teacher', questions.refresh);
-
-// function ( req, res, next ) {
-//     req.app.get('db').queries.getAllQuestionsForSession()
-//     .then(data => res.status(200).send(data))
-//     .catch(err => { res.status(500).send(err)})   
-// }
 
 
 // Get All Student Questions for Session
@@ -255,9 +230,6 @@ io.on('connection', (serverside) => {
 })
 
 
-
-
-// const path = require('path')
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
